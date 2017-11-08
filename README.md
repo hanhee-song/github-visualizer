@@ -8,15 +8,17 @@ The project will also include a production README, and maybe a classic atom-file
 
 ### Technologies, libraries, APIs
 
-The bulk of this project will be devoted to learning and implementing D3. In addition to the entry file, there will be one other script, ```graph.js```, and any necessary helper files.
+The bulk of this project will be devoted to learning and implementing D3. ```webpack``` will be used to bundle js files. In addition to the entry file, there will be one other script, ```graph.js```, and any necessary helper files.
 
 ### Wireframes
 
 The app will be a single screen with the graph in the middle and links to my Github, LinkedIn, and profile on the bottom.
 
+![wireframe](https://github.com/hanhee-song/project-visualizer/blob/master/docs/Screen%20Shot%202017-11-07%20at%2020.47.50.png?raw=true)
+
 ### Implementation Timeline
 
-Day 1: basic setup, familiarize self with D3 and experiment with its API.
+Day 1: npm setup, familiarize self with D3 and experiment with its API.
 
 Day 2: Build a basic graph with sufficient styling.
 
