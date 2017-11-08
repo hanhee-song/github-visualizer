@@ -1,0 +1,16 @@
+.svg-main {
+  display: block;
+  margin: 100px auto;
+  border: 1px solid red;
+}
+
+.nodes circle {
+  stroke: #ddd;
+  stroke-width: 1.5px;
+}
+
+
+.links line {
+  stroke: #888;
+  stroke-width: 2px;
+}
