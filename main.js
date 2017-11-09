@@ -1,3 +1,6 @@
+const fileParser = require('./file_parser.js');
+console.log(fileParser);
+
 const svg = d3.select('.svg-main');
 
 const width = Number(svg.attr("width"));

@@ -1,0 +1,28 @@
+{
+  "name": "project-visualizer",
+  "version": "1.0.0",
+  "description": "### MVP",
+  "main": "script.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "octonode": "^0.9.1"
+  },
+  "devDependencies": {
+    "beefy": "^2.1.8"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanhee-song/project-visualizer.git"
+  },
+  "author": "Hanhee Song",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hanhee-song/project-visualizer/issues"
+  },
+  "homepage": "https://github.com/hanhee-song/project-visualizer#readme"
+}
