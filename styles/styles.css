@@ -19,8 +19,7 @@
   stroke-width: 2px;
 }
 
-text {
-  /*fill: rgba(60, 20, 20, 0.9);*/
+.label {
   stroke: #333;
   stroke-width: .5px;
   font: 11px sans-serif;
@@ -28,4 +27,20 @@ text {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+}
+
+.tooltip {
+  stroke: #333;
+  stroke-width: .5px;
+  font: 11px sans-serif;
+  pointer-events: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.tooltip-box {
+  stroke: #fff;
+  stroke-width: 1.5px;
+  /*fill: #999;*/
 }

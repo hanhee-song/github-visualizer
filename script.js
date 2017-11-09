@@ -3,6 +3,7 @@ const svg = d3.select('.svg-main');
 const width = Number(svg.attr("width"));
 const height = Number(svg.attr("height"));
 let highlighted = "";
+let selectedTooltip = "";
 
 const simulation = d3.forceSimulation()
   .force(
@@ -25,7 +26,8 @@ d3.json("./filetree.json", function(error, graph) {
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
-      .attr("marker-end", (d) => `url(#marker_${d.id})`);
+      .attr("marker-end", (d) => `url(#marker_${d.id})`)
+      .attr("opacity", ".4");
 
   svg.append("svg:defs").selectAll("marker")
     .data(graph.links)
@@ -53,13 +55,24 @@ d3.json("./filetree.json", function(error, graph) {
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
-      ).on("dblclick", connectedNodes);
+      ).on("dblclick", connectedNodes)
+      .on("mouseover", showTooltip)
+      .on("mouseout", showTooltip);
   
-  const text = svg.selectAll("text")
+  const text = svg.selectAll("text").filter(".label")
     .data(graph.nodes)
     .enter()
     .append("text")
+    .classed("label", true)
     .text((d) => abbreviate(d.id));
+  
+  const tooltip = svg.selectAll("text").filter(".tooltip")
+    .data(graph.nodes)
+    .enter()
+    .append("text")
+    .classed("tooltip", true)
+    .text(d => generateTooltip(d))
+      .attr("opacity", ".5");
   
   simulation.nodes(graph.nodes)
     .on("tick", ticked);
@@ -76,11 +89,17 @@ d3.json("./filetree.json", function(error, graph) {
     node
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y);
-
+      
     text
       .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
       .attr("y", (d) => d.y + 3);
     
+    tooltip
+      .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
+      .attr("y", (d) => d.y + 3)
+      .text(d => generateTooltip(d));
+    
+    // console.log(selectedTooltip);
     function getCircumferencePoint(d) {
       const tRadius = Math.sqrt(d.target.loc);
       const dx = d.target.x - d.source.x;
@@ -114,21 +133,35 @@ d3.json("./filetree.json", function(error, graph) {
     if (!highlighted || highlighted !== d.id) {
       node.style("opacity", (o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? 1 : .2;
+          ? 1 : .14;
       });
       link.style("opacity", (o) => {
-        return d.id === o.source.id || d.id === o.target.id ? 1 : .2;
+        return d.id === o.source.id || d.id === o.target.id ? .7 : .14;
       });
       text.style("opacity", (o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? 1 : .2;
+          ? 1 : .14;
       });
       highlighted = d.id;
     } else {
       node.style("opacity", 1);
-      link.style("opacity", 1);
+      link.style("opacity", .4);
       text.style("opacity", 1);
       highlighted = "";
+    }
+  }
+  
+  function showTooltip(d) {
+    if (selectedTooltip !== d.id) {
+      selectedTooltip = d.id;
+    } else {
+      selectedTooltip = "";
+    }
+  }
+
+  function generateTooltip(d) {
+    if (d.id === selectedTooltip) {
+      return d.id.split(".")[0];
     }
   }
 });
