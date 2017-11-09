@@ -9,7 +9,7 @@
 }
 
 .nodes circle {
-  stroke: #fff;
+  stroke: #ccc;
   stroke-width: 1.5px;
   /*fill: #999;*/
 }
@@ -23,4 +23,7 @@ text {
   fill: rgba(90, 40, 40, 0.9);
   font: 11px sans-serif;
   pointer-events: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }

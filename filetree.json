@@ -24,7 +24,13 @@
     {"id": "message_index_item_container.jsx", "loc": 20, "group": 3},
     {"id": "message_index_item.jsx", "loc": 49, "group": 3},
     {"id": "message_form_container.jsx", "loc": 23, "group": 3},
-    {"id": "message_form.jsx", "loc": 78, "group": 3}
+    {"id": "message_form.jsx", "loc": 78, "group": 3},
+    {"id": "channel_details_container.jsx", "loc": 27, "group": 3},
+    {"id": "channel_details.jsx", "loc": 161, "group": 3},
+    {"id": "channel_index_container.jsx", "loc": 22, "group": 4},
+    {"id": "channel_index.jsx", "loc": 137, "group": 4},
+    {"id": "channel_index_item_container.jsx", "loc": 21, "group": 4},
+    {"id": "channel_index_item.jsx", "loc": 158, "group": 4}
   ],
   "links": [
     {"source": "app.jsx", "target": "root.jsx"},
@@ -50,6 +56,12 @@
     {"source": "message_index_item_container.jsx", "target": "message_index.jsx"},
     {"source": "message_index_item.jsx", "target": "message_index_item_container.jsx"},
     {"source": "message_form_container.jsx", "target": "message_index.jsx"},
-    {"source": "message_form.jsx", "target": "message_form_container.jsx"}
+    {"source": "message_form.jsx", "target": "message_form_container.jsx"},
+    {"source": "channel_details_container.jsx", "target": "workspace.jsx"},
+    {"source": "channel_details.jsx", "target": "channel_details_container.jsx"},
+    {"source": "channel_index_container.jsx", "target": "workspace.jsx"},
+    {"source": "channel_index.jsx", "target": "channel_index_container.jsx"},
+    {"source": "channel_index_item_container.jsx", "target": "channel_index.jsx"},
+    {"source": "channel_index_item.jsx", "target": "channel_index_item_container.jsx"}
   ]
 }

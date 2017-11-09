@@ -7,7 +7,7 @@ const simulation = d3.forceSimulation()
   .force(
     "link", d3.forceLink()
       .distance(d => distance(d))
-      .strength(.5)
+      .strength(1)
       .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody())
@@ -34,9 +34,9 @@ d3.json("./filetree.json", function(error, graph) {
       .attr("markerWidth", 4)
       .attr("markerHeight", 4)
       .attr("orient", "auto")
+      .attr("fill", "#888")
     .append("svg:path")
       .attr("d", "M0,-5L10,0L0,5");
-  
   
   
   const node = svg.append("g")
@@ -64,7 +64,6 @@ d3.json("./filetree.json", function(error, graph) {
 
   simulation.force("link")
     .links(graph.links);
-    // .on("tick", ticked); // ?
 
   function ticked() {
     link
@@ -81,7 +80,6 @@ d3.json("./filetree.json", function(error, graph) {
       .attr("y", (d) => d.y + 3);
     
     function getCircumferencePoint(d) {
-      // debugger;
       const tRadius = Math.sqrt(d.target.loc);
       const dx = d.target.x - d.source.x;
       const dy = d.target.y - d.source.y;
@@ -120,8 +118,7 @@ function dragended(d) {
 
 function color(d) {
   const group = d.group;
-  const colors = "red green blue purple".split(" ");
-  debugger;
+  const colors = "red green blue purple grey".split(" ");
   return colors[group];
 }
 
@@ -131,15 +128,15 @@ function abbreviate(name) {
 }
 
 function distance(d) {
-  const offset = Math.sqrt(d.source.loc);
+  const offset = Math.sqrt(d.target.loc) + Math.sqrt(d.source.loc);
   const sourceId = d.source.id.split("_");
   const targetId = d.target.id.split("_");
   const containerless = (name) => name.split("_container").join("").split(".")[0];
   
   if (containerless(d.source.id) === containerless(d.target.id)) {
-    return 10 + offset;
+    return 15 + offset;
   } else if (sourceId[0] === targetId[0]) {
-    return 30 + offset;
+    return 40 + offset;
 }
-  return 50 + offset;
+  return 70 + offset;
 }
