@@ -66,13 +66,13 @@ d3.json("./filetree.json", function(error, graph) {
     .classed("label", true)
     .text((d) => abbreviate(d.id));
   
-  const tooltip = svg.selectAll("text").filter(".tooltip")
-    .data(graph.nodes)
-    .enter()
-    .append("text")
-    .classed("tooltip", true)
-    .text(d => generateTooltip(d))
-      .attr("opacity", ".5");
+  // const tooltip = svg.selectAll("text").filter(".tooltip")
+  //   .data(graph.nodes)
+  //   .enter()
+  //   .append("text")
+  //   .classed("tooltip", true)
+  //   .text(d => generateTooltip(d))
+  //     .attr("opacity", ".5");
   
   simulation.nodes(graph.nodes)
     .on("tick", ticked);
@@ -94,10 +94,10 @@ d3.json("./filetree.json", function(error, graph) {
       .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
       .attr("y", (d) => d.y + 3);
     
-    tooltip
-      .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
-      .attr("y", (d) => d.y + 3)
-      .text(d => generateTooltip(d));
+    // tooltip
+    //   .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
+    //   .attr("y", (d) => d.y + 3)
+    //   .text(d => generateTooltip(d));
     
     // console.log(selectedTooltip);
     function getCircumferencePoint(d) {
@@ -134,14 +134,14 @@ d3.json("./filetree.json", function(error, graph) {
     if (!highlighted || highlighted !== d.id) {
       node.style("opacity", (o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? 1 : .14;
+          ? 1 : .2;
       });
       link.style("opacity", (o) => {
         return d.id === o.source.id || d.id === o.target.id ? .7 : .14;
       });
       text.style("opacity", (o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? 1 : .14;
+          ? 1 : .2;
       });
       text.text((o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
@@ -180,19 +180,11 @@ d3.json("./filetree.json", function(error, graph) {
     });
   }
   
-  function showExtendedName(d) {
-    
-  }
-  
-  function hideExtendedName(d) {
-    
-  }
-  
-  function generateTooltip(d) {
-    if (d.id === selectedTooltip) {
-      return d.id.split(".")[0];
-    }
-  }
+  // function generateTooltip(d) {
+  //   if (d.id === selectedTooltip) {
+  //     return d.id.split(".")[0];
+  //   }
+  // }
 });
 
 function dragstarted(d) {
