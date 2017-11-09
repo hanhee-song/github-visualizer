@@ -34,7 +34,7 @@ d3.json("./filetree.json", function(error, graph) {
       .attr("markerWidth", 4)
       .attr("markerHeight", 4)
       .attr("orient", "auto")
-      .attr("fill", "#888")
+      .attr("fill", "#ccc")
     .append("svg:path")
       .attr("d", "M0,-5L10,0L0,5");
   
@@ -118,7 +118,14 @@ function dragended(d) {
 
 function color(d) {
   const group = d.group;
-  const colors = "red green blue purple grey".split(" ");
+  const colors = [
+    "#4286f4",
+    "#309b55",
+    "#4286f4",
+    "#9e6bba",
+    "#6a7384",
+    "#844040"
+  ];
   return colors[group];
 }
 
@@ -136,7 +143,7 @@ function distance(d) {
   if (containerless(d.source.id) === containerless(d.target.id)) {
     return 15 + offset;
   } else if (sourceId[0] === targetId[0]) {
-    return 40 + offset;
+    return 30 + offset;
 }
   return 70 + offset;
 }

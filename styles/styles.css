@@ -9,18 +9,18 @@
 }
 
 .nodes circle {
-  stroke: #ccc;
+  stroke: #fff;
   stroke-width: 1.5px;
   /*fill: #999;*/
 }
 
 .links line {
-  stroke: #888;
+  stroke: #ccc;
   stroke-width: 2px;
 }
 
 text {
-  fill: rgba(90, 40, 40, 0.9);
+  fill: rgba(60, 20, 20, 0.9);
   font: 11px sans-serif;
   pointer-events: none;
   user-select: none;
