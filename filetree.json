@@ -35,7 +35,35 @@
     {"id": "channel_form.jsx", "loc": 183, "group": 4},
     {"id": "user_index_container.jsx", "loc": 32, "group": 4},
     {"id": "user_index.jsx", "loc": 253, "group": 4},
-    {"id": "user_index_item.jsx", "loc": 26, "group": 4}
+    {"id": "user_index_item.jsx", "loc": 26, "group": 4},
+    
+    {"id": "channel_actions.js", "loc": 179, "group": 0},
+    {"id": "message_actions.js", "loc": 86, "group": 0},
+    {"id": "session_actions.js", "loc": 84, "group": 0},
+    {"id": "ui_actions.js", "loc": 30, "group": 0},
+    {"id": "user_actions.js", "loc": 36, "group": 0},
+    
+    {"id": "channel_api_util.js", "loc": 44, "group": 0},
+    {"id": "find_next_channel_id.js", "loc": 12, "group": 0},
+    {"id": "message_api_util.js", "loc": 22, "group": 0},
+    {"id": "route_util.js", "loc": 46, "group": 0},
+    {"id": "session_api_util.js", "loc": 39, "group": 0},
+    {"id": "user_util.js", "loc": 7, "group": 0},
+    
+    {"id": "channel_errors_reducer.js", "loc": 29, "group": 0},
+    {"id": "channel_reducer.js", "loc": 40, "group": 0},
+    {"id": "entities_reducer.js", "loc": 13, "group": 0},
+    {"id": "errors_reducer.js", "loc": 15, "group": 0},
+    {"id": "message_errors_reducer.js", "loc": 29, "group": 0},
+    {"id": "message_reducer.js", "loc": 31, "group": 0},
+    {"id": "root_reducer.js", "loc": 15, "group": 0},
+    {"id": "session_errors_reducer.js", "loc": 26, "group": 0},
+    {"id": "session_reducer.js", "loc": 31, "group": 0},
+    {"id": "ui_reducer.js", "loc": 32, "group": 0},
+    {"id": "user_errors_reducer.js", "loc": 26, "group": 0},
+    {"id": "user_reducer.js", "loc": 20, "group": 0},
+    
+    {"id": "store.js", "loc": 15, "group": 0}
   ],
   "links": [
     {"source": "app.jsx", "target": "root.jsx"},
@@ -72,6 +100,42 @@
     {"source": "channel_form.jsx", "target": "channel_form_container.jsx"},
     {"source": "user_index_container.jsx", "target": "workspace.jsx"},
     {"source": "user_index.jsx", "target": "user_index_container.jsx"},
-    {"source": "user_index_item.jsx", "target": "user_index.jsx"}
+    {"source": "user_index_item.jsx", "target": "user_index.jsx"},
+    
+    {"source": "channel_actions.js", "target": "channel_errors_reducer.js"},
+    {"source": "channel_actions.js", "target": "channel_reducer.js"},
+    {"source": "message_actions.js", "target": "channel_reducer.js"},
+    {"source": "message_actions.js", "target": "message_errors_reducer.js"},
+    {"source": "message_actions.js", "target": "message_reducer.js"},
+    {"source": "message_actions.js", "target": "message_reducer.js"},
+    {"source": "session_actions.js", "target": "session_errors_reducer.js"},
+    {"source": "session_actions.js", "target": "session_reducer.js"},
+    {"source": "session_actions.js", "target": "ui_reducer.js"},
+    {"source": "ui_actions.js", "target": "ui_reducer.js"},
+    {"source": "user_actions.js", "target": "user_errors_reducer.js"},
+    {"source": "user_actions.js", "target": "user_reducer.js"},
+    
+    {"source": "channel_api_util.js", "target": "channel_actions.js"},
+    {"source": "message_api_util.js", "target": "message_actions.js"},
+    {"source": "route_util.js", "target": "app.jsx"},
+    {"source": "session_api_util.js", "target": "session_actions.js"},
+    {"source": "user_util.js", "target": "user_actions.js"},
+    
+    {"source": "channel_reducer.js", "target": "entities_reducer.js"},
+    {"source": "message_reducer.js", "target": "entities_reducer.js"},
+    {"source": "user_reducer.js", "target": "entities_reducer.js"},
+    {"source": "session_errors_reducer.js", "target": "errors_reducer.js"},
+    {"source": "channel_errors_reducer.js", "target": "errors_reducer.js"},
+    {"source": "message_errors_reducer.js", "target": "errors_reducer.js"},
+    {"source": "user_errors_reducer.js", "target": "errors_reducer.js"},
+    {"source": "entities_reducer.js", "target": "root_reducer.js"},
+    {"source": "session_reducer.js", "target": "root_reducer.js"},
+    {"source": "errors_reducer.js", "target": "root_reducer.js"},
+    {"source": "ui_reducer.js", "target": "root_reducer.js"},
+    {"source": "root_reducer.js", "target": "store.js"},
+    
+    
+    {"source": "store.js", "target": "slic.jsx"}
+
   ]
 }
