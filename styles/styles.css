@@ -1,3 +1,7 @@
+* {
+  font-family: sans-serif;
+}
+
 .svg-main {
   display: block;
   margin: 100px auto;
@@ -14,8 +18,8 @@
   stroke-width: 2px;
 }
 
-.nodes text {
-  fill: #000;
+text {
+  fill: rgba(230, 80, 80, 0.8);
   font: 10px sans-serif;
   pointer-events: none;
 }
