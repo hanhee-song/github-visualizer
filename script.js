@@ -2,6 +2,7 @@ const svg = d3.select('.svg-main');
 
 const width = Number(svg.attr("width"));
 const height = Number(svg.attr("height"));
+let highlighted = "";
 
 const simulation = d3.forceSimulation()
   .force(
@@ -11,7 +12,8 @@ const simulation = d3.forceSimulation()
       .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody())
-  .force("center", d3.forceCenter(width/2, height/2));
+  .force("center", d3.forceCenter(width/2, height/2))
+  .force("collision", d3.forceCollide());
 
 //
 
@@ -51,7 +53,7 @@ d3.json("./filetree.json", function(error, graph) {
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
-      );
+      ).on("dblclick", connectedNodes);
   
   const text = svg.selectAll("text")
     .data(graph.nodes)
@@ -96,6 +98,37 @@ d3.json("./filetree.json", function(error, graph) {
       if (graph.nodes[i].id === targetId) {
         return graph.nodes[i].loc;
       }
+    }
+  }
+  
+  const linkedById = {};
+  for (var i = 0; i < graph.nodes.length; i++) {
+    linkedById[`${i},${i}`] = 1;
+  }
+  graph.links.forEach(d => {
+    linkedById[`${d.source.id},${d.target.id}`] = 1;
+  });
+  const neighboring = (a, b) => linkedById[`${a.id},${b.id}`];
+  
+  function connectedNodes(d) {
+    if (!highlighted || highlighted !== d.id) {
+      node.style("opacity", (o) => {
+        return neighboring(o, d) || neighboring(d, o) || o.id === d.id
+          ? 1 : .2;
+      });
+      link.style("opacity", (o) => {
+        return d.id === o.source.id || d.id === o.target.id ? 1 : .2;
+      });
+      text.style("opacity", (o) => {
+        return neighboring(o, d) || neighboring(d, o) || o.id === d.id
+          ? 1 : .2;
+      });
+      highlighted = d.id;
+    } else {
+      node.style("opacity", 1);
+      link.style("opacity", 1);
+      text.style("opacity", 1);
+      highlighted = "";
     }
   }
 });

@@ -20,7 +20,9 @@
 }
 
 text {
-  fill: rgba(60, 20, 20, 0.9);
+  /*fill: rgba(60, 20, 20, 0.9);*/
+  stroke: #333;
+  stroke-width: .5px;
   font: 11px sans-serif;
   pointer-events: none;
   user-select: none;
