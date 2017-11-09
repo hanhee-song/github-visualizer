@@ -56,8 +56,8 @@ d3.json("./filetree.json", function(error, graph) {
         .on("drag", dragged)
         .on("end", dragended)
       ).on("dblclick", highlightNodes)
-      .on("mouseover", showTooltip)
-      .on("mouseout", showTooltip);
+      .on("mouseover", generateText)
+      .on("mouseout", generateText);
   
   const text = svg.selectAll("text").filter(".label")
     .data(graph.nodes)
@@ -128,6 +128,7 @@ d3.json("./filetree.json", function(error, graph) {
     linkedById[`${d.source.id},${d.target.id}`] = 1;
   });
   const neighboring = (a, b) => linkedById[`${a.id},${b.id}`];
+  const neighboringIds = (a, b) => linkedById[`${a},${b}`];
   
   function highlightNodes(d) {
     if (!highlighted || highlighted !== d.id) {
@@ -149,21 +150,44 @@ d3.json("./filetree.json", function(error, graph) {
       highlighted = d.id;
     } else {
       node.style("opacity", 1);
-      link.style("opacity", .4);
+      link.style("opacity", .6);
       text.style("opacity", 1);
       text.text((o) => abbreviate(o.id));
       highlighted = "";
     }
   }
   
-  function showTooltip(d) {
+  
+  function generateText(d) {
     if (selectedTooltip !== d.id) {
       selectedTooltip = d.id;
     } else {
       selectedTooltip = "";
     }
+    text.text((o) => {
+      if (selectedTooltip && o.id === d.id) {
+        return unextended(o.id);
+      }
+      if (highlighted && (neighboringIds(o.id, highlighted) ||
+        neighboringIds(highlighted, o.id)) || highlighted === o.id) {
+        return unextended(o.id);
+      }
+      if (selectedTooltip && highlighted && (neighboring(o, d) ||
+        neighboring(d, o) || o.id === d.id)) {
+        return unextended(o.id);
+      }
+      return abbreviate(o.id);
+    });
   }
-
+  
+  function showExtendedName(d) {
+    
+  }
+  
+  function hideExtendedName(d) {
+    
+  }
+  
   function generateTooltip(d) {
     if (d.id === selectedTooltip) {
       return d.id.split(".")[0];
