@@ -1,0 +1,11 @@
+{
+  "nodes": [
+    {"id": "slic.jsx", "loc": 24},
+    {"id": "root.jsx", "loc": 17},
+    {"id": "app.jsx", "loc": 56}
+  ],
+  "links": [
+    {"source": "app.jsx", "target": "root.jsx"},
+    {"source": "root.jsx", "target": "slic.jsx"}
+  ]
+}
