@@ -10,7 +10,7 @@ const simulation = d3.forceSimulation()
 
 //
 
-d3.json("../data/filetree.json", function(error, graph) {
+d3.json("./filetree.json", function(error, graph) {
   if (error) throw error;
   
   const link = svg.append("g")
