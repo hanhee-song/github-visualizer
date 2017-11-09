@@ -1,21 +1,35 @@
 {
   "nodes": [
-    {"id": "slic.jsx", "loc": 24},
-    {"id": "root.jsx", "loc": 17},
-    {"id": "app.jsx", "loc": 56},
-    {"id": "navbar.jsx", "loc": 21},
-    {"id": "footer.jsx", "loc": 30},
-    {"id": "session_form_container.jsx", "loc": 33},
-    {"id": "session_form.jsx", "loc": 188},
-    {"id": "workspace_container.jsx", "loc": 56}
+    {"id": "slic.jsx", "loc": 24, "group": 1},
+    {"id": "root.jsx", "loc": 17, "group": 1},
+    {"id": "app.jsx", "loc": 56, "group": 1},
+    {"id": "workspace_container.jsx", "loc": 56, "group": 1},
+    {"id": "workspace.jsx", "loc": 143, "group": 1},
+    {"id": "navbar.jsx", "loc": 21, "group": 2},
+    {"id": "footer.jsx", "loc": 30, "group": 2},
+    {"id": "welcome_page_container.jsx", "loc": 22, "group": 2},
+    {"id": "welcome_page.jsx", "loc": 68, "group": 2},
+    {"id": "session_form_container.jsx", "loc": 33, "group": 2},
+    {"id": "session_form.jsx", "loc": 188, "group": 2},
+    {"id": "channel_sidebar_container.jsx", "loc": 22, "group": 3},
+    {"id": "channel_sidebar.jsx", "loc": 110, "group": 3},
+    {"id": "channel_sidebar_item_container.jsx", "loc": 24, "group": 3},
+    {"id": "channel_sidebar_item.jsx", "loc": 69, "group": 3}
   ],
   "links": [
     {"source": "app.jsx", "target": "root.jsx"},
     {"source": "root.jsx", "target": "slic.jsx"},
     {"source": "navbar.jsx", "target": "app.jsx"},
     {"source": "footer.jsx", "target": "app.jsx"},
+    {"source": "workspace_container.jsx", "target": "app.jsx"},
+    {"source": "workspace.jsx", "target": "workspace_container.jsx"},
     {"source": "session_form_container.jsx", "target": "app.jsx"},
     {"source": "session_form.jsx", "target": "session_form_container.jsx"},
-    {"source": "workspace_container.jsx", "target": "app.jsx"}
+    {"source": "welcome_page_container.jsx", "target": "app.jsx"},
+    {"source": "welcome_page.jsx", "target": "welcome_page_container.jsx"},
+    {"source": "channel_sidebar_container.jsx", "target": "workspace.jsx"},
+    {"source": "channel_sidebar.jsx", "target": "channel_sidebar_container.jsx"},
+    {"source": "channel_sidebar_item_container.jsx", "target": "channel_sidebar.jsx"},
+    {"source": "channel_sidebar_item.jsx", "target": "channel_sidebar_item_container.jsx"}
   ]
 }
