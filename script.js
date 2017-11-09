@@ -8,11 +8,11 @@ let selectedTooltip = "";
 const simulation = d3.forceSimulation()
   .force(
     "link", d3.forceLink()
-      .distance(d => distance(d))
+      .distance(d => distance(d)/2)
       .strength(1)
       .id((d) => d.id)
   )
-  .force("charge", d3.forceManyBody())
+  .force("charge", d3.forceManyBody(0))
   .force("center", d3.forceCenter(width/2, height/2))
   .force("collision", d3.forceCollide());
 
@@ -211,7 +211,8 @@ function color(d) {
     "#4286f4",
     "#9e6bba",
     "#6a7384",
-    "#844040"
+    "#844040",
+    "#c49c25"
   ];
   return colors[group];
 }
@@ -231,9 +232,9 @@ function distance(d) {
   const containerless = (name) => name.split("_container").join("").split(".")[0];
   
   if (containerless(d.source.id) === containerless(d.target.id)) {
-    return 15 + offset;
+    return 10 + offset;
   } else if (sourceId[0] === targetId[0]) {
-    return 30 + offset;
+    return 15 + offset;
 }
-  return 70 + offset;
+  return 20 + offset;
 }
