@@ -55,7 +55,7 @@ d3.json("./filetree.json", function(error, graph) {
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
-      ).on("dblclick", connectedNodes)
+      ).on("dblclick", highlightNodes)
       .on("mouseover", showTooltip)
       .on("mouseout", showTooltip);
   
@@ -129,7 +129,7 @@ d3.json("./filetree.json", function(error, graph) {
   });
   const neighboring = (a, b) => linkedById[`${a.id},${b.id}`];
   
-  function connectedNodes(d) {
+  function highlightNodes(d) {
     if (!highlighted || highlighted !== d.id) {
       node.style("opacity", (o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
@@ -142,11 +142,16 @@ d3.json("./filetree.json", function(error, graph) {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
           ? 1 : .14;
       });
+      text.text((o) => {
+        return neighboring(o, d) || neighboring(d, o) || o.id === d.id
+          ? unextended(o.id) : abbreviate(o.id);
+      });
       highlighted = d.id;
     } else {
       node.style("opacity", 1);
       link.style("opacity", .4);
       text.style("opacity", 1);
+      text.text((o) => abbreviate(o.id));
       highlighted = "";
     }
   }
@@ -196,7 +201,10 @@ function color(d) {
 }
 
 function abbreviate(name) {
-  // return name.split("_").map((word) => word[0]).join("");
+  return name.split("_").map((word) => word[0]).join("");
+}
+
+function unextended(name) {
   return name.split(".")[0];
 }
 
