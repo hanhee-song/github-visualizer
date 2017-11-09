@@ -6,12 +6,12 @@ const height = Number(svg.attr("height"));
 const simulation = d3.forceSimulation()
   .force(
     "link", d3.forceLink()
-      .distance(d => 60)
-      .strength(1)
+      .distance(d => distance(d))
+      .strength(.5)
       .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody())
-  .force("radial", d3.forceRadial(100, width/2, height/2));
+  .force("center", d3.forceCenter(width/2, height/2));
 
 //
 
@@ -23,15 +23,14 @@ d3.json("./filetree.json", function(error, graph) {
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
-      // .attr("stroke-width", (d) => Math.sqrt(d.value))
-      .style("marker-end", "url(#end)");
-  
+      .attr("marker-end", (d) => `url(#marker_${d.id})`);
+
   svg.append("svg:defs").selectAll("marker")
-    .data(["end"])
+    .data(graph.links)
     .enter().append("svg:marker")
-      .attr("id", String)
+      .attr("id", (d) => `marker_${d.id}`)
       .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 40)
+      .attr("refX", 10)
       .attr("markerWidth", 4)
       .attr("markerHeight", 4)
       .attr("orient", "auto")
@@ -47,6 +46,7 @@ d3.json("./filetree.json", function(error, graph) {
     .enter()
     .append("circle")
       .attr("r", (d) => Math.sqrt(d.loc))
+      .attr("fill", (d) => color(d))
       .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
@@ -57,7 +57,7 @@ d3.json("./filetree.json", function(error, graph) {
     .data(graph.nodes)
     .enter()
     .append("text")
-    .text((d) => d.id);
+    .text((d) => abbreviate(d.id));
   
   simulation.nodes(graph.nodes)
     .on("tick", ticked);
@@ -70,14 +70,35 @@ d3.json("./filetree.json", function(error, graph) {
     link
       .attr("x1", (d) => d.source.x)
       .attr("y1", (d) => d.source.y)
-      .attr("x2", (d) => d.target.x)
-      .attr("y2", (d) => d.target.y);
+      .attr("x2", (d) => getCircumferencePoint(d)[0])
+      .attr("y2", (d) => getCircumferencePoint(d)[1]);
     node
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y);
+
     text
       .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
-      .attr("y", (d) => d.y);
+      .attr("y", (d) => d.y + 3);
+    
+    function getCircumferencePoint(d) {
+      // debugger;
+      const tRadius = Math.sqrt(d.target.loc);
+      const dx = d.target.x - d.source.x;
+      const dy = d.target.y - d.source.y;
+      const gamma = Math.atan2(dy, dx);
+      const tx = d.target.x - (Math.cos(gamma) * tRadius);
+      const ty = d.target.y - (Math.sin(gamma) * tRadius);
+      return [tx, ty];
+    }
+  }
+  
+  function pointerDistance(d) {
+    const targetId = d.target;
+    for (var i = 0; i < graph.nodes.length; i++) {
+      if (graph.nodes[i].id === targetId) {
+        return graph.nodes[i].loc;
+      }
+    }
   }
 });
 
@@ -95,4 +116,30 @@ function dragged(d) {
 function dragended(d) {
   d.fx = null;
   d.fy = null;
+}
+
+function color(d) {
+  const group = d.group;
+  const colors = "red green blue purple".split(" ");
+  debugger;
+  return colors[group];
+}
+
+function abbreviate(name) {
+  // return name.split("_").map((word) => word[0]).join("");
+  return name.split(".")[0];
+}
+
+function distance(d) {
+  const offset = Math.sqrt(d.source.loc);
+  const sourceId = d.source.id.split("_");
+  const targetId = d.target.id.split("_");
+  const containerless = (name) => name.split("_container").join("").split(".")[0];
+  
+  if (containerless(d.source.id) === containerless(d.target.id)) {
+    return 10 + offset;
+  } else if (sourceId[0] === targetId[0]) {
+    return 30 + offset;
+}
+  return 50 + offset;
 }

@@ -11,6 +11,7 @@
 .nodes circle {
   stroke: #fff;
   stroke-width: 1.5px;
+  /*fill: #999;*/
 }
 
 .links line {
@@ -19,7 +20,7 @@
 }
 
 text {
-  fill: rgba(230, 80, 80, 0.8);
-  font: 10px sans-serif;
+  fill: rgba(90, 40, 40, 0.9);
+  font: 11px sans-serif;
   pointer-events: none;
 }
