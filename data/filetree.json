@@ -2,10 +2,20 @@
   "nodes": [
     {"id": "slic.jsx", "loc": 24},
     {"id": "root.jsx", "loc": 17},
-    {"id": "app.jsx", "loc": 56}
+    {"id": "app.jsx", "loc": 56},
+    {"id": "navbar.jsx", "loc": 21},
+    {"id": "footer.jsx", "loc": 30},
+    {"id": "session_form_container.jsx", "loc": 33},
+    {"id": "session_form.jsx", "loc": 188},
+    {"id": "workspace_container.jsx", "loc": 56}
   ],
   "links": [
     {"source": "app.jsx", "target": "root.jsx"},
-    {"source": "root.jsx", "target": "slic.jsx"}
+    {"source": "root.jsx", "target": "slic.jsx"},
+    {"source": "navbar.jsx", "target": "app.jsx"},
+    {"source": "footer.jsx", "target": "app.jsx"},
+    {"source": "session_form_container.jsx", "target": "app.jsx"},
+    {"source": "session_form.jsx", "target": "session_form_container.jsx"},
+    {"source": "workspace_container.jsx", "target": "app.jsx"}
   ]
 }

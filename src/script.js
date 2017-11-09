@@ -18,20 +18,45 @@ d3.json("../data/filetree.json", function(error, graph) {
     .selectAll("line")
     .data(graph.links)
     .enter().append("line")
-      .attr("stroke-width", (d) => Math.sqrt(d.value));
-
+      .attr("stroke-width", (d) => Math.sqrt(d.value))
+      .style("marker-end", "url(#end)");
+  
+  svg.append("svg:defs").selectAll("marker")
+    .data(["end"])
+    .enter().append("svg:marker")
+      .attr("id", String)
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 15)
+      .attr("refY", -1.5)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+    .append("svg:path")
+      .attr("d", "M0,-5L10,0L0,5");
+  
+  
+  
   const node = svg.append("g")
     .attr("class", "nodes")
     .selectAll("circle")
     .data(graph.nodes)
-    .enter().append("circle")
+    .enter()
+    .append("circle")
       .attr("r", 5)
       .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
       );
-
+  
+  const text = svg.selectAll("text")
+    .data(graph.nodes)
+    .enter()
+    .append("text")
+    .text((d) => d.id)
+      .attr("x", 12)
+      .attr("dy", ".35em");
+  
   simulation.nodes(graph.nodes)
     .on("tick", ticked);
 
@@ -48,6 +73,9 @@ d3.json("../data/filetree.json", function(error, graph) {
     node
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y);
+    text
+      .attr("x", (d) => d.x)
+      .attr("y", (d) => d.y);
   }
 });
 

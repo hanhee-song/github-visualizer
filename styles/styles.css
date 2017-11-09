@@ -9,8 +9,13 @@
   stroke-width: 1.5px;
 }
 
-
 .links line {
   stroke: #888;
   stroke-width: 2px;
+}
+
+.nodes text {
+  fill: #000;
+  font: 10px sans-serif;
+  pointer-events: none;
 }
