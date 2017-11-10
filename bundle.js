@@ -151,36 +151,50 @@ module.exports = fileParser;
 
 const fileParser = require('./file_parser.js');
 
-fileParser("hanhee-song", "slic", "frontend")
-  .then(
-    response => {
-      debugger;
-    }
-  );
+// let graph = {
+//   "nodes": [],
+//   "links": []
+// };
 
 const svg = d3.select('.svg-main');
 
-const width = Number(svg.attr("width"));
-const height = Number(svg.attr("height"));
-let highlighted = "";
-let selectedTooltip = "";
+fileParser("hanhee-song", "slic", "frontend")
+.then(
+  response => {
+    const graph = response;
+    debugger;
+    svg.data(graph);
+    svg.selectAll("g").remove();
+    svg.selectAll("text").remove();
+    drawGraph(null, graph);
+  }
+);
 
-const simulation = d3.forceSimulation()
+
+
+//
+
+d3.json("./filetree.json", (e, graph) => drawGraph(e, graph));
+
+function drawGraph(error, graph) {
+  const width = Number(svg.attr("width"));
+  const height = Number(svg.attr("height"));
+  let highlighted = "";
+  let selectedTooltip = "";
+  
+  const simulation = d3.forceSimulation()
   .force(
     "link", d3.forceLink()
-      .distance(d => distance(d)/2)
-      .strength(1)
-      .id((d) => d.id)
+    .distance(d => distance(d)/2)
+    .strength(1)
+    .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody(0))
   .force("center", d3.forceCenter(width/2, height/2))
   .force("collision", d3.forceCollide());
-
-//
-
-d3.json("./filetree.json", function(error, graph) {
-  if (error) throw error;
   
+  
+  if (error) throw error;
   const link = svg.append("g")
     .attr("class", "links")
     .selectAll("line")
@@ -345,7 +359,7 @@ d3.json("./filetree.json", function(error, graph) {
   //     return d.id.split(".")[0];
   //   }
   // }
-});
+}
 
 function dragstarted(d) {
   if (!d3.event.active) simulation.alphaTarget(0.3).restart();
