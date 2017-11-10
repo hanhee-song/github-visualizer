@@ -33,13 +33,9 @@ function makeRequest(method, url, key, headerKey, headerValue) {
     request.send();
   });
 }
-debugger;
 // const repo = gh.getRepo("hanhee-song", "slic");
 // repo.getContents("", "", true, (...args) => {
-//   debugger;
 // });
-// debugger;
-// debugger;
 // let sha;
 // repo.getSha("", "", (err, result, request) => {
 //   sha = result[0].sha;
@@ -51,7 +47,6 @@ const graphJSON = {
 };
 
 function fileParser(user, repo, subtree, key) {
-  debugger;
   return makeRequest(
     "GET",
     `https://api.github.com/repos/${user}/${repo}/commits`,
@@ -81,7 +76,6 @@ function fileParser(user, repo, subtree, key) {
         rootDir = parseRoot(file.path, subtree);
         if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
       });
-      debugger;
       // let counter = files.length
       let counter = 0;
       
@@ -101,12 +95,10 @@ function fileParser(user, repo, subtree, key) {
               counter ++;
               
               if (counter === files.length) {
-                debugger;
               }
             }
           );
       });
-      debugger;
       // iterate over each file
       // send a GET request to the blob with "setHeader" as true
       // on completion of each promise, parse out internals
@@ -119,7 +111,6 @@ function fileParser(user, repo, subtree, key) {
     }
   ).then(
     response => {
-      debugger;
     }
   );
   
@@ -145,11 +136,9 @@ function parseRoot(path, subtree) {
 //
 // }
 
-// debugger;
 // repo.getTree();
 
 // repo.getContents("", "", true, (...args) => {
-//   debugger;
 // });
 
 module.exports = fileParser;
