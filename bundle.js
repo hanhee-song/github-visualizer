@@ -7,7 +7,7 @@ function makeRequest(method, url, key, headerKey, headerValue) {
     if (headerKey) {
       request.setRequestHeader(headerKey, headerValue);
     }
-    request.setRequestHeader("Authorization", "Basic " + btoa(`hanhee-song:${key}`));
+    request.setRequestHeader("Authorization", `Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==`);
     request.onload = function() {
       if (this.status === 200) {
         resolve(request);
@@ -39,8 +39,9 @@ const graphJSON = {
   "nodes": [],
   "links": [],
 };
-
-function fileParser(user, repo, subtree, key) {
+debugger;
+debugger;
+function fileParser(user, repo, subtree, key="") {
   return makeRequest(
     "GET",
     `https://api.github.com/repos/${user}/${repo}/commits`,
@@ -75,20 +76,23 @@ function fileParser(user, repo, subtree, key) {
       
       
       files.forEach((file) => {
-        makeRequest("GET", file.url, true)
+        makeRequest("GET", file.url, "", "accept", "application/vnd.github.VERSION.raw")
           .then(
-            content => {
-              let contentArr = content.responseText.split(/\r?\n/);
-              const fileName = file.path.split("/")[file.path.split("/").length - 1];
+            response => {
+              let content = response.responseText;
+              
+              const fileName = parseName(file.path);
+              let links = parseLinks(fileName, content);
               let node = {
                 id: fileName,
-                loc: contentArr.length,
-                group: rootDirs.indexOf(parseRoot(file.path))
+                loc: content.split(/\r?\n/).length,
+                group: rootDirs.indexOf(parseRoot(file.path, "frontend"))
               };
               graphJSON.nodes.push(node);
+              graphJSON.links = graphJSON.links.concat(links);
               counter ++;
-              
               if (counter === files.length) {
+                debugger;
               }
             }
           );
@@ -98,6 +102,7 @@ function fileParser(user, repo, subtree, key) {
       // on completion of each promise, parse out internals
       // use response.responseText.split(/\r?\n/) to split into lines
       console.log(files);
+      debugger;
     }
   );//.then(
   //   response => {
@@ -109,6 +114,11 @@ function fileParser(user, repo, subtree, key) {
   //   }
   // );
   //
+}
+
+function parseName(path) {
+  return path.split("/")[path.split("/").length - 1].split(".")[0]
+    .split("'")[0];
 }
 
 function parseRoot(path, subtree) {
@@ -125,6 +135,20 @@ function parseRoot(path, subtree) {
   }
   return rootDir;
 }
+function parseLinks(fileName, content) {
+  let contentArr = content.split(/\r?\n/);
+  let links = [];
+  for (var i = 0; i < contentArr.length; i++) {
+    if (contentArr[i].includes("from") && contentArr[i].includes("./")) {
+      links.push({
+        "source": parseName(contentArr[i]),
+        "target": fileName
+      });
+    }
+  }
+  return links;
+}
+
 
 //
 // function parseResponse () {
@@ -139,12 +163,11 @@ function parseRoot(path, subtree) {
 module.exports = fileParser;
 
 },{}],2:[function(require,module,exports){
-var githubKey = config.GITHUB_API_KEY;
+// var githubKey = config.GITHUB_API_KEY;
 
 const fileParser = require('./file_parser.js');
-// console.log("fileParser");
 
-fileParser("hanhee-song", "slic", "frontend", githubKey);
+fileParser("hanhee-song", "slic", "frontend");
 
 const svg = d3.select('.svg-main');
 
