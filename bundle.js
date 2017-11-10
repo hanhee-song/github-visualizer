@@ -159,7 +159,7 @@ const fileParser = require('./file_parser.js');
 
 const svg = d3.select('.svg-main');
 
-fileParser("steven-ossorio", "SocialBook", "frontend")
+fileParser("hanhee-song", "Slic", "frontend")
 .then(
   response => {
     const graph = response;
@@ -392,15 +392,14 @@ const drawGraph = (error, graph) => {
   function color(d) {
     const group = d.group;
     const colors = [
-      "#4286f4",
+      "#9e6bba",
       "#309b55",
       "#4286f4",
-      "#9e6bba",
       "#6a7384",
       "#844040",
       "#c49c25"
     ];
-    return colors[group];
+    return colors[group % 6];
   }
   
   function abbreviate(name) {
