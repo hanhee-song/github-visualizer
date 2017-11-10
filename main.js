@@ -1,7 +1,9 @@
+var githubKey = config.GITHUB_API_KEY;
+
 const fileParser = require('./file_parser.js');
 // console.log("fileParser");
 
-fileParser("hanhee-song", "slic", "frontend");
+fileParser("hanhee-song", "slic", "frontend", githubKey);
 
 const svg = d3.select('.svg-main');
 
