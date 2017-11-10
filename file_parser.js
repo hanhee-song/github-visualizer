@@ -42,7 +42,6 @@ const graphJSON = {
   "links": [],
 };
 
-debugger;
 function fileParser(user, repo, subtree, key="") {
   return makeRequest(
     "GET",
@@ -100,7 +99,6 @@ function fileParser(user, repo, subtree, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter === files.length) {
-            debugger;
             return resolve(graphJSON);
           }
           setTimeout(waitForFiles, 30);

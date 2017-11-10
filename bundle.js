@@ -43,7 +43,6 @@ const graphJSON = {
   "links": [],
 };
 
-debugger;
 function fileParser(user, repo, subtree, key="") {
   return makeRequest(
     "GET",
@@ -101,7 +100,6 @@ function fileParser(user, repo, subtree, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter === files.length) {
-            debugger;
             return resolve(graphJSON);
           }
           setTimeout(waitForFiles, 30);
@@ -156,23 +154,21 @@ const fileParser = require('./file_parser.js');
 
 const svg = d3.select('.svg-main');
 
-fileParser("victorwu3", "Taskable", "frontend")
+fileParser("patrick-fulghum", "BetterRead", "frontend")
 .then(
   response => {
     console.log(response);
     const graph = response;
-    debugger;
     svg.data(graph);
-    drawGraph(null, graph, "victorwu3", "Taskable", "frontend");
+    drawGraph(null, graph, "patrick-fulghum", "BetterRead", "frontend");
   }
 );
-
-//
 
 d3.json("./filetree.json", (e, graph) => drawGraph(e, graph));
 
 const drawGraph = (error, graph, user, repo, subdir) => {
   generateHeader(graph, user, repo, subdir);
+  setContentMessage();
   
   svg.selectAll("g").remove();
   svg.selectAll("text").remove();
@@ -320,14 +316,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
           ? unextended(o.id) : abbreviate(o.id);
       });
       highlighted = d.id;
-      
-      // fill that box
-      debugger;
-      const fileBox = document.querySelector(".file-content");
-      fileBox.removeChild(fileBox.firstChild);
-      let txt = document.createTextNode(d.content);
-      fileBox.appendChild(txt);
+      setContentMessage(d.content);
     } else {
+      setContentMessage();
       node.style("opacity", 1);
       link.style("opacity", .6);
       text.style("opacity", 1);
@@ -439,6 +430,16 @@ function generateHeader(graph, user, repo, subdir) {
     header.append(textNode);
     header.append(document.createTextNode("\n"));
   });
+}
+
+function setContentMessage(content) {
+  const fileBox = document.querySelector(".file-content");
+  while (fileBox.firstChild) {
+    fileBox.removeChild(fileBox.firstChild);
+  }
+  const text = content || "Doubleclick a node to see its contents!";
+  let textNode = document.createTextNode(text);
+  fileBox.appendChild(textNode);
 }
 
 },{"./file_parser.js":1}]},{},[2]);
