@@ -2208,17 +2208,18 @@ function fileParser(user, repo, subtree, key) {
       // send a GET request to the blob with "setHeader" as true
       // on completion of each promise, parse out internals
       // use response.responseText.split(/\r?\n/) to split into lines
+      console.log(files);
     }
-  ).then(
-    response => {
-      // THIS WORKS!
-      return makeRequest("GET", "https://api.github.com/repos/hanhee-song/slic/git/blobs/d9f9e52af68f027de6a4bcb8750f6426997cf289", "accept", "application/vnd.github.VERSION.raw");
-    }
-  ).then(
-    response => {
-    }
-  );
-  
+  );//.then(
+  //   response => {
+  //     // THIS WORKS!
+  //     return makeRequest("GET", "https://api.github.com/repos/hanhee-song/slic/git/blobs/d9f9e52af68f027de6a4bcb8750f6426997cf289", "accept", "application/vnd.github.VERSION.raw");
+  //   }
+  // ).then(
+  //   response => {
+  //   }
+  // );
+  //
 }
 
 function parseRoot(path, subtree) {
