@@ -4,7 +4,6 @@ const Github = require('github-api');
 const gh = new Github();
 
 
-const repo = gh.getRepo("hanhee-song", "slic");
 
 
 function makeRequest(method, url) {
@@ -13,7 +12,7 @@ function makeRequest(method, url) {
     request.open(method, url);
     request.onload = function() {
       if (this.status === 200) {
-        resolve(request.response);
+        resolve(request);
       } else {
         reject({
           status: this.status,
@@ -31,14 +30,35 @@ function makeRequest(method, url) {
   });
 }
 
-let sha;
+debugger;
+debugger;
+// let sha;
+const repo = gh.getRepo("hanhee-song", "slic");
+// repo.getSha("", "", (err, result, request) => {
+//   sha = result[0].sha;
+// });
+debugger;
 makeRequest("GET", `https://api.github.com/repos/hanhee-song/slic/commits`)
   .then(
-    responseText => {
-      sha = JSON.parse(responseText)[0].sha;
-      console.log(JSON.parse(responseText)[0].sha);
+    response => {
+      debugger;
+      return JSON.parse(response.responseText)[0].sha;
+      
+    }
+  ).then(
+    sha => {
+      return makeRequest("GET", `https://api.github.com/repos/hanhee-song/slic/git/trees/${sha}?recursive=1`);
+    }
+  ).then(
+    response => {
+      debugger;
+      repo.getContents();
     }
   );
+
+function parseResponse () {
+  
+}
 
 // debugger;
 // repo.getTree();
