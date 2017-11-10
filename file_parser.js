@@ -51,6 +51,9 @@ function fileParser(user, repo, subtree, key="") {
     .then(
     response => {
       return JSON.parse(response.responseText)[0].sha;
+    },
+    error => {
+      return ["Invalid username or repo"];
     }
   ).then(
     sha => {

@@ -52,6 +52,9 @@ function fileParser(user, repo, subtree, key="") {
     .then(
     response => {
       return JSON.parse(response.responseText)[0].sha;
+    },
+    error => {
+      return ["Invalid username or repo"];
     }
   ).then(
     sha => {
@@ -154,13 +157,16 @@ const fileParser = require('./file_parser.js');
 
 const svg = d3.select('.svg-main');
 
-fileParser("patrick-fulghum", "BetterRead", "frontend")
+fileParser("patrick-fulghum", "Better-Read", "frontend")
 .then(
   response => {
     console.log(response);
     const graph = response;
     svg.data(graph);
     drawGraph(null, graph, "patrick-fulghum", "BetterRead", "frontend");
+  },
+  error => {
+    setContentMessage("Sorry, we couldn't find that repo!");
   }
 );
 
@@ -418,10 +424,10 @@ function generateHeader(graph, user, repo, subdir) {
     totalLines += node.loc;
   });
   
-  const linkText = document.createTextNode(`Data from https://api.github.com/repos/${user}/${repo}`);
-  const userText = document.createTextNode(`Current user: ${user}`);
-  const repoText = document.createTextNode(`Current repo: ${repo}`);
-  const subdirText = document.createTextNode(`Current subdir: ${subdir}`);
+  const linkText = document.createTextNode(`https://api.github.com/repos/${user}/${repo}`);
+  const userText = document.createTextNode(`       Current user: ${user}`);
+  const repoText = document.createTextNode(`       Current repo: ${repo}`);
+  const subdirText = document.createTextNode(`     Current subdir: ${subdir}`);
   const linesText = document.createTextNode(`Total lines of code: ${totalLines}`);
   const lineBreak = document.createElement("br");
   

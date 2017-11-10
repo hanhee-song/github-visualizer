@@ -16,48 +16,64 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-	display: block;
+  display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
 }
 ol, ul {
-	list-style: none;
+  list-style: none;
 }
 blockquote, q {
-	quotes: none;
+  quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-	content: '';
-	content: none;
+  content: '';
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 
 /**************************************************/
 
 * {
   font-family: 'Inconsolata', monospace;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: linear-gradient(0deg, #0f141c, #212d3f);
+  height: 100%;
+  width: 100%;
+  color: #d8d8d8;
+  padding-top: 100px;
+  overflow: hidden;
 }
 
 .main {
-  margin: 100px auto;
+  margin: 0 auto;
   display: flex;
-  width: 804px;
-  height: 604px;
+  width: 1000px;
+  height: 600px;
 }
 
 .svg-main {
@@ -66,12 +82,13 @@ table {
 }
 
 .sidebar-main {
-  width: 400px;
+  width: 500px;
   height: 600px;
 }
 
 .sidebar-header {
-  width: 400px;
+  padding: 5px;
+  width: 500px;
   height: 100px;
   border: 1px solid green;
   font-family: 'Inconsolata', monospace;
@@ -79,7 +96,8 @@ table {
 }
 
 .file-content {
-  width: 400px;
+  padding: 5px 0px 5px 10px;
+  width: 500px;
   height: 500px;
   display: block;
   border: 1px solid blue;
@@ -89,20 +107,19 @@ table {
 }
 
 .nodes circle {
-  stroke: #fff;
+  stroke: #0f141c;
   stroke-width: 1.5px;
-  /*fill: #999;*/
 }
 
 .links line {
-  stroke: #ccc;
+  stroke: #444;
   stroke-width: 2px;
 }
 
 .label {
-  stroke: #333;
-  stroke-width: .5px;
-  /*font: 11px sans-serif;*/
+  /*stroke: #d8d8d8;
+  stroke-width: 0px;*/
+  fill: #d8d8d8;
   font-size: 11px;
   pointer-events: none;
   user-select: none;
@@ -111,9 +128,8 @@ table {
 }
 
 .tooltip {
-  stroke: #333;
+  stroke: #d8d8d8;
   stroke-width: .5px;
-  /*font: 11px sans-serif;*/
   font-size: 11px;
   pointer-events: none;
   user-select: none;
@@ -122,7 +138,23 @@ table {
 }
 
 .tooltip-box {
-  stroke: #fff;
+  stroke: #d8d8d8;
   stroke-width: 1.5px;
-  /*fill: #999;*/
+}
+
+*::-webkit-scrollbar-track {
+  border: 0;
+}
+
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-corner {
+  background-color: rgba(0, 0, 0, 0)
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(98, 129, 178, .5);
+  border-radius: 8px;
 }
