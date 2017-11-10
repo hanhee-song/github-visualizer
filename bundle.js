@@ -164,8 +164,6 @@ fileParser("hanhee-song", "slic", "frontend")
     const graph = response;
     debugger;
     svg.data(graph);
-    svg.selectAll("g").remove();
-    svg.selectAll("text").remove();
     drawGraph(null, graph);
   }
 );
@@ -176,7 +174,9 @@ fileParser("hanhee-song", "slic", "frontend")
 
 d3.json("./filetree.json", (e, graph) => drawGraph(e, graph));
 
-function drawGraph(error, graph) {
+const drawGraph = (error, graph) => {
+  svg.selectAll("g").remove();
+  svg.selectAll("text").remove();
   const width = Number(svg.attr("width"));
   const height = Number(svg.attr("height"));
   let highlighted = "";
@@ -359,58 +359,57 @@ function drawGraph(error, graph) {
   //     return d.id.split(".")[0];
   //   }
   // }
-}
-
-function dragstarted(d) {
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-  d.fx = d.x;
-  d.fy = d.y;
-}
-
-function dragged(d) {
-  d.fx = d3.event.x;
-  d.fy = d3.event.y;
-}
-
-function dragended(d) {
-  d.fx = null;
-  d.fy = null;
-}
-
-function color(d) {
-  const group = d.group;
-  const colors = [
-    "#4286f4",
-    "#309b55",
-    "#4286f4",
-    "#9e6bba",
-    "#6a7384",
-    "#844040",
-    "#c49c25"
-  ];
-  return colors[group];
-}
-
-function abbreviate(name) {
-  return name.split("_").map((word) => word[0]).join("");
-}
-
-function unextended(name) {
-  return name.split(".")[0];
-}
-
-function distance(d) {
-  const offset = Math.sqrt(d.target.loc) + Math.sqrt(d.source.loc);
-  const sourceId = d.source.id.split("_");
-  const targetId = d.target.id.split("_");
-  const containerless = (name) => name.split("_container").join("").split(".")[0];
+  function dragstarted(d) {
+    if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x;
+    d.fy = d.y;
+  }
   
-  if (containerless(d.source.id) === containerless(d.target.id)) {
-    return 10 + offset;
-  } else if (sourceId[0] === targetId[0]) {
-    return 15 + offset;
-}
-  return 20 + offset;
-}
+  function dragged(d) {
+    d.fx = d3.event.x;
+    d.fy = d3.event.y;
+  }
+  
+  function dragended(d) {
+    d.fx = null;
+    d.fy = null;
+  }
+  
+  function color(d) {
+    const group = d.group;
+    const colors = [
+      "#4286f4",
+      "#309b55",
+      "#4286f4",
+      "#9e6bba",
+      "#6a7384",
+      "#844040",
+      "#c49c25"
+    ];
+    return colors[group];
+  }
+  
+  function abbreviate(name) {
+    return name.split("_").map((word) => word[0]).join("");
+  }
+  
+  function unextended(name) {
+    return name.split(".")[0];
+  }
+  
+  function distance(d) {
+    const offset = Math.sqrt(d.target.loc) + Math.sqrt(d.source.loc);
+    const sourceId = d.source.id.split("_");
+    const targetId = d.target.id.split("_");
+    const containerless = (name) => name.split("_container").join("").split(".")[0];
+    
+    if (containerless(d.source.id) === containerless(d.target.id)) {
+      return 20 + offset;
+    } else if (sourceId[0] === targetId[0]) {
+      return 85 + offset;
+    }
+    return 130 + offset;
+  }
+};
 
 },{"./file_parser.js":1}]},{},[2]);
