@@ -2111,10 +2111,13 @@ const gh = new Github();
 
 
 
-function makeRequest(method, url) {
+function makeRequest(method, url, setHeader) {
   return new Promise(function (resolve, reject) {
     const request = new XMLHttpRequest();
     request.open(method, url);
+    if (setHeader) {
+      request.setRequestHeader("accept", "application/vnd.github.VERSION.raw");
+    }
     request.onload = function() {
       if (this.status === 200) {
         resolve(request);
@@ -2135,35 +2138,98 @@ function makeRequest(method, url) {
   });
 }
 
-debugger;
-debugger;
+// const repo = gh.getRepo("hanhee-song", "slic");
+// repo.getContents("", "", true, (...args) => {
+//   debugger;
+// });
+// debugger;
+// debugger;
 // let sha;
-const repo = gh.getRepo("hanhee-song", "slic");
 // repo.getSha("", "", (err, result, request) => {
 //   sha = result[0].sha;
 // });
-debugger;
-makeRequest("GET", `https://api.github.com/repos/hanhee-song/slic/commits`)
+
+const graphJSON = {
+  "nodes": [],
+  "links": [],
+};
+
+function fileParser(user, repo, subtree) {
+  return makeRequest("GET", `https://api.github.com/repos/${user}/${repo}/commits`)
   .then(
     response => {
-      debugger;
       return JSON.parse(response.responseText)[0].sha;
-      
     }
   ).then(
     sha => {
-      return makeRequest("GET", `https://api.github.com/repos/hanhee-song/slic/git/trees/${sha}?recursive=1`);
+      return makeRequest("GET", `https://api.github.com/repos/${user}/${repo}/git/trees/${sha}?recursive=1`);
+    }
+  ).then(
+    response => {
+      const files = JSON.parse(response.responseText).tree.filter(file => {
+        return file.path.split("/")[0] === subtree && file.path.split(".")[0] !== file.path;
+      });
+      // const fileNames = files.map(file => file.path);
+      
+      debugger;
+      
+      let rootDirs;
+      files.forEach((file) => {
+        let splitPath = file.path.split("/");
+        let rootDir;
+        if (splitPath[0] === subtree) {
+          if (splitPath[1].split(".") === splitPath[1]) {
+            rootDir = splitPath[1]
+          } else {
+            rootDir = ""
+          }
+        } else {
+          rootDir = splitPath[0]
+        }
+        let rootDir = splitPath[0] === subtree ? splitPath[1] : splitPath[0];
+        if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
+      });
+      
+      files.forEach((file) => {
+        makeRequest("GET", file.url, true)
+          .then(
+            content => {
+              let contentArr = content.responseText.split(/\r?\n/);
+              const fileName = file.path.split("/")[file.path.split("/").length - 1];
+              let node = {
+                id: fileName,
+                loc: contentArr.length,
+                
+              };
+              
+              graphJSON.nodes.push(fileName);
+              
+            }
+          );
+        
+      });
+      debugger;
+      // iterate over each file
+      // send a GET request to the blob with "setHeader" as true
+      // on completion of each promise, parse out internals
+      // use response.responseText.split(/\r?\n/) to split into lines
+    }
+  ).then(
+    response => {
+      // THIS WORKS!
+      return makeRequest("GET", "https://api.github.com/repos/hanhee-song/slic/git/blobs/d9f9e52af68f027de6a4bcb8750f6426997cf289", true);
     }
   ).then(
     response => {
       debugger;
-      repo.getContents();
     }
   );
-
-function parseResponse () {
   
 }
+// 
+// function parseResponse () {
+// 
+// }
 
 // debugger;
 // repo.getTree();
@@ -2172,10 +2238,12 @@ function parseResponse () {
 //   debugger;
 // });
 
-module.exports = "fileParser";
+module.exports = fileParser;
 },{"github-api":35}],6:[function(require,module,exports){
 const fileParser = require('./file_parser.js');
-console.log("fileParser");
+// console.log("fileParser");
+
+fileParser("hanhee-song", "slic", "frontend");
 
 const svg = d3.select('.svg-main');
 
