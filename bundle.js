@@ -88,7 +88,8 @@ function fileParser(user, repo, subtree, key="") {
               let node = {
                 id: fileName,
                 loc: content.split(/\r?\n/).length,
-                group: rootDirs.indexOf(parseRoot(file.path, "frontend"))
+                group: rootDirs.indexOf(parseRoot(file.path, "frontend")),
+                content: content
               };
               graphJSON.nodes.push(node);
               graphJSON.links = graphJSON.links.concat(links);
@@ -113,7 +114,7 @@ function fileParser(user, repo, subtree, key="") {
 
 function parseName(path) {
   return path.split("/")[path.split("/").length - 1].split(".")[0]
-    .split("'")[0];
+    .split("'")[0].split("\"")[0];
 }
 
 function parseRoot(path, subtree) {
@@ -159,17 +160,16 @@ const fileParser = require('./file_parser.js');
 
 const svg = d3.select('.svg-main');
 
-fileParser("hanhee-song", "Slic", "frontend")
+fileParser("hanhee-song", "slic", "frontend")
 .then(
   response => {
+    console.log(response);
     const graph = response;
     debugger;
     svg.data(graph);
     drawGraph(null, graph);
   }
 );
-
-
 
 //
 
@@ -336,6 +336,14 @@ const drawGraph = (error, graph) => {
           ? unextended(o.id) : abbreviate(o.id);
       });
       highlighted = d.id;
+      
+      // fill that box
+      debugger;
+      const fileBox = document.querySelector(".file-content");
+      // fileBox.innerHTML = d.content;
+      fileBox.removeChild(fileBox.firstChild);
+      let txt = document.createTextNode(d.content);
+      fileBox.appendChild(txt);
     } else {
       node.style("opacity", 1);
       link.style("opacity", .6);
@@ -425,7 +433,7 @@ const drawGraph = (error, graph) => {
   }
   
   function radius(loc) {
-    return Math.sqrt(loc * 2 + 9);
+    return Math.sqrt(loc * 2 + 25);
   }
 };
 

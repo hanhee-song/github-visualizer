@@ -87,7 +87,8 @@ function fileParser(user, repo, subtree, key="") {
               let node = {
                 id: fileName,
                 loc: content.split(/\r?\n/).length,
-                group: rootDirs.indexOf(parseRoot(file.path, "frontend"))
+                group: rootDirs.indexOf(parseRoot(file.path, "frontend")),
+                content: content
               };
               graphJSON.nodes.push(node);
               graphJSON.links = graphJSON.links.concat(links);
@@ -112,7 +113,7 @@ function fileParser(user, repo, subtree, key="") {
 
 function parseName(path) {
   return path.split("/")[path.split("/").length - 1].split(".")[0]
-    .split("'")[0];
+    .split("'")[0].split("\"")[0];
 }
 
 function parseRoot(path, subtree) {
