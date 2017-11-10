@@ -41,8 +41,8 @@ const drawGraph = (error, graph) => {
     .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody(0))
-  .force("center", d3.forceCenter(width/2, height/2));
-  // .force("collision", d3.forceCollide());
+  // .force("center", d3.forceCenter(width/2, height/2))
+  .force("collision", d3.forceCollide());
   
   
   if (error) throw error;
@@ -106,14 +106,27 @@ const drawGraph = (error, graph) => {
     .links(graph.links);
 
   function ticked() {
+    const boundedX = (d) => {
+      return Math.max(radius(d.loc), Math.min(width - radius(d.loc), d.x));
+    };
+    const boundedY = (d) => {
+      return Math.max(radius(d.loc), Math.min(height - radius(d.loc), d.y));
+    };
+    
     link
       .attr("x1", (d) => d.source.x)
       .attr("y1", (d) => d.source.y)
       .attr("x2", (d) => getCircumferencePoint(d)[0])
       .attr("y2", (d) => getCircumferencePoint(d)[1]);
     node
-      .attr("cx", (d) => d.x)
-      .attr("cy", (d) => d.y);
+      .attr("cx", (d) => {
+        d.x = boundedX(d);
+        return d.x;
+      })
+      .attr("cy", (d) => {
+        d.y = boundedY(d);
+        return d.y;
+      });
       
     text
       .attr("x", (d) => d.x + 1 + radius(d.loc))
