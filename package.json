@@ -7,7 +7,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "octonode": "^0.9.1"
+    "github-api": "^3.0.0"
   },
   "devDependencies": {
     "beefy": "^2.1.8"

@@ -1,5 +1,5 @@
 const fileParser = require('./file_parser.js');
-console.log(fileParser);
+console.log("fileParser");
 
 const svg = d3.select('.svg-main');
 
