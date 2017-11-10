@@ -1,10 +1,3 @@
-const Github = require('github-api');
-// import Github from 'github-api'
-
-const gh = new Github();
-
-
-
 
 function makeRequest(method, url, key, headerKey, headerValue) {
   return new Promise(function (resolve, reject) {
@@ -13,7 +6,7 @@ function makeRequest(method, url, key, headerKey, headerValue) {
     if (headerKey) {
       request.setRequestHeader(headerKey, headerValue);
     }
-     request.setRequestHeader("Authorization", "Basic " + btoa(`hanhee-song:${key}`));
+    request.setRequestHeader("Authorization", "Basic " + btoa(`hanhee-song:${key}`));
     request.onload = function() {
       if (this.status === 200) {
         resolve(request);
