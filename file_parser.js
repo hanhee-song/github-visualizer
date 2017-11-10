@@ -133,7 +133,8 @@ function parseLinks(fileName, content) {
   let contentArr = content.split(/\r?\n/);
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
-    if (contentArr[i].includes("from") && contentArr[i].includes("./")) {
+    if (contentArr[i].includes("from") && contentArr[i].includes("./")
+      && contentArr[i].slice(0, 2) !== "//") {
       links.push({
         "source": parseName(contentArr[i]),
         "target": fileName

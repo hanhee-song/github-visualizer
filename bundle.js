@@ -134,7 +134,8 @@ function parseLinks(fileName, content) {
   let contentArr = content.split(/\r?\n/);
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
-    if (contentArr[i].includes("from") && contentArr[i].includes("./")) {
+    if (contentArr[i].includes("from") && contentArr[i].includes("./")
+      && contentArr[i].slice(0, 2) !== "//") {
       links.push({
         "source": parseName(contentArr[i]),
         "target": fileName
@@ -158,7 +159,7 @@ const fileParser = require('./file_parser.js');
 
 const svg = d3.select('.svg-main');
 
-fileParser("hanhee-song", "slic", "frontend")
+fileParser("steven-ossorio", "SocialBook", "frontend")
 .then(
   response => {
     const graph = response;
@@ -190,8 +191,8 @@ const drawGraph = (error, graph) => {
     .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody(0))
-  .force("center", d3.forceCenter(width/2, height/2))
-  .force("collision", d3.forceCollide());
+  .force("center", d3.forceCenter(width/2, height/2));
+  // .force("collision", d3.forceCollide());
   
   
   if (error) throw error;
@@ -223,7 +224,7 @@ const drawGraph = (error, graph) => {
     .data(graph.nodes)
     .enter()
     .append("circle")
-      .attr("r", (d) => Math.sqrt(d.loc))
+      .attr("r", (d) => radius(d.loc))
       .attr("fill", (d) => color(d))
       .call(d3.drag()
         .on("start", dragstarted)
@@ -265,17 +266,17 @@ const drawGraph = (error, graph) => {
       .attr("cy", (d) => d.y);
       
     text
-      .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
+      .attr("x", (d) => d.x + 1 + radius(d.loc))
       .attr("y", (d) => d.y + 3);
     
     // tooltip
-    //   .attr("x", (d) => d.x + 1 + Math.sqrt(d.loc))
+    //   .attr("x", (d) => d.x + 1 + radius(d.loc))
     //   .attr("y", (d) => d.y + 3)
     //   .text(d => generateTooltip(d));
     
     // console.log(selectedTooltip);
     function getCircumferencePoint(d) {
-      const tRadius = Math.sqrt(d.target.loc);
+      const tRadius = radius(d.target.loc);
       const dx = d.target.x - d.source.x;
       const dy = d.target.y - d.source.y;
       const gamma = Math.atan2(dy, dx);
@@ -398,17 +399,21 @@ const drawGraph = (error, graph) => {
   }
   
   function distance(d) {
-    const offset = Math.sqrt(d.target.loc) + Math.sqrt(d.source.loc);
+    const offset = radius(d.target.loc) + radius(d.source.loc);
     const sourceId = d.source.id.split("_");
     const targetId = d.target.id.split("_");
     const containerless = (name) => name.split("_container").join("").split(".")[0];
     
     if (containerless(d.source.id) === containerless(d.target.id)) {
-      return 20 + offset;
+      return 50 + offset;
     } else if (sourceId[0] === targetId[0]) {
-      return 85 + offset;
+      return 105 + offset;
     }
-    return 130 + offset;
+    return 180 + offset;
+  }
+  
+  function radius(loc) {
+    return Math.sqrt(loc * 2 + 9);
   }
 };
 
