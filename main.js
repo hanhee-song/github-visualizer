@@ -2,7 +2,12 @@
 
 const fileParser = require('./file_parser.js');
 
-fileParser("hanhee-song", "slic", "frontend");
+fileParser("hanhee-song", "slic", "frontend")
+  .then(
+    response => {
+      debugger;
+    }
+  );
 
 const svg = d3.select('.svg-main');
 

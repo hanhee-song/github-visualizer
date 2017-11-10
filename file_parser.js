@@ -1,4 +1,3 @@
-
 function makeRequest(method, url, key, headerKey, headerValue) {
   return new Promise(function (resolve, reject) {
     const request = new XMLHttpRequest();
@@ -26,19 +25,23 @@ function makeRequest(method, url, key, headerKey, headerValue) {
     request.send();
   });
 }
-// const repo = gh.getRepo("hanhee-song", "slic");
-// repo.getContents("", "", true, (...args) => {
-// });
-// let sha;
-// repo.getSha("", "", (err, result, request) => {
-//   sha = result[0].sha;
-// });
+
+function logRateLimit() {
+  return makeRequest("GET", `https://api.github.com/rate_limit`)
+    .then(
+      response => {
+        console.log(response.responseText);
+      }
+    );
+}
+
+logRateLimit();
 
 const graphJSON = {
   "nodes": [],
   "links": [],
 };
-debugger;
+
 debugger;
 function fileParser(user, repo, subtree, key="") {
   return makeRequest(
@@ -70,16 +73,15 @@ function fileParser(user, repo, subtree, key="") {
         rootDir = parseRoot(file.path, subtree);
         if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
       });
-      // let counter = files.length
       let counter = 0;
       
+      for (var i = 0; i < files.length; i++) {
+        let file = files[i];
       
-      files.forEach((file) => {
         makeRequest("GET", file.url, "", "accept", "application/vnd.github.VERSION.raw")
           .then(
             response => {
               let content = response.responseText;
-              
               const fileName = parseName(file.path);
               let links = parseLinks(fileName, content);
               let node = {
@@ -90,29 +92,22 @@ function fileParser(user, repo, subtree, key="") {
               graphJSON.nodes.push(node);
               graphJSON.links = graphJSON.links.concat(links);
               counter ++;
-              if (counter === files.length) {
-                debugger;
-              }
             }
           );
+      }
+      
+      return new Promise(function(resolve, reject) {
+        (function waitForFiles() {
+          if (counter === files.length) {
+            debugger;
+            return resolve(graphJSON);
+          }
+          setTimeout(waitForFiles, 30);
+        })();
       });
-      // iterate over each file
-      // send a GET request to the blob with "setHeader" as true
-      // on completion of each promise, parse out internals
-      // use response.responseText.split(/\r?\n/) to split into lines
-      console.log(files);
-      debugger;
+      
     }
-  );//.then(
-  //   response => {
-  //     // THIS WORKS!
-  //     return makeRequest("GET", "https://api.github.com/repos/hanhee-song/slic/git/blobs/d9f9e52af68f027de6a4bcb8750f6426997cf289", "accept", "application/vnd.github.VERSION.raw");
-  //   }
-  // ).then(
-  //   response => {
-  //   }
-  // );
-  //
+  );
 }
 
 function parseName(path) {
@@ -147,16 +142,5 @@ function parseLinks(fileName, content) {
   }
   return links;
 }
-
-
-//
-// function parseResponse () {
-//
-// }
-
-// repo.getTree();
-
-// repo.getContents("", "", true, (...args) => {
-// });
 
 module.exports = fileParser;
