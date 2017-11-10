@@ -50,7 +50,7 @@ table {
 /**************************************************/
 
 * {
-  font-family: sans-serif;
+  font-family: 'Inconsolata', monospace;
 }
 
 .main {
@@ -74,6 +74,8 @@ table {
   width: 400px;
   height: 100px;
   border: 1px solid green;
+  font-family: 'Inconsolata', monospace;
+  overflow: auto
 }
 
 .file-content {
@@ -81,7 +83,7 @@ table {
   height: 500px;
   display: block;
   border: 1px solid blue;
-  font-family: sans-serif;
+  font-family: 'Inconsolata', monospace;
   font-size: 12px;
   overflow: auto;
 }
@@ -100,7 +102,8 @@ table {
 .label {
   stroke: #333;
   stroke-width: .5px;
-  font: 11px sans-serif;
+  /*font: 11px sans-serif;*/
+  font-size: 11px;
   pointer-events: none;
   user-select: none;
   -moz-user-select: none;
@@ -110,7 +113,8 @@ table {
 .tooltip {
   stroke: #333;
   stroke-width: .5px;
-  font: 11px sans-serif;
+  /*font: 11px sans-serif;*/
+  font-size: 11px;
   pointer-events: none;
   user-select: none;
   -moz-user-select: none;

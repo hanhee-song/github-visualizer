@@ -153,21 +153,17 @@ module.exports = fileParser;
 
 const fileParser = require('./file_parser.js');
 
-// let graph = {
-//   "nodes": [],
-//   "links": []
-// };
 
 const svg = d3.select('.svg-main');
 
-fileParser("hanhee-song", "slic", "frontend")
+fileParser("victorwu3", "Taskable", "frontend")
 .then(
   response => {
     console.log(response);
     const graph = response;
     debugger;
     svg.data(graph);
-    drawGraph(null, graph);
+    drawGraph(null, graph, "victorwu3", "Taskable", "frontend");
   }
 );
 
@@ -175,7 +171,9 @@ fileParser("hanhee-song", "slic", "frontend")
 
 d3.json("./filetree.json", (e, graph) => drawGraph(e, graph));
 
-const drawGraph = (error, graph) => {
+const drawGraph = (error, graph, user, repo, subdir) => {
+  generateHeader(graph, user, repo, subdir);
+  
   svg.selectAll("g").remove();
   svg.selectAll("text").remove();
   const width = Number(svg.attr("width"));
@@ -241,14 +239,6 @@ const drawGraph = (error, graph) => {
     .classed("label", true)
     .text((d) => abbreviate(d.id));
   
-  // const tooltip = svg.selectAll("text").filter(".tooltip")
-  //   .data(graph.nodes)
-  //   .enter()
-  //   .append("text")
-  //   .classed("tooltip", true)
-  //   .text(d => generateTooltip(d))
-  //     .attr("opacity", ".5");
-  
   simulation.nodes(graph.nodes)
     .on("tick", ticked);
 
@@ -282,12 +272,6 @@ const drawGraph = (error, graph) => {
       .attr("x", (d) => d.x + 1 + radius(d.loc))
       .attr("y", (d) => d.y + 3);
     
-    // tooltip
-    //   .attr("x", (d) => d.x + 1 + radius(d.loc))
-    //   .attr("y", (d) => d.y + 3)
-    //   .text(d => generateTooltip(d));
-    
-    // console.log(selectedTooltip);
     function getCircumferencePoint(d) {
       const tRadius = radius(d.target.loc);
       const dx = d.target.x - d.source.x;
@@ -340,7 +324,6 @@ const drawGraph = (error, graph) => {
       // fill that box
       debugger;
       const fileBox = document.querySelector(".file-content");
-      // fileBox.innerHTML = d.content;
       fileBox.removeChild(fileBox.firstChild);
       let txt = document.createTextNode(d.content);
       fileBox.appendChild(txt);
@@ -376,11 +359,6 @@ const drawGraph = (error, graph) => {
     });
   }
   
-  // function generateTooltip(d) {
-  //   if (d.id === selectedTooltip) {
-  //     return d.id.split(".")[0];
-  //   }
-  // }
   function dragstarted(d) {
     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
     d.fx = d.x;
@@ -436,5 +414,31 @@ const drawGraph = (error, graph) => {
     return Math.sqrt(loc * 2 + 25);
   }
 };
+
+
+function generateHeader(graph, user, repo, subdir) {
+  const header = document.querySelector(".sidebar-header");
+  while (header.firstChild) {
+    header.removeChild(header.firstChild);
+  }
+  
+  let totalLines = 0;
+  graph.nodes.forEach(node => {
+    totalLines += node.loc;
+  });
+  
+  const linkText = document.createTextNode(`Data from https://api.github.com/repos/${user}/${repo}`);
+  const userText = document.createTextNode(`Current user: ${user}`);
+  const repoText = document.createTextNode(`Current repo: ${repo}`);
+  const subdirText = document.createTextNode(`Current subdir: ${subdir}`);
+  const linesText = document.createTextNode(`Total lines of code: ${totalLines}`);
+  const lineBreak = document.createElement("br");
+  
+  const textArr = [linkText, userText, repoText, subdirText, linesText];
+  textArr.forEach((textNode) => {
+    header.append(textNode);
+    header.append(document.createTextNode("\n"));
+  });
+}
 
 },{"./file_parser.js":1}]},{},[2]);
