@@ -65,8 +65,16 @@ body {
   height: 100%;
   width: 100%;
   color: #d8d8d8;
-  padding-top: 100px;
   overflow: hidden;
+}
+
+.title {
+  font-family: 'Inconsolata', monospace;
+  margin: auto;
+  text-align: center;
+  margin-top: 50px;
+  font-size: 50px;
+  margin-bottom: 15px;
 }
 
 .main {
@@ -95,7 +103,7 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 150px;
+  height: 140px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   overflow: auto
@@ -105,7 +113,7 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 50px;
+  height: 60px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   overflow: auto
@@ -204,23 +212,25 @@ form label {
   font-size: 16px;
   width: 120px;
   margin-right: 10px;
+  margin-top: 2px;
+  padding: 3px 0px 3px 5px;
   padding-left: 5px;
 }
 
 .input-text + span {
-  background: #ddd;
+  background: #232b42;
   width: 0;
-  height: 2px;
+  height: 1px;
   display: block;
   margin: auto;
   content: '';
-  transition: width .2s ease;
-  -webkit-transition: width .2s ease;
+  transition: width .2s, background .2s;
+  -webkit-transition: width .2s, background .2s;
 }
 
 .input-text:focus + span {
   width: 100%;
-  background: #ddd;
+  background: #ccc;
 }
 
 .input-submit-label {
@@ -239,9 +249,9 @@ form label {
 }
 
 .input-submit:hover {
-  background-color: #2b3554;
+  background-color: #43537f;
 }
 
 .input-submit:active, .input-submit:focus {
-  background-color: #1c2438;
+  background-color: #2d3756;
 }
