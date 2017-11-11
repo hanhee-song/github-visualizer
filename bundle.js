@@ -318,13 +318,8 @@ function fileParser(user, repo, subtree, key="") {
     response => {
       const files = JSON.parse(response.responseText).tree.filter(file => {
         if (parseName(file.path) === "bundle"
-          || extension(file.path) === "html"
-          || extension(file.path) === "css"
-          || extension(file.path) === "gitignore"
-          || extension(file.path) === "png"
-          || extension(file.path) === "jpg"
-          || extension(file.path) === "jpeg"
-          || extension(file.path) === "json") {
+          || (extension(file.path) !== "js"
+          && extension(file.path) !== "jsx")) {
           return false;
         }
         if (subtree) {
@@ -421,7 +416,7 @@ module.exports = fileParser;
 
 },{}],3:[function(require,module,exports){
 const fileParser = require('./file_parser.js');
-const drawGraph = require('./draw_graph');
+const drawGraph = require('./draw_graph.js');
 const sidebarFunctions = require('./sidebar.js');
 const generateHeader = sidebarFunctions.generateHeader;
 const setContentMessage = sidebarFunctions.setContentMessage;
@@ -429,13 +424,12 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 
 const svg = d3.select('.svg-main');
 
-fileParser("hanhee-song", "project-visualizer", "")
+fileParser("hanhee-song", "Slic", "")
 .then(
   response => {
     const graph = response;
     svg.data(graph);
-    debugger;
-    drawGraph(null, graph, "hanhee-song", "project-visualizer", "");
+    drawGraph(null, graph, "hanhee-song", "Slic", "");
   },
   error => {
     setContentMessage("Sorry, we couldn't find that repo!");
@@ -444,7 +438,7 @@ fileParser("hanhee-song", "project-visualizer", "")
 
 d3.json("./filetree.json", (e, graph) => drawGraph(e, graph));
 
-},{"./draw_graph":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
+},{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
 function generateHeader(graph, user, repo, subdir) {
   const header = document.querySelector(".sidebar-header");
   while (header.firstChild) {

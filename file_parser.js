@@ -67,13 +67,8 @@ function fileParser(user, repo, subtree, key="") {
     response => {
       const files = JSON.parse(response.responseText).tree.filter(file => {
         if (parseName(file.path) === "bundle"
-          || extension(file.path) === "html"
-          || extension(file.path) === "css"
-          || extension(file.path) === "gitignore"
-          || extension(file.path) === "png"
-          || extension(file.path) === "jpg"
-          || extension(file.path) === "jpeg"
-          || extension(file.path) === "json") {
+          || (extension(file.path) !== "js"
+          && extension(file.path) !== "jsx")) {
           return false;
         }
         if (subtree) {
