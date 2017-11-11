@@ -5,7 +5,8 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 const svg = d3.select('.svg-main');
 
 
-const drawGraph = (error, graph) => {
+const drawGraph = (error, graph, user, repo, subdir) => {
+  generateHeader(graph, user, repo, subdir);
   setContentMessage();
   
   svg.selectAll("g").remove();
@@ -24,7 +25,7 @@ const drawGraph = (error, graph) => {
   )
   .force("charge", d3.forceManyBody(0))
   // .force("center", d3.forceCenter(width/2, height/2))
-  .force("collision", d3.forceCollide());
+  .force("collision", d3.forceCollide(10));
   
   
   if (error) throw error;
@@ -155,8 +156,10 @@ const drawGraph = (error, graph) => {
       });
       highlighted = d.id;
       setContentMessage(d.content);
+      generateHeader(graph, user, repo, subdir, d);
     } else {
       setContentMessage();
+      generateHeader(graph, user, repo, subdir);
       node.style("opacity", 1);
       link.style("opacity", .6);
       text.style("opacity", 1);
@@ -184,7 +187,7 @@ const drawGraph = (error, graph) => {
         neighboring(d, o) || o.id === d.id)) {
         return unextended(o.name);
       }
-      return abbreviate(o.nname);
+      return abbreviate(o.name);
     });
   }
   
@@ -218,7 +221,12 @@ const drawGraph = (error, graph) => {
   }
   
   function abbreviate(name) {
-    return name.split("_").map((word) => word[0]).join("");
+    let abb;
+    abb = name.split("_").map((word) => word[0]).join("");
+    if (abb.length === 1) {
+      abb = name.split("-").map((word) => word[0]).join("");
+    }
+    return abb;
   }
   
   function unextended(name) {

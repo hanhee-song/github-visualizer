@@ -9,8 +9,8 @@ const svg = d3.select('.svg-main');
 let loading = false;
 
 d3.json("./filetree.json", (e, graph) => {
-  drawGraph(e, graph);
-  generateHeader(graph, "hanhee-song", "Slic", "frontend");
+  drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
+  // generateHeader(graph, "hanhee-song", "Slic", "frontend");
   setContentMessage("Double-click a node to see its contents!");
 });
 document.querySelector(".input-user").value = "hanhee-song";
@@ -26,7 +26,7 @@ const submitGraph = (user, repo, subdir = "") => {
       debugger;
       svg.data(graph);
       drawGraph(null, graph);
-      generateHeader(graph, user, repo, subdir);
+      // generateHeader(graph, user, repo, subdir);
       if (graph.nodes.length === 0) {
         setContentMessage("No .js or .jsx files found...");
       } else {

@@ -6,7 +6,8 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 const svg = d3.select('.svg-main');
 
 
-const drawGraph = (error, graph) => {
+const drawGraph = (error, graph, user, repo, subdir) => {
+  generateHeader(graph, user, repo, subdir);
   setContentMessage();
   
   svg.selectAll("g").remove();
@@ -25,7 +26,7 @@ const drawGraph = (error, graph) => {
   )
   .force("charge", d3.forceManyBody(0))
   // .force("center", d3.forceCenter(width/2, height/2))
-  .force("collision", d3.forceCollide());
+  .force("collision", d3.forceCollide(10));
   
   
   if (error) throw error;
@@ -156,8 +157,10 @@ const drawGraph = (error, graph) => {
       });
       highlighted = d.id;
       setContentMessage(d.content);
+      generateHeader(graph, user, repo, subdir, d);
     } else {
       setContentMessage();
+      generateHeader(graph, user, repo, subdir);
       node.style("opacity", 1);
       link.style("opacity", .6);
       text.style("opacity", 1);
@@ -185,7 +188,7 @@ const drawGraph = (error, graph) => {
         neighboring(d, o) || o.id === d.id)) {
         return unextended(o.name);
       }
-      return abbreviate(o.nname);
+      return abbreviate(o.name);
     });
   }
   
@@ -219,7 +222,12 @@ const drawGraph = (error, graph) => {
   }
   
   function abbreviate(name) {
-    return name.split("_").map((word) => word[0]).join("");
+    let abb;
+    abb = name.split("_").map((word) => word[0]).join("");
+    if (abb.length === 1) {
+      abb = name.split("-").map((word) => word[0]).join("");
+    }
+    return abb;
   }
   
   function unextended(name) {
@@ -486,8 +494,8 @@ const svg = d3.select('.svg-main');
 let loading = false;
 
 d3.json("./filetree.json", (e, graph) => {
-  drawGraph(e, graph);
-  generateHeader(graph, "hanhee-song", "Slic", "frontend");
+  drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
+  // generateHeader(graph, "hanhee-song", "Slic", "frontend");
   setContentMessage("Double-click a node to see its contents!");
 });
 document.querySelector(".input-user").value = "hanhee-song";
@@ -503,7 +511,7 @@ const submitGraph = (user, repo, subdir = "") => {
       debugger;
       svg.data(graph);
       drawGraph(null, graph);
-      generateHeader(graph, user, repo, subdir);
+      // generateHeader(graph, user, repo, subdir);
       if (graph.nodes.length === 0) {
         setContentMessage("No .js or .jsx files found...");
       } else {
@@ -530,7 +538,7 @@ form.addEventListener("submit", (e) => {
 });
 
 },{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
-function generateHeader(graph, user, repo, subdir) {
+function generateHeader(graph, user, repo, subdir, d) {
   const header = document.querySelector(".sidebar-header");
   while (header.firstChild) {
     header.removeChild(header.firstChild);
@@ -542,13 +550,18 @@ function generateHeader(graph, user, repo, subdir) {
   });
   
   const linkText = document.createTextNode(`https://api.github.com/repos/${user}/${repo}/${subdir}`);
-  const userText = document.createTextNode(`       Current user: ${user}`);
-  const repoText = document.createTextNode(`       Current repo: ${repo}`);
-  const subdirText = document.createTextNode(`     Current subdir: ${subdir}`);
-  const linesText = document.createTextNode(`Total lines of code: ${totalLines}`);
-  const lineBreak = document.createElement("br");
+  const userText = document.createTextNode(`     Current user: ${user}`);
+  const repoText = document.createTextNode(`     Current repo: ${repo}`);
+  const subdirText = document.createTextNode(`   Current subdir: ${subdir}`);
+  const linesText = document.createTextNode(`      Total lines: ${totalLines}`);
+  let textArr = [linkText, userText, repoText, subdirText, linesText];
   
-  const textArr = [linkText, userText, repoText, subdirText, linesText];
+  if (d) {
+    const fileNameText = document.createTextNode(`Current directory: ${d.id}.${d.extension}`);
+    const fileLoc = document.createTextNode(`    Current lines: ${d.loc}`);
+    textArr = textArr.concat([fileNameText, fileLoc]);
+  }
+  
   textArr.forEach((textNode) => {
     header.append(textNode);
     header.append(document.createTextNode("\n"));

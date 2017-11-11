@@ -1,4 +1,4 @@
-function generateHeader(graph, user, repo, subdir) {
+function generateHeader(graph, user, repo, subdir, d) {
   const header = document.querySelector(".sidebar-header");
   while (header.firstChild) {
     header.removeChild(header.firstChild);
@@ -10,13 +10,18 @@ function generateHeader(graph, user, repo, subdir) {
   });
   
   const linkText = document.createTextNode(`https://api.github.com/repos/${user}/${repo}/${subdir}`);
-  const userText = document.createTextNode(`       Current user: ${user}`);
-  const repoText = document.createTextNode(`       Current repo: ${repo}`);
-  const subdirText = document.createTextNode(`     Current subdir: ${subdir}`);
-  const linesText = document.createTextNode(`Total lines of code: ${totalLines}`);
-  const lineBreak = document.createElement("br");
+  const userText = document.createTextNode(`     Current user: ${user}`);
+  const repoText = document.createTextNode(`     Current repo: ${repo}`);
+  const subdirText = document.createTextNode(`   Current subdir: ${subdir}`);
+  const linesText = document.createTextNode(`      Total lines: ${totalLines}`);
+  let textArr = [linkText, userText, repoText, subdirText, linesText];
   
-  const textArr = [linkText, userText, repoText, subdirText, linesText];
+  if (d) {
+    const fileNameText = document.createTextNode(`Current directory: ${d.id}.${d.extension}`);
+    const fileLoc = document.createTextNode(`    Current lines: ${d.loc}`);
+    textArr = textArr.concat([fileNameText, fileLoc]);
+  }
+  
   textArr.forEach((textNode) => {
     header.append(textNode);
     header.append(document.createTextNode("\n"));
