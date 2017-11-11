@@ -6,8 +6,7 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 const svg = d3.select('.svg-main');
 
 
-const drawGraph = (error, graph, user, repo, subdir) => {
-  generateHeader(graph, user, repo, subdir);
+const drawGraph = (error, graph) => {
   setContentMessage();
   
   svg.selectAll("g").remove();
@@ -424,19 +423,26 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 
 const svg = d3.select('.svg-main');
 
-fileParser("hanhee-song", "Slic", "")
-.then(
-  response => {
-    const graph = response;
-    svg.data(graph);
-    drawGraph(null, graph, "hanhee-song", "Slic", "");
-  },
-  error => {
-    setContentMessage("Sorry, we couldn't find that repo!");
-  }
-);
+d3.json("./filetree.json", (e, graph) => {
+  drawGraph(e, graph);
+  generateHeader(graph, "hanhee-song", "Slic", "frontend");
+});
 
-d3.json("./filetree.json", (e, graph) => drawGraph(e, graph));
+
+const submitGraph = (user, repo, subdir = "") => {
+  fileParser(user, repo, subdir)
+  .then(
+    response => {
+      const graph = response;
+      svg.data(graph);
+      drawGraph(null, graph);
+      generateHeader(graph, user, repo, subdir);
+    },
+    error => {
+      setContentMessage("Sorry, we couldn't find that repo!");
+    }
+  );
+};
 
 },{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
 function generateHeader(graph, user, repo, subdir) {

@@ -7,16 +7,23 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 
 const svg = d3.select('.svg-main');
 
-fileParser("hanhee-song", "Slic", "")
-.then(
-  response => {
-    const graph = response;
-    svg.data(graph);
-    drawGraph(null, graph, "hanhee-song", "Slic", "");
-  },
-  error => {
-    setContentMessage("Sorry, we couldn't find that repo!");
-  }
-);
+d3.json("./filetree.json", (e, graph) => {
+  drawGraph(e, graph);
+  generateHeader(graph, "hanhee-song", "Slic", "frontend");
+});
 
-d3.json("./filetree.json", (e, graph) => drawGraph(e, graph));
+
+const submitGraph = (user, repo, subdir = "") => {
+  fileParser(user, repo, subdir)
+  .then(
+    response => {
+      const graph = response;
+      svg.data(graph);
+      drawGraph(null, graph);
+      generateHeader(graph, user, repo, subdir);
+    },
+    error => {
+      setContentMessage("Sorry, we couldn't find that repo!");
+    }
+  );
+};

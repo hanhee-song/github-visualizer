@@ -5,8 +5,7 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 const svg = d3.select('.svg-main');
 
 
-const drawGraph = (error, graph, user, repo, subdir) => {
-  generateHeader(graph, user, repo, subdir);
+const drawGraph = (error, graph) => {
   setContentMessage();
   
   svg.selectAll("g").remove();
