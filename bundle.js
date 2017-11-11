@@ -72,7 +72,7 @@ const drawGraph = (error, graph) => {
     .enter()
     .append("text")
     .classed("label", true)
-    .text((d) => abbreviate(d.id));
+    .text((d) => abbreviate(d.name));
   
   simulation.nodes(graph.nodes)
     .on("tick", ticked);
@@ -152,7 +152,7 @@ const drawGraph = (error, graph) => {
       });
       text.text((o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? unextended(o.id) : abbreviate(o.id);
+          ? unextended(o.name) : abbreviate(o.name);
       });
       highlighted = d.id;
       setContentMessage(d.content);
@@ -175,17 +175,17 @@ const drawGraph = (error, graph) => {
     }
     text.text((o) => {
       if (selectedTooltip && o.id === d.id) {
-        return unextended(o.id);
+        return unextended(o.name);
       }
       if (highlighted && (neighboringIds(o.id, highlighted) ||
         neighboringIds(highlighted, o.id)) || highlighted === o.id) {
-        return unextended(o.id);
+        return unextended(o.name);
       }
       if (selectedTooltip && highlighted && (neighboring(o, d) ||
         neighboring(d, o) || o.id === d.id)) {
-        return unextended(o.id);
+        return unextended(o.name);
       }
-      return abbreviate(o.id);
+      return abbreviate(o.nname);
     });
   }
   
@@ -342,10 +342,11 @@ function fileParser(user, repo, subdir, key="") {
             response => {
               let content = response.responseText;
               const fileName = parseName(file.path);
-              let links = parseLinks(fileName, content);
+              let links = parseLinks(file.path, content);
               let node = {
-                id: fileName,
-                path: file.path,
+                id: noExtension(file.path),
+                name: fileName,
+                extension: extension(file.path),
                 loc: content.split(/\r?\n/).length,
                 group: rootDirs.indexOf(parseRoot(file.path, subdir)),
                 content: content
@@ -360,6 +361,7 @@ function fileParser(user, repo, subdir, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter === files.length) {
+            debugger;
             return resolve(
               sanitizeGraph(graphJSON)
             );
@@ -403,7 +405,36 @@ function parseRoot(path, subdir) {
   return rootDir;
 }
 
-function parseLinks(fileName, content) {
+function parsePath(filePath, line) {
+  const lineArr = line.split("'");
+  if (lineArr.length === 1) {
+    lineArr = line.split("\"");
+  }
+  let segment;
+  lineArr.forEach(section => {
+    if (section.includes("./")) segment = section;
+  });
+  
+  const sectionArr = segment.split("/");
+  const filePathArr = filePath.split("/");
+  filePathArr.pop();
+  let newPath;
+  sectionArr.forEach(section => {
+    if (section === '..') {
+      filePathArr.pop();
+    } else if (section !== ".") {
+      filePathArr.push(section);
+    }
+  });
+  
+  return filePathArr.join("/");
+}
+
+function noExtension(filePath) {
+  return filePath.split(".")[0];
+}
+
+function parseLinks(filePath, content) {
   let contentArr = content.split(/\r?\n/);
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
@@ -417,8 +448,8 @@ function parseLinks(fileName, content) {
       && contentArr[i].slice(0, 2) !== "/*"
       && parseName(contentArr[i]) !== "") {
       links.push({
-        "source": parseName(contentArr[i]),
-        "target": fileName
+        "source": noExtension(parsePath(filePath, contentArr[i])),
+        "target": noExtension(filePath)
       });
     }
   }

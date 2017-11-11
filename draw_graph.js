@@ -71,7 +71,7 @@ const drawGraph = (error, graph) => {
     .enter()
     .append("text")
     .classed("label", true)
-    .text((d) => abbreviate(d.id));
+    .text((d) => abbreviate(d.name));
   
   simulation.nodes(graph.nodes)
     .on("tick", ticked);
@@ -151,7 +151,7 @@ const drawGraph = (error, graph) => {
       });
       text.text((o) => {
         return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? unextended(o.id) : abbreviate(o.id);
+          ? unextended(o.name) : abbreviate(o.name);
       });
       highlighted = d.id;
       setContentMessage(d.content);
@@ -174,17 +174,17 @@ const drawGraph = (error, graph) => {
     }
     text.text((o) => {
       if (selectedTooltip && o.id === d.id) {
-        return unextended(o.id);
+        return unextended(o.name);
       }
       if (highlighted && (neighboringIds(o.id, highlighted) ||
         neighboringIds(highlighted, o.id)) || highlighted === o.id) {
-        return unextended(o.id);
+        return unextended(o.name);
       }
       if (selectedTooltip && highlighted && (neighboring(o, d) ||
         neighboring(d, o) || o.id === d.id)) {
-        return unextended(o.id);
+        return unextended(o.name);
       }
-      return abbreviate(o.id);
+      return abbreviate(o.nname);
     });
   }
   
