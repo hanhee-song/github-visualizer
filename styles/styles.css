@@ -62,7 +62,6 @@ a {
 html {
   height: 100%;
   width: 100%;
-  /*overflow: hidden;*/
 }
 
 body {
@@ -70,8 +69,9 @@ body {
   height: 100%;
   width: 100%;
   color: #d8d8d8;
-  /*overflow: hidden;*/
 }
+
+/********** TITLE AND SUBHEADER **********/
 
 .title {
   font-family: 'Inconsolata', monospace;
@@ -118,6 +118,8 @@ body {
   font-size: 19px;
 }
 
+/********** BLOCKS **********/
+
 .main {
   margin: 0 auto;
   display: flex;
@@ -151,10 +153,10 @@ body {
 }
 
 .sidebar-options {
-  padding: 5px 0px 5px 10px;
+  padding: 10px 0px 0px 15px;
   min-width: 400px;
   max-width: 500px;
-  height: 100px;
+  height: 110px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   overflow: auto
@@ -164,13 +166,15 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 270px;
+  height: 260px;
   display: block;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   font-size: 13px;
   overflow: auto;
 }
+
+/********** D3 **********/
 
 .nodes circle {
   stroke: #232b42;
@@ -193,20 +197,7 @@ body {
   -webkit-user-select: none;
 }
 
-.tooltip {
-  stroke: #d8d8d8;
-  stroke-width: .5px;
-  font-size: 11px;
-  pointer-events: none;
-  user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-}
-
-.tooltip-box {
-  stroke: #d8d8d8;
-  stroke-width: 1.5px;
-}
+/********** SCROLLBAR **********/
 
 *::-webkit-scrollbar-track {
   border: 0;
@@ -227,6 +218,8 @@ body {
   background-color: rgba(98, 129, 178, .3);
   border-radius: 6px;
 }
+
+/********** FORM **********/
 
 input {
   outline: none;
@@ -264,6 +257,7 @@ form label {
 
 .input-url-label {
   font-size: 14px;
+  margin-top: 2px;
 }
 
 .optional-tag {
@@ -278,14 +272,14 @@ form label {
   border: 0px;
   font-size: 16px;
   width: 120px;
-  margin-right: 10px;
   margin-top: 2px;
   padding: 3px 0px 3px 5px;
   padding-left: 5px;
 }
 
 .input-url {
-  width: 400px;
+  min-width: 300px;
+  width: 450px;
   margin: 0;
 }
 
@@ -306,8 +300,7 @@ form label {
 }
 
 .input-submit-label {
-  height: 26px;
-  margin-bottom: 2px;
+  margin-top: 14px;
 }
 
 .input-submit {
