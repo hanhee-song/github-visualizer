@@ -54,6 +54,11 @@ table {
   box-sizing: border-box;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 html {
   height: 100%;
   width: 100%;
@@ -72,9 +77,45 @@ body {
   font-family: 'Inconsolata', monospace;
   margin: auto;
   text-align: center;
-  padding-top: 50px;
+  padding-top: 70px;
   font-size: 50px;
-  padding-bottom: 15px;
+  padding-bottom: 20px;
+}
+
+.name {
+  font-family: 'Inconsolata', monospace;
+  padding-top: 20px;
+  font-size: 22px;
+  text-align: center;
+}
+
+.about-me {
+  width: 300px;
+  margin: auto;
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: #7987af;
+  font-size: 18px;
+  line-height: 20px;
+}
+
+.about-me a {
+  display: flex;
+  font-family: 'Inconsolata', monospace;
+}
+
+.about-me .fa {
+  text-align: center;
+  min-width: 22px;
+}
+
+.about-me a:hover {
+  color: #9ba7c9;
+}
+
+.about-me a:hover .fa {
+  font-size: 19px;
 }
 
 .main {
