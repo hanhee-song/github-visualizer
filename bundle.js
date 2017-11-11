@@ -7,8 +7,6 @@ const svg = d3.select('.svg-main');
 
 
 const drawGraph = (error, graph) => {
-  setContentMessage();
-  
   svg.selectAll("g").remove();
   svg.selectAll("text").remove();
   const width = Number(svg.attr("width"));
@@ -287,12 +285,12 @@ function logRateLimit() {
 
 logRateLimit();
 
-const graphJSON = {
-  "nodes": [],
-  "links": [],
-};
 
-function fileParser(user, repo, subtree, key="") {
+function fileParser(user, repo, subdir, key="") {
+  const graphJSON = {
+    "nodes": [],
+    "links": [],
+  };
   return makeRequest(
     "GET",
     `https://api.github.com/repos/${user}/${repo}/commits`,
@@ -321,9 +319,9 @@ function fileParser(user, repo, subtree, key="") {
           && extension(file.path) !== "jsx")) {
           return false;
         }
-        if (subtree) {
-          return file.path.split("/")[0] === subtree && file.path.split(".")[0] !== file.path;
-        } else if (subtree === "") {
+        if (subdir) {
+          return file.path.split("/")[0] === subdir && file.path.split(".")[0] !== file.path;
+        } else if (subdir === "") {
           return file.path.split(".")[0] !== file.path;
         }
       });
@@ -331,7 +329,7 @@ function fileParser(user, repo, subtree, key="") {
       let rootDirs = [];
       let rootDir;
       files.forEach((file) => {
-        rootDir = parseRoot(file.path, subtree);
+        rootDir = parseRoot(file.path, subdir);
         if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
       });
       let counter = 0;
@@ -348,7 +346,7 @@ function fileParser(user, repo, subtree, key="") {
               let node = {
                 id: fileName,
                 loc: content.split(/\r?\n/).length,
-                group: rootDirs.indexOf(parseRoot(file.path, subtree)),
+                group: rootDirs.indexOf(parseRoot(file.path, subdir)),
                 content: content
               };
               graphJSON.nodes.push(node);
@@ -380,10 +378,10 @@ function extension(path) {
   return path.split(".")[path.split(".").length - 1];
 }
 
-function parseRoot(path, subtree) {
+function parseRoot(path, subdir) {
   let splitPath = path.split("/");
   let rootDir;
-  if (splitPath[0] === subtree) {
+  if (splitPath[0] === subdir) {
     if (splitPath[1].split(".")[0] === splitPath[1]) {
       rootDir = splitPath[1];
     } else {
@@ -422,27 +420,49 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 
 
 const svg = d3.select('.svg-main');
+let loading = false;
 
 d3.json("./filetree.json", (e, graph) => {
   drawGraph(e, graph);
   generateHeader(graph, "hanhee-song", "Slic", "frontend");
+  setContentMessage("Double-click a node to see its contents!");
 });
-
+document.querySelector(".input-user").value = "hanhee-song";
+document.querySelector(".input-repo").value = "Slic";
+document.querySelector(".input-subdir").value = "frontend";
 
 const submitGraph = (user, repo, subdir = "") => {
   fileParser(user, repo, subdir)
   .then(
     response => {
       const graph = response;
+      d3.selectAll("svg > *").remove();
       svg.data(graph);
       drawGraph(null, graph);
       generateHeader(graph, user, repo, subdir);
+      if (graph.nodes.length === 0) {
+        setContentMessage("No .js or .jsx files found...");
+      } else {
+        setContentMessage("Double-click a node to see its contents!");
+      }
     },
     error => {
       setContentMessage("Sorry, we couldn't find that repo!");
     }
   );
 };
+
+const submit = document.querySelector(".input-submit");
+
+submit.addEventListener("click", () => {
+  const user = document.querySelector(".input-user").value;
+  const repo = document.querySelector(".input-repo").value;
+  const subdir = document.querySelector(".input-subdir").value;
+  
+  submitGraph(user, repo, subdir);
+  setContentMessage("Loading repo...");
+  loading = true;
+});
 
 },{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
 function generateHeader(graph, user, repo, subdir) {
@@ -456,7 +476,7 @@ function generateHeader(graph, user, repo, subdir) {
     totalLines += node.loc;
   });
   
-  const linkText = document.createTextNode(`https://api.github.com/repos/${user}/${repo}`);
+  const linkText = document.createTextNode(`https://api.github.com/repos/${user}/${repo}/${subdir}`);
   const userText = document.createTextNode(`       Current user: ${user}`);
   const repoText = document.createTextNode(`       Current repo: ${repo}`);
   const subdirText = document.createTextNode(`     Current subdir: ${subdir}`);
@@ -475,7 +495,15 @@ function setContentMessage(content) {
   while (fileBox.firstChild) {
     fileBox.removeChild(fileBox.firstChild);
   }
-  const text = content || "Doubleclick a node to see its contents!";
+  let text;
+  if (content === undefined) {
+    text = "Double-click a node to see its contents!";
+  } else if (content === "") {
+    text = "This file is empty!";
+  } else {
+    text = content;
+  }
+  
   let textNode = document.createTextNode(text);
   fileBox.appendChild(textNode);
 }

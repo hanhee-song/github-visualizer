@@ -9,7 +9,7 @@ function generateHeader(graph, user, repo, subdir) {
     totalLines += node.loc;
   });
   
-  const linkText = document.createTextNode(`https://api.github.com/repos/${user}/${repo}`);
+  const linkText = document.createTextNode(`https://api.github.com/repos/${user}/${repo}/${subdir}`);
   const userText = document.createTextNode(`       Current user: ${user}`);
   const repoText = document.createTextNode(`       Current repo: ${repo}`);
   const subdirText = document.createTextNode(`     Current subdir: ${subdir}`);
@@ -28,7 +28,15 @@ function setContentMessage(content) {
   while (fileBox.firstChild) {
     fileBox.removeChild(fileBox.firstChild);
   }
-  const text = content || "Doubleclick a node to see its contents!";
+  let text;
+  if (content === undefined) {
+    text = "Double-click a node to see its contents!";
+  } else if (content === "") {
+    text = "This file is empty!";
+  } else {
+    text = content;
+  }
+  
   let textNode = document.createTextNode(text);
   fileBox.appendChild(textNode);
 }

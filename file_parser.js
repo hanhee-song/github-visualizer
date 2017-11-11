@@ -37,12 +37,12 @@ function logRateLimit() {
 
 logRateLimit();
 
-const graphJSON = {
-  "nodes": [],
-  "links": [],
-};
 
-function fileParser(user, repo, subtree, key="") {
+function fileParser(user, repo, subdir, key="") {
+  const graphJSON = {
+    "nodes": [],
+    "links": [],
+  };
   return makeRequest(
     "GET",
     `https://api.github.com/repos/${user}/${repo}/commits`,
@@ -71,9 +71,9 @@ function fileParser(user, repo, subtree, key="") {
           && extension(file.path) !== "jsx")) {
           return false;
         }
-        if (subtree) {
-          return file.path.split("/")[0] === subtree && file.path.split(".")[0] !== file.path;
-        } else if (subtree === "") {
+        if (subdir) {
+          return file.path.split("/")[0] === subdir && file.path.split(".")[0] !== file.path;
+        } else if (subdir === "") {
           return file.path.split(".")[0] !== file.path;
         }
       });
@@ -81,7 +81,7 @@ function fileParser(user, repo, subtree, key="") {
       let rootDirs = [];
       let rootDir;
       files.forEach((file) => {
-        rootDir = parseRoot(file.path, subtree);
+        rootDir = parseRoot(file.path, subdir);
         if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
       });
       let counter = 0;
@@ -98,7 +98,7 @@ function fileParser(user, repo, subtree, key="") {
               let node = {
                 id: fileName,
                 loc: content.split(/\r?\n/).length,
-                group: rootDirs.indexOf(parseRoot(file.path, subtree)),
+                group: rootDirs.indexOf(parseRoot(file.path, subdir)),
                 content: content
               };
               graphJSON.nodes.push(node);
@@ -130,10 +130,10 @@ function extension(path) {
   return path.split(".")[path.split(".").length - 1];
 }
 
-function parseRoot(path, subtree) {
+function parseRoot(path, subdir) {
   let splitPath = path.split("/");
   let rootDir;
-  if (splitPath[0] === subtree) {
+  if (splitPath[0] === subdir) {
     if (splitPath[1].split(".")[0] === splitPath[1]) {
       rootDir = splitPath[1];
     } else {

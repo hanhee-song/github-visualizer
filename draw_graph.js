@@ -6,8 +6,6 @@ const svg = d3.select('.svg-main');
 
 
 const drawGraph = (error, graph) => {
-  setContentMessage();
-  
   svg.selectAll("g").remove();
   svg.selectAll("text").remove();
   const width = Number(svg.attr("width"));
