@@ -532,6 +532,28 @@ form.addEventListener("submit", (e) => {
   loading = true;
 });
 
+
+const inputUrl = document.querySelector(".input-url");
+const inputUser = document.querySelector(".input-user");
+const inputRepo = document.querySelector(".input-repo");
+const inputSubdir = document.querySelector(".input-subdir");
+
+inputUrl.addEventListener("input", (e) => {
+  
+});
+
+inputUser.addEventListener("input", (e) => {
+  
+});
+
+inputRepo.addEventListener("input", (e) => {
+  
+});
+
+inputSubdir.addEventListener("input", (e) => {
+  
+});
+
 },{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
 function generateHeader(graph, user, repo, subdir, d) {
   const header = document.querySelector(".sidebar-header");

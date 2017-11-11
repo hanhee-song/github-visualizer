@@ -48,3 +48,25 @@ form.addEventListener("submit", (e) => {
   setContentMessage("Loading repo...");
   loading = true;
 });
+
+
+const inputUrl = document.querySelector(".input-url");
+const inputUser = document.querySelector(".input-user");
+const inputRepo = document.querySelector(".input-repo");
+const inputSubdir = document.querySelector(".input-subdir");
+
+inputUrl.addEventListener("input", (e) => {
+  
+});
+
+inputUser.addEventListener("input", (e) => {
+  
+});
+
+inputRepo.addEventListener("input", (e) => {
+  
+});
+
+inputSubdir.addEventListener("input", (e) => {
+  
+});
