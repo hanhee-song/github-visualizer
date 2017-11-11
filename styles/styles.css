@@ -186,6 +186,12 @@ input {
   align-items:flex-end;
 }
 
+form label {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
 .input-text-label {
   width: 120px;
   margin-right: 10px;
