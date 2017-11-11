@@ -111,7 +111,6 @@ function fileParser(user, repo, subdir, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter === files.length) {
-            debugger;
             return resolve(
               sanitizeGraph(graphJSON)
             );

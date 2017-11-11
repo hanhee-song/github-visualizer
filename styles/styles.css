@@ -57,7 +57,7 @@ table {
 html {
   height: 100%;
   width: 100%;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 body {
@@ -65,16 +65,16 @@ body {
   height: 100%;
   width: 100%;
   color: #d8d8d8;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .title {
   font-family: 'Inconsolata', monospace;
   margin: auto;
   text-align: center;
-  margin-top: 50px;
+  padding-top: 50px;
   font-size: 50px;
-  margin-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 .main {
@@ -169,15 +169,17 @@ body {
 
 *::-webkit-scrollbar-track {
   border: 0;
+  background-color: #232b42;
 }
 
 *::-webkit-scrollbar {
   width: 6px;
   height: 6px;
+  background-color: #232b42;
 }
 
 *::-webkit-scrollbar-corner {
-  background-color: rgba(0, 0, 0, 0)
+  background-color: #232b42;
 }
 
 *::-webkit-scrollbar-thumb {
