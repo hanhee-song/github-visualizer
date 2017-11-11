@@ -144,7 +144,7 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 140px;
+  height: 130px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   overflow: auto
@@ -154,7 +154,7 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 60px;
+  height: 100px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   overflow: auto
@@ -164,7 +164,7 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 300px;
+  height: 270px;
   display: block;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
@@ -234,7 +234,20 @@ input {
 
 .form {
   display: flex;
-  align-items:flex-end;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-fields-top {
+  display: flex;
+}
+
+.input-fields-bottom {
+  margin-top: 8px;
+  display: flex;
 }
 
 form label {
@@ -246,6 +259,17 @@ form label {
 .input-text-label {
   width: 120px;
   margin-right: 10px;
+  font-size: 14px;
+}
+
+.input-url-label {
+  font-size: 14px;
+}
+
+.optional-tag {
+  display: inline;
+  font-size: 12px;
+  color: #bbb;
 }
 
 .input-text {
@@ -258,6 +282,11 @@ form label {
   margin-top: 2px;
   padding: 3px 0px 3px 5px;
   padding-left: 5px;
+}
+
+.input-url {
+  width: 300px;
+  margin: 0;
 }
 
 .input-text + span {
