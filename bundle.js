@@ -539,20 +539,43 @@ const inputRepo = document.querySelector(".input-repo");
 const inputSubdir = document.querySelector(".input-subdir");
 
 inputUrl.addEventListener("input", (e) => {
-  
+  parseUrl();
 });
 
 inputUser.addEventListener("input", (e) => {
-  
+  makeUrl();
 });
 
 inputRepo.addEventListener("input", (e) => {
-  
+  makeUrl();
 });
 
 inputSubdir.addEventListener("input", (e) => {
-  
+  makeUrl();
 });
+
+function parseUrl() {
+  // https://github.com/hanhee-song/project-visualizer
+  
+  let urlTag = inputUrl.value.split("github.com")[1];
+  if (urlTag) {
+    const urlTagArr = urlTag.slice(1).split("/");
+    inputUser.value = urlTagArr[0] ? urlTagArr[0] : "";
+    inputRepo.value = urlTagArr[1] ? urlTagArr[1] : "";
+    inputSubdir.value = urlTagArr[2] ? urlTagArr[2] : "";
+  }
+}
+
+function makeUrl() {
+  let url = `https://github.com/${inputUser.value}`;
+  if (inputRepo.value) {
+    url += '/' + inputRepo.value;
+  }
+  if (inputSubdir.value) {
+    url += '/' + inputSubdir.value;
+  }
+  inputUrl.value = url;
+}
 
 },{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
 function generateHeader(graph, user, repo, subdir, d) {
