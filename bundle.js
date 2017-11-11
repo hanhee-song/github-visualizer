@@ -164,7 +164,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       node.style("opacity", 1);
       link.style("opacity", .6);
       text.style("opacity", 1);
-      text.text((o) => abbreviate(o.id));
+      text.text((o) => abbreviate(o.name));
       highlighted = "";
     }
   }

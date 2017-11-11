@@ -61,7 +61,7 @@ html {
 }
 
 body {
-  background: linear-gradient(0deg, #0f141c, #212d3f);
+  background: linear-gradient(0deg, #232b42, #232b42);
   height: 100%;
   width: 100%;
   color: #d8d8d8;
@@ -74,11 +74,13 @@ body {
   display: flex;
   width: 1000px;
   height: 600px;
+  border-radius: 2px;
+  border: 1px solid #374468;
 }
 
 .svg-main {
   display: block;
-  border: 1px solid red;
+  border: 1px solid #374468;
 }
 
 .sidebar-main {
@@ -90,7 +92,7 @@ body {
   padding: 5px 0px 5px 10px;
   width: 500px;
   height: 150px;
-  border: 1px solid green;
+  border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   overflow: auto
 }
@@ -99,7 +101,7 @@ body {
   padding: 5px 0px 5px 10px;
   width: 500px;
   height: 50px;
-  border: 1px solid yellow;
+  border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   overflow: auto
 }
@@ -109,14 +111,14 @@ body {
   width: 500px;
   height: 400px;
   display: block;
-  border: 1px solid blue;
+  border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
   font-size: 13px;
   overflow: auto;
 }
 
 .nodes circle {
-  stroke: #0f141c;
+  stroke: #232b42;
   stroke-width: 1.5px;
 }
 
@@ -156,7 +158,8 @@ body {
 }
 
 *::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 *::-webkit-scrollbar-corner {
@@ -164,6 +167,44 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background-color: rgba(98, 129, 178, .5);
-  border-radius: 8px;
+  background-color: rgba(98, 129, 178, .3);
+  border-radius: 6px;
+}
+
+input {
+  outline: none;
+}
+
+.form {
+  margin-top: 5px;
+  display: flex;
+}
+
+.input-text {
+  background-color: #374468;
+  color: #d8d8d8;
+  border: 0px;
+  font-size: 16px;
+  width: 120px;
+  margin-right: 10px;
+  padding-left: 5px;
+  border-bottom: 1px solid #374468;
+  transition: border .3s;
+  -webkit-transition: border .3s;
+}
+
+.input-text:focus {
+  border-bottom: 1px solid #ddd;
+}
+
+.input-submit {
+  background-color: #232b42;
+  border: 2px solid #374468;
+  color: #d8d8d8;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.input-submit:active {
+  background-color: #2b3554;
 }
