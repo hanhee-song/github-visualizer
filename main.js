@@ -23,6 +23,7 @@ const submitGraph = (user, repo, subdir = "") => {
     response => {
       const graph = response;
       d3.selectAll("svg > *").remove();
+      debugger;
       svg.data(graph);
       drawGraph(null, graph);
       generateHeader(graph, user, repo, subdir);

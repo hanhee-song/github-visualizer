@@ -7,6 +7,8 @@ const svg = d3.select('.svg-main');
 
 
 const drawGraph = (error, graph) => {
+  setContentMessage();
+  
   svg.selectAll("g").remove();
   svg.selectAll("text").remove();
   const width = Number(svg.attr("width"));
@@ -314,9 +316,7 @@ function fileParser(user, repo, subdir, key="") {
   ).then(
     response => {
       const files = JSON.parse(response.responseText).tree.filter(file => {
-        if (parseName(file.path) === "bundle"
-          || (extension(file.path) !== "js"
-          && extension(file.path) !== "jsx")) {
+        if (forbiddenFile(file.path)) {
           return false;
         }
         if (subdir) {
@@ -345,6 +345,7 @@ function fileParser(user, repo, subdir, key="") {
               let links = parseLinks(fileName, content);
               let node = {
                 id: fileName,
+                path: file.path,
                 loc: content.split(/\r?\n/).length,
                 group: rootDirs.indexOf(parseRoot(file.path, subdir)),
                 content: content
@@ -359,7 +360,9 @@ function fileParser(user, repo, subdir, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter === files.length) {
-            return resolve(graphJSON);
+            return resolve(
+              sanitizeGraph(graphJSON)
+            );
           }
           setTimeout(waitForFiles, 30);
         })();
@@ -376,6 +379,13 @@ function parseName(path) {
 
 function extension(path) {
   return path.split(".")[path.split(".").length - 1];
+}
+
+function forbiddenFile(path) {
+  return parseName(path) === "bundle"
+  || (extension(path) !== "js"
+  && extension(path) !== "jsx"
+  && extension(path) !== "json");
 }
 
 function parseRoot(path, subdir) {
@@ -397,9 +407,15 @@ function parseLinks(fileName, content) {
   let contentArr = content.split(/\r?\n/);
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
-    if ((contentArr[i].includes("from") || contentArr[i].includes("require"))
+    if (
+      (contentArr[i].includes("from '")
+      || contentArr[i].includes("from \"")
+      || contentArr[i].includes("require(")
+      || contentArr[i].includes("require ("))
       && contentArr[i].includes("./")
-      && contentArr[i].slice(0, 2) !== "//") {
+      && contentArr[i].slice(0, 2) !== "//"
+      && contentArr[i].slice(0, 2) !== "/*"
+      && parseName(contentArr[i]) !== "") {
       links.push({
         "source": parseName(contentArr[i]),
         "target": fileName
@@ -407,6 +423,22 @@ function parseLinks(fileName, content) {
     }
   }
   return links;
+}
+
+function sanitizeGraph(graph) {
+  let newGraph = {
+    "links": [],
+    "nodes": graph.nodes
+  };
+  const names = graph.nodes.map(node => node.id);
+  
+  graph.links.forEach(link => {
+    if (names.includes(link.source) && names.includes(link.target)) {
+      newGraph.links.push(link);
+    }
+  });
+  
+  return newGraph;
 }
 
 module.exports = fileParser;
@@ -437,6 +469,7 @@ const submitGraph = (user, repo, subdir = "") => {
     response => {
       const graph = response;
       d3.selectAll("svg > *").remove();
+      debugger;
       svg.data(graph);
       drawGraph(null, graph);
       generateHeader(graph, user, repo, subdir);
