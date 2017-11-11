@@ -38,9 +38,10 @@ const submitGraph = (user, repo, subdir = "") => {
   );
 };
 
-const submit = document.querySelector(".input-submit");
+const form = document.querySelector(".form");
 
-submit.addEventListener("click", () => {
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
   const user = document.querySelector(".input-user").value;
   const repo = document.querySelector(".input-repo").value;
   const subdir = document.querySelector(".input-subdir").value;
