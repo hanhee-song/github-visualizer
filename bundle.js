@@ -317,7 +317,21 @@ function fileParser(user, repo, subtree, key="") {
   ).then(
     response => {
       const files = JSON.parse(response.responseText).tree.filter(file => {
-        return file.path.split("/")[0] === subtree && file.path.split(".")[0] !== file.path;
+        if (parseName(file.path) === "bundle"
+          || extension(file.path) === "html"
+          || extension(file.path) === "css"
+          || extension(file.path) === "gitignore"
+          || extension(file.path) === "png"
+          || extension(file.path) === "jpg"
+          || extension(file.path) === "jpeg"
+          || extension(file.path) === "json") {
+          return false;
+        }
+        if (subtree) {
+          return file.path.split("/")[0] === subtree && file.path.split(".")[0] !== file.path;
+        } else if (subtree === "") {
+          return file.path.split(".")[0] !== file.path;
+        }
       });
       
       let rootDirs = [];
@@ -340,7 +354,7 @@ function fileParser(user, repo, subtree, key="") {
               let node = {
                 id: fileName,
                 loc: content.split(/\r?\n/).length,
-                group: rootDirs.indexOf(parseRoot(file.path, "frontend")),
+                group: rootDirs.indexOf(parseRoot(file.path, subtree)),
                 content: content
               };
               graphJSON.nodes.push(node);
@@ -368,6 +382,10 @@ function parseName(path) {
     .split("'")[0].split("\"")[0];
 }
 
+function extension(path) {
+  return path.split(".")[path.split(".").length - 1];
+}
+
 function parseRoot(path, subtree) {
   let splitPath = path.split("/");
   let rootDir;
@@ -382,6 +400,7 @@ function parseRoot(path, subtree) {
   }
   return rootDir;
 }
+
 function parseLinks(fileName, content) {
   let contentArr = content.split(/\r?\n/);
   let links = [];
@@ -410,12 +429,13 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 
 const svg = d3.select('.svg-main');
 
-fileParser("hanhee-song", "Slic", "frontend")
+fileParser("hanhee-song", "project-visualizer", "")
 .then(
   response => {
     const graph = response;
     svg.data(graph);
-    drawGraph(null, graph, "hanhee-song", "Slic", "frontend");
+    debugger;
+    drawGraph(null, graph, "hanhee-song", "project-visualizer", "");
   },
   error => {
     setContentMessage("Sorry, we couldn't find that repo!");
