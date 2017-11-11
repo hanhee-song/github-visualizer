@@ -136,8 +136,7 @@ function extension(path) {
 function forbiddenFile(path) {
   return parseName(path) === "bundle"
   || (extension(path) !== "js"
-  && extension(path) !== "jsx"
-  && extension(path) !== "json");
+  && extension(path) !== "jsx");
 }
 
 function parseRoot(path, subdir) {
