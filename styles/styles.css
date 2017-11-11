@@ -72,8 +72,9 @@ body {
 .main {
   margin: 0 auto;
   display: flex;
-  width: 1000px;
-  height: 600px;
+  max-width: 1000px;
+  min-width: 800px;
+  height: 500px;
   border-radius: 2px;
   border: 1px solid #374468;
 }
@@ -84,13 +85,16 @@ body {
 }
 
 .sidebar-main {
+  min-width: 400px;
   width: 500px;
-  height: 600px;
+  max-width: 500px;
+  height: 500px;
 }
 
 .sidebar-header {
   padding: 5px 0px 5px 10px;
-  width: 500px;
+  min-width: 400px;
+  max-width: 500px;
   height: 150px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
@@ -99,7 +103,8 @@ body {
 
 .sidebar-options {
   padding: 5px 0px 5px 10px;
-  width: 500px;
+  min-width: 400px;
+  max-width: 500px;
   height: 50px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
@@ -108,8 +113,9 @@ body {
 
 .file-content {
   padding: 5px 0px 5px 10px;
-  width: 500px;
-  height: 400px;
+  min-width: 400px;
+  max-width: 500px;
+  height: 300px;
   display: block;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
@@ -176,8 +182,13 @@ input {
 }
 
 .form {
-  margin-top: 5px;
   display: flex;
+  align-items:flex-end;
+}
+
+.input-text-label {
+  width: 120px;
+  margin-right: 10px;
 }
 
 .input-text {
@@ -188,23 +199,43 @@ input {
   width: 120px;
   margin-right: 10px;
   padding-left: 5px;
-  border-bottom: 1px solid #374468;
-  transition: border .3s;
-  -webkit-transition: border .3s;
 }
 
-.input-text:focus {
-  border-bottom: 1px solid #ddd;
+.input-text + span {
+  background: #ddd;
+  width: 0;
+  height: 2px;
+  display: block;
+  margin: auto;
+  content: '';
+  transition: width .2s ease;
+  -webkit-transition: width .2s ease;
+}
+
+.input-text:focus + span {
+  width: 100%;
+  background: #ddd;
+}
+
+.input-submit-label {
+  height: 26px;
+  margin-bottom: 2px;
 }
 
 .input-submit {
   background-color: #232b42;
+  transition: background .2s ease;
+  -webkit-transition: background .2s ease;
   border: 2px solid #374468;
   color: #d8d8d8;
   font-size: 16px;
   cursor: pointer;
 }
 
-.input-submit:active {
+.input-submit:hover {
   background-color: #2b3554;
+}
+
+.input-submit:active {
+  background-color: #1c2438;
 }
