@@ -242,6 +242,6 @@ form label {
   background-color: #2b3554;
 }
 
-.input-submit:active {
+.input-submit:active, .input-submit:focus {
   background-color: #1c2438;
 }
