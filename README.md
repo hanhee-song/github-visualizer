@@ -18,7 +18,7 @@ Users can double-click a node to highlight its links and display its contents, o
 
 The visualizer is compatible with various major repositories, including Redux, Express, and React.
 
-![](https://thumbs.gfycat.com/ImmediateHideousBobwhite-max-14mb.gif)
+![](https://thumbs.gfycat.com/DeliriousFarflungAquaticleech-size_restricted.gif)
 
 ## How it works
 
