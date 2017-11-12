@@ -1,6 +1,6 @@
 # Github Filetree Visualizer
 
-![example gif](https://thumbs.gfycat.com/ThirdThriftyKrill-max-14mb.gif)
+![](https://thumbs.gfycat.com/MeatyRecklessButterfly-size_restricted.gif)
 
 [Live Site](https://hanhee-song.github.io/github-visualizer/)
 
