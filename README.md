@@ -2,7 +2,7 @@
 
 <img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_0.png?raw=true" width="900px"/>
 
-[Live Site](https://hanhee-song.github.io/project-visualizer/)
+[Live Site](https://hanhee-song.github.io/github-visualizer/)
 
 The Github Filetree Visualizer combines the D3 library with Github's API to create powerful visualizations of JavaScript-based repositories.
 
