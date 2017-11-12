@@ -1,6 +1,6 @@
 # Github Filetree Visualizer
 
-![example image](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_0.png?raw=true)
+<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_0.png?raw=true" width="900px"/>
 
 [Live Site](https://hanhee-song.github.io/project-visualizer/)
 
@@ -20,11 +20,15 @@ The visualizer is compatible with various major repositories.
 
 ##### Redux
 
-![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_1.png?raw=true)
+<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true" width="600px"/>
 
 ##### Express
 
-![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true)
+<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true" width="600px"/>
+
+##### ...and even itself
+
+<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_3.png?raw=true" width="600px"/>
 
 ## How it works
 
@@ -34,5 +38,5 @@ The visualizer sends XHR requests via the Github API - one to retrieve the SHA o
 
 * The visualizer ignores any file named ```bundle```
 * References to node modules or files outside of the specified subdirectory are ignored
-* Colors are based on the subdirectory immediately following the specified directory. Higher specificity will result in more colorful graphs
-* The subdirectory field takes in only one layer
+* Colors are based on the subdirectory immediately following the specified directory. Providing a subdirectory (if applicable) will result in more colorful graphs
+* The subdirectory field takes in only one folder. Attempting to nest folders will result in an error
