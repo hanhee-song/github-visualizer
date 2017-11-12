@@ -18,7 +18,7 @@ Users can double-click a node to highlight its links and display its contents, o
 
 The visualizer is compatible with various major repositories.
 
-##### React
+##### Redux
 
 ![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_1.png?raw=true)
 
@@ -26,7 +26,7 @@ The visualizer is compatible with various major repositories.
 
 ![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true)
 
-#### How it works
+## How it works
 
 The visualizer sends XHR requests via the Github API - one to retrieve the SHA of the most recent commit, one to retrieve the file tree, and a series of requests to retrieve the contents of every ```.js``` or ```.jsx``` file. It stores each file as a node and examines file dependencies to construct links between each file. Any line with an ```import``` or ```require``` statement is parsed into a link between the two files. The resulting JSON is then rendered in D3.
 
