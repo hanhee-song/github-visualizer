@@ -1,5 +1,7 @@
 # Github Filetree Visualizer
 
+![example image](https://github.com/hanhee-song/github-visualizer/blob/master/docs/Screen%20Shot%202017-11-11%20at%2019.03.58.png?raw=true)
+
 [Live Site](https://hanhee-song.github.io/project-visualizer/)
 
 The Github Filetree Visualizer combines the D3 library with Github's API to create powerful visualizations of JavaScript-based repositories.
@@ -13,6 +15,8 @@ Users can input either the Github URL or the user, repo, and an optional subdire
 A node represents a file. The side of the node corresponds with the number of lines of code in the file. An arrow from one node to another represents an interdependency.
 
 Users can double-click a node to highlight its links and display its contents, or double-click the same node to remove highlighting. Users can also click and drag nodes around.
+
+![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/Screen%20Shot%202017-11-11%20at%2019.04.29.png?raw=true)
 
 #### How it works
 
