@@ -1,32 +1,26 @@
-# Project File Interdependency Visualizer
+# Github Filetree Visualizer
 
-### MVP
+[Live Site](https://hanhee-song.github.io/project-visualizer/)
 
-The project will give a visual and interactive web of file interdependencies and imports of a file tree, namely the Redux/React files of my fullstack project. Asides from basic click-and-drag interactions, files will display their import statements (and maybe even have their lines highlighted) on mouseover.
+The Github Filetree Visualizer combines the D3 library with Github's API to create powerful visualizations of JavaScript-based repositories.
 
-The project will also include a production README, and maybe a classic atom-filetree representation of the files at hand to contrast the two.
+### Features
 
-### Technologies, libraries, APIs
+The visualizer will parse out the contents of any given repository, sift through all files with a ```.js``` or ```.jsx``` extension, and calculate the interdependencies based on the contents of the files.
 
-The bulk of this project will be devoted to learning and implementing D3. ```webpack``` will be used to bundle js files. In addition to the entry file, there will be one other script, ```graph.js```, and any necessary helper files.
+Users can input either the Github URL or the user, repo, and an optional subdirectory. The visualizer will retrieve and display the files in a graph.
 
-### Wireframes
+A node represents a file. The side of the node corresponds with the number of lines of code in the file. An arrow from one node to another represents an interdependency.
 
-The app will be a single screen with the graph in the middle and links to my Github, LinkedIn, and profile on the bottom.
+Users can double-click a node to highlight its links and display its contents, or double-click the same node to remove highlighting. Users can also click and drag nodes around.
 
-![wireframe](https://github.com/hanhee-song/project-visualizer/blob/master/docs/Screen%20Shot%202017-11-07%20at%2020.47.50.png?raw=true)
+#### How it works
 
-### Implementation Timeline
+The visualizer sends XHR requests via the Github API - one to retrieve the SHA of the most recent commit, one to retrieve the file tree, and a series of requests to retrieve the contents of every ```.js``` or ```.jsx``` file. It stores each file as a node and examines file dependencies to construct links between each file. Any line with an ```import``` or ```require``` statement is parsed into a link between the two files. The resulting JSON is then rendered in D3.
 
-Day 1: npm setup, familiarize self with D3 and experiment with its API.
+#### Notes
 
-Day 2: Build a basic graph with sufficient styling.
-
-Day 3: Get data showing! Manually parse necessary data and incorporate into graph.
-
-Day 4: Build hover feature and other interactive features.
-
-### Bonus Features
-
-* Have the size of the node respond to the line count of the file
-* Use Github API to analyze file contents and remove the need to manually import data
+* The visualizer ignores any file named ```bundle```
+* References to node modules or files outside of the specified subdirectory are ignored
+* Colors are based on the subdirectory immediately following the specified directory. Higher specificity will result in more colorful graphs
+* The subdirectory field takes in only one layer

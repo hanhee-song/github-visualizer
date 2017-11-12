@@ -489,14 +489,13 @@ const setContentMessage = sidebarFunctions.setContentMessage;
 
 
 const svg = d3.select('.svg-main');
-let loading = false;
 
 d3.json("./filetree.json", (e, graph) => {
   drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
   setContentMessage("Double-click a node to see its contents!");
 });
 document.querySelector(".input-user").value = "hanhee-song";
-document.querySelector(".input-repo").value = "Slic";
+document.querySelector(".input-repo").value = "slic";
 document.querySelector(".input-subdir").value = "frontend";
 
 const submitGraph = (user, repo, subdir = "") => {
@@ -529,7 +528,6 @@ form.addEventListener("submit", (e) => {
   
   submitGraph(user, repo, subdir);
   setContentMessage("Loading repo...");
-  loading = true;
 });
 
 
@@ -555,14 +553,13 @@ inputSubdir.addEventListener("input", (e) => {
 });
 
 function parseUrl() {
-  // https://github.com/hanhee-song/project-visualizer
-  
   let urlTag = inputUrl.value.split("github.com")[1];
   if (urlTag) {
     const urlTagArr = urlTag.slice(1).split("/");
     inputUser.value = urlTagArr[0] ? urlTagArr[0] : "";
     inputRepo.value = urlTagArr[1] ? urlTagArr[1] : "";
-    inputSubdir.value = urlTagArr[2] ? urlTagArr[2] : "";
+    if (urlTagArr[2] === "tree" && urlTagArr[3] === "master")
+    inputSubdir.value = urlTagArr[4] ? urlTagArr[4] : "";
   }
 }
 
@@ -572,7 +569,7 @@ function makeUrl() {
     url += '/' + inputRepo.value;
   }
   if (inputSubdir.value) {
-    url += '/' + inputSubdir.value;
+    url += '/tree/master/' + inputSubdir.value;
   }
   inputUrl.value = url;
 }
