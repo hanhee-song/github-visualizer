@@ -16,19 +16,9 @@ A node represents a file. The side of the node corresponds with the number of li
 
 Users can double-click a node to highlight its links and display its contents, or double-click the same node to remove highlighting. Users can also click and drag nodes around.
 
-The visualizer is compatible with various major repositories.
+The visualizer is compatible with various major repositories, including Redux, Express, and React.
 
-#### Redux
-
-<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_1.png?raw=true" width="600px"/>
-
-#### Express
-
-<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true" width="600px"/>
-
-#### ...and even itself
-
-<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_3.png?raw=true" width="600px"/>
+![](https://thumbs.gfycat.com/ImmediateHideousBobwhite-max-14mb.gif)
 
 ## How it works
 
