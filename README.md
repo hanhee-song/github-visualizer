@@ -1,6 +1,6 @@
 # Github Filetree Visualizer
 
-<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_0.png?raw=true" width="900px"/>
+![example gif](https://thumbs.gfycat.com/ThirdThriftyKrill-max-14mb.gif)
 
 [Live Site](https://hanhee-song.github.io/github-visualizer/)
 
