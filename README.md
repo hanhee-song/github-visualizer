@@ -1,6 +1,6 @@
 # Github Filetree Visualizer
 
-![example image](https://github.com/hanhee-song/github-visualizer/blob/master/docs/Screen%20Shot%202017-11-11%20at%2019.03.58.png?raw=true)
+![example image](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_0.png?raw=true)
 
 [Live Site](https://hanhee-song.github.io/project-visualizer/)
 
@@ -16,7 +16,15 @@ A node represents a file. The side of the node corresponds with the number of li
 
 Users can double-click a node to highlight its links and display its contents, or double-click the same node to remove highlighting. Users can also click and drag nodes around.
 
-![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/Screen%20Shot%202017-11-11%20at%2019.04.29.png?raw=true)
+The visualizer is compatible with various major repositories.
+
+##### React
+
+![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_1.png?raw=true)
+
+##### Express
+
+![highlighting node example](https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true)
 
 #### How it works
 
