@@ -18,15 +18,15 @@ Users can double-click a node to highlight its links and display its contents, o
 
 The visualizer is compatible with various major repositories.
 
-##### Redux
+#### Redux
+
+<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_1.png?raw=true" width="600px"/>
+
+#### Express
 
 <img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true" width="600px"/>
 
-##### Express
-
-<img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_2.png?raw=true" width="600px"/>
-
-##### ...and even itself
+#### ...and even itself
 
 <img src="https://github.com/hanhee-song/github-visualizer/blob/master/docs/image_3.png?raw=true" width="600px"/>
 
