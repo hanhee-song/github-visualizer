@@ -284,18 +284,6 @@ function makeRequest(method, url, key, headerKey, headerValue) {
   });
 }
 
-function logRateLimit() {
-  return makeRequest("GET", `https://api.github.com/rate_limit`)
-    .then(
-      response => {
-        console.log(response.responseText);
-      }
-    );
-}
-
-logRateLimit();
-
-
 function fileParser(user, repo, subdir, key="") {
   const graphJSON = {
     "nodes": [],
@@ -412,7 +400,7 @@ function parseRoot(path, subdir) {
 }
 
 function parsePath(filePath, line) {
-  const lineArr = line.split("'");
+  let lineArr = line.split("'");
   if (lineArr.length === 1) {
     lineArr = line.split("\"");
   }
@@ -421,8 +409,8 @@ function parsePath(filePath, line) {
     if (section.includes("./")) segment = section;
   });
   
-  const sectionArr = segment.split("/");
-  const filePathArr = filePath.split("/");
+  let sectionArr = segment.split("/");
+  let filePathArr = filePath.split("/");
   filePathArr.pop();
   let newPath;
   sectionArr.forEach(section => {
