@@ -142,7 +142,7 @@ function parseRoot(path, subdir) {
 }
 
 function parsePath(filePath, line) {
-  const lineArr = line.split("'");
+  let lineArr = line.split("'");
   if (lineArr.length === 1) {
     lineArr = line.split("\"");
   }
@@ -151,8 +151,8 @@ function parsePath(filePath, line) {
     if (section.includes("./")) segment = section;
   });
   
-  const sectionArr = segment.split("/");
-  const filePathArr = filePath.split("/");
+  let sectionArr = segment.split("/");
+  let filePathArr = filePath.split("/");
   filePathArr.pop();
   let newPath;
   sectionArr.forEach(section => {
