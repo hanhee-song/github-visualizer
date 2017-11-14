@@ -491,6 +491,7 @@ Double-click a node to see its contents.
 Double-click on the same node to return to the main view,
 or double-click on a different node to select a new node.
 `;
+let loading = false;
 
 const svg = d3.select('.svg-main');
 
@@ -503,9 +504,14 @@ document.querySelector(".input-repo").value = "slic";
 document.querySelector(".input-subdir").value = "frontend";
 
 const submitGraph = (user, repo, subdir = "") => {
+  if (loading === true) {
+    return;
+  }
+  loading = true;
   fileParser(user, repo, subdir)
   .then(
     response => {
+      loading = false;
       const graph = response;
       d3.selectAll("svg > *").remove();
       svg.data(graph);
@@ -517,6 +523,7 @@ const submitGraph = (user, repo, subdir = "") => {
       }
     },
     error => {
+      loading = false;
       setContentMessage("Sorry, we couldn't find that repo!");
     }
   );
@@ -603,13 +610,15 @@ const examples = {
 const buttonExamples = document.querySelectorAll(".button-example");
 buttonExamples.forEach((button) => {
   button.addEventListener("click", (e) => {
-    const repo = examples[e.target.getAttribute("repo")];
-    inputUser.value = repo.user;
-    inputRepo.value = repo.repo;
-    inputSubdir.value = repo.subdir;
-    makeUrl();
-    submitGraph(repo.user, repo.repo, repo.subdir);
-    setContentMessage("Loading repo...");
+    if (loading === false) {
+      const repo = examples[e.target.getAttribute("repo")];
+      inputUser.value = repo.user;
+      inputRepo.value = repo.repo;
+      inputSubdir.value = repo.subdir;
+      makeUrl();
+      submitGraph(repo.user, repo.repo, repo.subdir);
+      setContentMessage("Loading repo...");
+    }
   });
 });
 
