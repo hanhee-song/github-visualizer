@@ -582,6 +582,37 @@ function makeUrl() {
   inputUrl.value = url;
 }
 
+const examples = {
+  "express": {
+    "user": "expressjs",
+    "repo": "express",
+    "subdir": "lib",
+  },
+  "redux": {
+    "user": "react",
+    "repo": "redux",
+    "subdir": "src",
+  },
+  "react": {
+    "user": "facebook",
+    "repo": "react",
+    "subdir": "scripts",
+  },
+};
+
+const buttonExamples = document.querySelectorAll(".button-example");
+buttonExamples.forEach((button) => {
+  button.addEventListener("click", (e) => {
+    const repo = examples[e.target.getAttribute("repo")];
+    inputUser.value = repo.user;
+    inputRepo.value = repo.repo;
+    inputSubdir.value = repo.subdir;
+    makeUrl();
+    submitGraph(repo.user, repo.repo, repo.subdir);
+    setContentMessage("Loading repo...");
+  });
+});
+
 },{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
 function generateHeader(graph, user, repo, subdir, d) {
   const header = document.querySelector(".sidebar-header");

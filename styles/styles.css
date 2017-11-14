@@ -80,6 +80,10 @@ body {
   padding-top: 5%;
   font-size: 50px;
   padding-bottom: 20px;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  cursor: default;
 }
 
 .name {
@@ -117,6 +121,43 @@ body {
 
 .about-me a:hover .fa {
   font-size: 19px;
+}
+
+.sample-buttons {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  width: 400px;
+  margin: auto;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Inconsolata', monospace;
+}
+
+.button-title {
+  padding: 5px 0;
+  cursor: default;
+}
+
+.button-example {
+  padding: 5px 10px;
+  border-radius: 4px;
+  background-color: #232b42;
+  transition: background .2s ease;
+  -webkit-transition: background .2s ease;
+  border: 2px solid #374468;
+  color: #d8d8d8;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.button-example:hover {
+  background-color: #43537f;
+}
+
+.button-example:active, .button-example:focus {
+  background-color: #2d3756;
 }
 
 /********** BLOCKS **********/
