@@ -4,12 +4,21 @@ const sidebarFunctions = require('./sidebar.js');
 const generateHeader = sidebarFunctions.generateHeader;
 const setContentMessage = sidebarFunctions.setContentMessage;
 
+const MESSAGE = `Instructions:
+
+Click and drag to move nodes around.
+
+Double-click a node to see its contents.
+
+Double-click on the same node to return to the main view,
+or double-click on a different node to select a new node.
+`;
 
 const svg = d3.select('.svg-main');
 
 d3.json("./filetree.json", (e, graph) => {
   drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
-  setContentMessage("Double-click a node to see its contents!");
+  setContentMessage(MESSAGE);
 });
 document.querySelector(".input-user").value = "hanhee-song";
 document.querySelector(".input-repo").value = "slic";
@@ -26,7 +35,7 @@ const submitGraph = (user, repo, subdir = "") => {
       if (graph.nodes.length === 0) {
         setContentMessage("No .js or .jsx files found...");
       } else {
-        setContentMessage("Double-click a node to see its contents!");
+        setContentMessage(MESSAGE);
       }
     },
     error => {
