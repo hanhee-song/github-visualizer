@@ -589,7 +589,7 @@ const examples = {
     "subdir": "lib",
   },
   "redux": {
-    "user": "react",
+    "user": "reactjs",
     "repo": "redux",
     "subdir": "src",
   },
