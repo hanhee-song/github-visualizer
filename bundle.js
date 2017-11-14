@@ -25,7 +25,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody(0))
-  .force("center", d3.forceCenter(width/2, height/2))
+  // .force("center", d3.forceCenter(width/2, height/2))
   .force("collision", d3.forceCollide(10));
   
   
@@ -604,6 +604,11 @@ const examples = {
     "user": "facebook",
     "repo": "react",
     "subdir": "scripts",
+  },
+  "slic": {
+    "user": "hanhee-song",
+    "repo": "slic",
+    "subdir": "frontend",
   },
 };
 

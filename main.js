@@ -127,6 +127,11 @@ const examples = {
     "repo": "react",
     "subdir": "scripts",
   },
+  "slic": {
+    "user": "hanhee-song",
+    "repo": "slic",
+    "subdir": "frontend",
+  },
 };
 
 const buttonExamples = document.querySelectorAll(".button-example");
