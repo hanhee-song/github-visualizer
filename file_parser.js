@@ -1,31 +1,3 @@
-function makeRequest(method, url, key, headerKey, headerValue) {
-  return new Promise(function (resolve, reject) {
-    const request = new XMLHttpRequest();
-    request.open(method, url);
-    if (headerKey) {
-      request.setRequestHeader(headerKey, headerValue);
-    }
-    request.setRequestHeader("Authorization", `Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==`);
-    request.onload = function() {
-      if (this.status === 200) {
-        resolve(request);
-      } else {
-        reject({
-          status: this.status,
-          statusText: request.statusText
-        });
-      }
-    };
-    request.onerror = function () {
-      reject({
-        status: this.status,
-        statusText: request.statusText
-      });
-    };
-    request.send();
-  });
-}
-
 function fileParser(user, repo, subdir, key="") {
   const graphJSON = {
     "nodes": [],
@@ -35,57 +7,36 @@ function fileParser(user, repo, subdir, key="") {
     "GET",
     `https://api.github.com/repos/${user}/${repo}/commits`,
     key
-  )
-    .then(
-    response => {
-      return JSON.parse(response.responseText)[0].sha;
-    },
-    error => {
-      return ["Invalid username or repo"];
-    }
   ).then(
-    sha => {
-      return makeRequest(
+    response => JSON.parse(response.responseText)[0].sha,
+    error => ["Invalid username or repo"]
+  ).then(
+    sha => makeRequest(
         "GET",
         `https://api.github.com/repos/${user}/${repo}/git/trees/${sha}?recursive=1`,
         key
-      );
-    }
+      )
   ).then(
     response => {
-      const files = JSON.parse(response.responseText).tree.filter(file => {
-        if (forbiddenFile(file.path)) {
-          return false;
-        }
-        if (subdir) {
-          return file.path.split("/")[0] === subdir && file.path.split(".")[0] !== file.path;
-        } else if (subdir === "") {
-          return file.path.split(".")[0] !== file.path;
-        }
-      });
+      const files = parseTree(response, subdir);
+      const rootDirs = parseRootDirs(files, subdir);
       
-      let rootDirs = [];
-      let rootDir;
-      files.forEach((file) => {
-        rootDir = parseRoot(file.path, subdir);
-        if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
-      });
       let counter = 0;
       let fileErrors = 0;
       for (var i = 0; i < files.length; i++) {
         let file = files[i];
-      
         makeRequest("GET", file.url, "", "accept", "application/vnd.github.VERSION.raw")
           .then(
             response => {
               let content = response.responseText;
+              const contentArr = content.split(/\r?\n/);
               const fileName = parseName(file.path);
-              let links = parseLinks(file.path, content);
+              let links = parseLinks(file.path, contentArr);
               let node = {
                 id: noExtension(file.path),
                 name: fileName,
                 extension: extension(file.path),
-                loc: content.split(/\r?\n/).length,
+                loc: contentArr.length,
                 group: rootDirs.indexOf(parseRoot(file.path, subdir)),
                 content: content
               };
@@ -113,6 +64,37 @@ function fileParser(user, repo, subdir, key="") {
     }
   );
 }
+
+////////////////////
+
+function makeRequest(method, url, key, headerKey, headerValue) {
+  return new Promise(function (resolve, reject) {
+    const request = new XMLHttpRequest();
+    request.open(method, url);
+    if (headerKey) {
+      request.setRequestHeader(headerKey, headerValue);
+    }
+    request.setRequestHeader("Authorization", `Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==`);
+    request.onload = function() {
+      if (this.status === 200) {
+        resolve(request);
+      } else {
+        reject({
+          status: this.status,
+          statusText: request.statusText
+        });
+      }
+    };
+    request.onerror = function () {
+      reject({
+        status: this.status,
+        statusText: request.statusText
+      });
+    };
+    request.send();
+  });
+}
+///////////////////
 
 function parseName(path) {
   return path.split("/")[path.split("/").length - 1].split(".")[0]
@@ -144,6 +126,16 @@ function parseRoot(path, subdir) {
   return rootDir;
 }
 
+function parseRootDirs(files, subdir) {
+  let rootDirs = [];
+  let rootDir;
+  files.forEach((file) => {
+    rootDir = parseRoot(file.path, subdir);
+    if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
+  });
+  return rootDirs;
+}
+
 function parsePath(filePath, line) {
   let lineArr = line.split("'");
   if (lineArr.length === 1) {
@@ -169,12 +161,24 @@ function parsePath(filePath, line) {
   return filePathArr.join("/");
 }
 
+function parseTree(response, subdir) {
+  return JSON.parse(response.responseText).tree.filter(file => {
+    if (forbiddenFile(file.path)) {
+      return false;
+    }
+    if (subdir) {
+      return file.path.split("/")[0] === subdir && file.path.split(".")[0] !== file.path;
+    } else if (subdir === "") {
+      return file.path.split(".")[0] !== file.path;
+    }
+  });
+}
+
 function noExtension(filePath) {
   return filePath.split(".")[0];
 }
 
-function parseLinks(filePath, content) {
-  let contentArr = content.split(/\r?\n/);
+function parseLinks(filePath, contentArr) {
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
     if (
