@@ -75,8 +75,12 @@ function parseUrl() {
     const urlTagArr = urlTag.slice(1).split("/");
     inputUser.value = urlTagArr[0] ? urlTagArr[0] : "";
     inputRepo.value = urlTagArr[1] ? urlTagArr[1] : "";
-    if (urlTagArr[2] === "tree" && urlTagArr[3] === "master")
-    inputSubdir.value = urlTagArr[4] ? urlTagArr[4] : "";
+    if (urlTagArr[2] === "tree" && urlTagArr[3] === "master"
+      && urlTagArr[4]) {
+      inputSubdir.value = urlTagArr[4];
+    } else {
+      inputSubdir.value = "";
+    }
   }
 }
 

@@ -329,7 +329,7 @@ function fileParser(user, repo, subdir, key="") {
         if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
       });
       let counter = 0;
-      
+      let fileError = false;
       for (var i = 0; i < files.length; i++) {
         let file = files[i];
       
@@ -350,6 +350,9 @@ function fileParser(user, repo, subdir, key="") {
               graphJSON.nodes.push(node);
               graphJSON.links = graphJSON.links.concat(links);
               counter ++;
+            },
+            error => {
+              fileError = true;
             }
           );
       }
@@ -360,6 +363,8 @@ function fileParser(user, repo, subdir, key="") {
             return resolve(
               sanitizeGraph(graphJSON)
             );
+          } else if (fileError) {
+            return reject();
           }
           setTimeout(waitForFiles, 30);
         })();
@@ -546,8 +551,12 @@ function parseUrl() {
     const urlTagArr = urlTag.slice(1).split("/");
     inputUser.value = urlTagArr[0] ? urlTagArr[0] : "";
     inputRepo.value = urlTagArr[1] ? urlTagArr[1] : "";
-    if (urlTagArr[2] === "tree" && urlTagArr[3] === "master")
-    inputSubdir.value = urlTagArr[4] ? urlTagArr[4] : "";
+    if (urlTagArr[2] === "tree" && urlTagArr[3] === "master"
+      && urlTagArr[4]) {
+      inputSubdir.value = urlTagArr[4];
+    } else {
+      inputSubdir.value = "";
+    }
   }
 }
 

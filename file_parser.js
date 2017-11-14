@@ -71,7 +71,7 @@ function fileParser(user, repo, subdir, key="") {
         if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
       });
       let counter = 0;
-      
+      let fileError = false;
       for (var i = 0; i < files.length; i++) {
         let file = files[i];
       
@@ -92,6 +92,9 @@ function fileParser(user, repo, subdir, key="") {
               graphJSON.nodes.push(node);
               graphJSON.links = graphJSON.links.concat(links);
               counter ++;
+            },
+            error => {
+              fileError = true;
             }
           );
       }
@@ -102,6 +105,8 @@ function fileParser(user, repo, subdir, key="") {
             return resolve(
               sanitizeGraph(graphJSON)
             );
+          } else if (fileError) {
+            return reject();
           }
           setTimeout(waitForFiles, 30);
         })();
