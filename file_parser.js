@@ -71,7 +71,7 @@ function fileParser(user, repo, subdir, key="") {
         if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
       });
       let counter = 0;
-      let fileError = false;
+      let fileErrors = 0;
       for (var i = 0; i < files.length; i++) {
         let file = files[i];
       
@@ -94,19 +94,17 @@ function fileParser(user, repo, subdir, key="") {
               counter ++;
             },
             error => {
-              fileError = true;
+              fileErrors++;
             }
           );
       }
       
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
-          if (counter === files.length) {
+          if (counter + fileErrors === files.length) {
             return resolve(
               sanitizeGraph(graphJSON)
             );
-          } else if (fileError) {
-            return reject();
           }
           setTimeout(waitForFiles, 30);
         })();
