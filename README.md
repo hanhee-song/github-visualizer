@@ -12,7 +12,7 @@ The visualizer will parse out the contents of any given repository, sift through
 
 Users can input either the Github URL or the user, repo, and an optional subdirectory. The visualizer will retrieve and display the files in a graph.
 
-A node represents a file. The side of the node corresponds with the number of lines of code in the file. An arrow from one node to another represents an interdependency.
+A node represents a file. The size of the node corresponds with the number of lines of code in the file. An arrow from one node to another represents an interdependency.
 
 Users can double-click a node to highlight its links and display its contents, or double-click the same node to remove highlighting. Users can also click and drag nodes around.
 
