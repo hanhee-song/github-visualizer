@@ -242,15 +242,15 @@ body {
 .nodes circle {
   stroke: #232b42;
   stroke-width: 1.5px;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s;
+  transition: opacity .3s ease;
+  -webkit-transition: opacity .3s ease;
 }
 
 .links line {
   stroke: #888;
   stroke-width: 2px;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s;
+  transition: opacity .3s ease;
+  -webkit-transition: opacity .3s ease;
 }
 
 .label {
@@ -262,8 +262,8 @@ body {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
-  transition: opacity .3s;
-  -webkit-transition: opacity .3s;
+  transition: opacity .3s ease;
+  -webkit-transition: opacity .3s ease;
 }
 
 /********** SCROLLBAR **********/
