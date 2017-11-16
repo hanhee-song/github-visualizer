@@ -519,19 +519,22 @@ let loading = false;
 
 const svg = d3.select('.svg-main');
 
-d3.json("./filetree.json", (e, graph) => {
-  drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
-  setContentMessage();
-});
+// d3.json("./filetree.json", (e, graph) => {
+//   drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
+//   setContentMessage();
+// });
 document.querySelector(".input-user").value = "hanhee-song";
 document.querySelector(".input-repo").value = "slic";
 document.querySelector(".input-subdir").value = "frontend";
 
-const submitGraph = (user, repo, subdir = "") => {
+submitGraph("hanhee-song", "slic", "frontend");
+
+function submitGraph(user, repo, subdir = "") {
   if (loading === true) {
     return;
   }
   loading = true;
+  setContentMessage("Loading repo...");
   fileParser(user, repo, subdir)
   .then(
     response => {
@@ -551,7 +554,7 @@ const submitGraph = (user, repo, subdir = "") => {
       setContentMessage("Sorry, we couldn't find that repo!");
     }
   );
-};
+}
 
 const form = document.querySelector(".form");
 
@@ -562,7 +565,6 @@ form.addEventListener("submit", (e) => {
   const subdir = document.querySelector(".input-subdir").value;
   
   submitGraph(user, repo, subdir);
-  setContentMessage("Loading repo...");
 });
 
 
@@ -646,7 +648,6 @@ buttonExamples.forEach((button) => {
       inputSubdir.value = repo.subdir;
       makeUrl();
       submitGraph(repo.user, repo.repo, repo.subdir);
-      setContentMessage("Loading repo...");
     }
   });
 });
