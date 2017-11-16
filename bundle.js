@@ -731,10 +731,10 @@ Instructions:
 
 Click and drag to move nodes around.
 
-Double-click a node to see its contents.
+Click on a node to see its contents.
 
-Double-click on the same node to return to the main view,
-or double-click on a different node to select a new node.
+Click on the same node or the background to return to the
+main view, or click on a different node to select a new node.
 `;
 
 function setContentMessage(content) {
