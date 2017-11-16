@@ -135,8 +135,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   graph.links.forEach(d => {
     linkedById[`${d.source.id},${d.target.id}`] = 1;
   });
-  const neighboring = (a, b) => linkedById[`${a.id},${b.id}`];
-  const neighboringIds = (a, b) => linkedById[`${a},${b}`];
+  const linkedNodes = (a, b) => linkedById[`${a.id},${b.id}`];
+  const linkedIds = (a, b) => linkedById[`${a},${b}`];
   
   function highlightNode(d) {
     if (!highlightedId || highlightedId !== d.id) {
@@ -166,12 +166,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function generateText(d) {
     text.text((o) => {
-      if (highlightedId && (neighboringIds(o.id, highlightedId) ||
-        neighboringIds(highlightedId, o.id)) || highlightedId === o.id) {
+      if (highlightedId && adjacent(highlightedId, o)) {
         return unextended(o.name);
       }
-      if (hoveredId && (neighboring(o, d) ||
-        neighboring(d, o) || o.id === d.id)) {
+      if (hoveredId && adjacent(o, d)) {
         return unextended(o.name);
       }
       return abbreviate(o.name);
@@ -189,16 +187,22 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     }
     
     node.style("opacity", (o) => {
-      return neighboring(o, d) || neighboring(d, o) || o.id === d.id
+      return adjacent(o, d)
         ? 1 : opacity;
     });
     link.style("opacity", (o) => {
       return d.id === o.source.id || d.id === o.target.id ? .5 : opacity * .5;
     });
     text.style("opacity", (o) => {
-      return neighboring(o, d) || neighboring(d, o) || o.id === d.id
+      return adjacent(o, d)
         ? 1 : opacity;
     });
+  }
+  
+  function adjacent(o, d) {
+    const oId = o.id ? o.id : o;
+    const dId = d.id ? d.id : d;
+    return linkedIds(oId, dId) || linkedIds(dId, oId) || oId === dId;
   }
   
   function dragstarted(d) {
