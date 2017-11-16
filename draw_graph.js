@@ -13,8 +13,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   svg.selectAll("text").remove();
   const width = Number(svg.attr("width"));
   const height = Number(svg.attr("height"));
-  let highlighted = "";
-  let selectedTooltip = "";
+  let highlightedId = "";
+  let hoveredId = "";
   
   const simulation = d3.forceSimulation()
   .force(
@@ -63,9 +63,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
-      ).on("dblclick", highlightNodes)
-      .on("mouseover", generateText)
-      .on("mouseout", generateText);
+      ).on("dblclick", highlightNode)
+      .on("mouseover", hoverNode)
+      .on("mouseout", hoverNode);
   
   const text = svg.selectAll("text").filter(".label")
     .data(graph.nodes)
@@ -137,57 +137,66 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   const neighboring = (a, b) => linkedById[`${a.id},${b.id}`];
   const neighboringIds = (a, b) => linkedById[`${a},${b}`];
   
-  function highlightNodes(d) {
-    if (!highlighted || highlighted !== d.id) {
-      node.style("opacity", (o) => {
-        return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? 1 : .2;
-      });
-      link.style("opacity", (o) => {
-        return d.id === o.source.id || d.id === o.target.id ? .7 : .14;
-      });
-      text.style("opacity", (o) => {
-        return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? 1 : .2;
-      });
-      text.text((o) => {
-        return neighboring(o, d) || neighboring(d, o) || o.id === d.id
-          ? unextended(o.name) : abbreviate(o.name);
-      });
-      highlighted = d.id;
+  function highlightNode(d) {
+    if (!highlightedId || highlightedId !== d.id) {
+      highlightedId = d.id;
       setContentMessage(d.content);
       generateHeader(graph, user, repo, subdir, d);
     } else {
       setContentMessage();
       generateHeader(graph, user, repo, subdir);
-      node.style("opacity", 1);
-      link.style("opacity", .6);
-      text.style("opacity", 1);
-      text.text((o) => abbreviate(o.name));
-      highlighted = "";
+      highlightedId = "";
     }
+    generateOpacity(d);
+    generateText(d);
   }
   
+  function hoverNode(d) {
+    if (hoveredId !== d.id) {
+      hoveredId = d.id;
+    } else {
+      hoveredId = "";
+    }
+    if (!highlightedId) {
+      generateOpacity(d);
+    }
+    generateText(d);
+  }
   
   function generateText(d) {
-    if (selectedTooltip !== d.id) {
-      selectedTooltip = d.id;
-    } else {
-      selectedTooltip = "";
-    }
     text.text((o) => {
-      if (selectedTooltip && o.id === d.id) {
+      if (highlightedId && (neighboringIds(o.id, highlightedId) ||
+        neighboringIds(highlightedId, o.id)) || highlightedId === o.id) {
         return unextended(o.name);
       }
-      if (highlighted && (neighboringIds(o.id, highlighted) ||
-        neighboringIds(highlighted, o.id)) || highlighted === o.id) {
-        return unextended(o.name);
-      }
-      if (selectedTooltip && highlighted && (neighboring(o, d) ||
+      if (hoveredId && (neighboring(o, d) ||
         neighboring(d, o) || o.id === d.id)) {
         return unextended(o.name);
       }
       return abbreviate(o.name);
+    });
+  }
+  
+  function generateOpacity(d) {
+    let opacity;
+    if (highlightedId) {
+      opacity = .2;
+    } else if (hoveredId) {
+      opacity = 1;
+    } else {
+      opacity = 1;
+    }
+    
+    node.style("opacity", (o) => {
+      return neighboring(o, d) || neighboring(d, o) || o.id === d.id
+        ? 1 : opacity;
+    });
+    link.style("opacity", (o) => {
+      return d.id === o.source.id || d.id === o.target.id ? .5 : opacity * .5;
+    });
+    text.style("opacity", (o) => {
+      return neighboring(o, d) || neighboring(d, o) || o.id === d.id
+        ? 1 : opacity;
     });
   }
   
@@ -222,15 +231,23 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function abbreviate(name) {
     let abb;
-    abb = name.split("_").map((word) => word[0]).join("");
-    if (abb.length === 1) {
-      abb = name.split("-").map((word) => word[0]).join("");
+    if (name.includes("-")) {
+      abb = name.split("-");
+    } else if (name.includes("_")) {
+      abb = name.split("_");
+    } else if (name.split(/A-Z/).length > 2) {
+      abb = name.split(/A-Z/);
+    } else {
+      let split = name.split(".");
+      abb = split.slice(0, split.length - 1);
     }
-    return abb;
+    return abb.map((word) => word[0]).join("");
   }
   
   function unextended(name) {
-    return name.split(".")[0];
+    const splitName = name.split(".");
+    splitName.pop();
+    return splitName.join(".");
   }
   
   function distance(d) {

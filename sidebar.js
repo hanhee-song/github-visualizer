@@ -28,6 +28,16 @@ function generateHeader(graph, user, repo, subdir, d) {
   });
 }
 
+const MESSAGE = `Instructions:
+
+Click and drag to move nodes around.
+
+Double-click a node to see its contents.
+
+Double-click on the same node to return to the main view,
+or double-click on a different node to select a new node.
+`;
+
 function setContentMessage(content) {
   const fileBox = document.querySelector(".file-content");
   while (fileBox.firstChild) {
@@ -35,7 +45,7 @@ function setContentMessage(content) {
   }
   let text;
   if (content === undefined) {
-    text = "Double-click a node to see its contents!";
+    text = MESSAGE;
   } else if (content === "") {
     text = "This file is empty!";
   } else {
@@ -45,6 +55,7 @@ function setContentMessage(content) {
   let textNode = document.createTextNode(text);
   fileBox.appendChild(textNode);
 }
+
 module.exports = {
   generateHeader,
   setContentMessage
