@@ -297,7 +297,6 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         distanceDenom += 60;
       }
     }
-    console.log(60000 / distanceDenom + offset);
     return 80000 / distanceDenom + offset;
   }
   
