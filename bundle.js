@@ -158,9 +158,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     } else {
       hoveredId = "";
     }
-    if (!highlightedId) {
-      generateOpacity(d);
-    }
+    generateOpacity(d);
     generateText(d);
   }
   
@@ -185,17 +183,35 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     } else {
       opacity = 1;
     }
+    const partialOpacity = .4;
+    const linkFactor = .5;
     
     node.style("opacity", (o) => {
-      return adjacent(o, d)
-        ? 1 : opacity;
+      if (adjacent(o, highlightedId)) {
+        return 1;
+      } else if (adjacent(o, hoveredId)) {
+        return highlightedId ? partialOpacity : 1;
+      } else {
+        return opacity;
+      }
     });
     link.style("opacity", (o) => {
-      return d.id === o.source.id || d.id === o.target.id ? .5 : opacity * .5;
+      if (highlightedId === o.source.id || highlightedId === o.target.id) {
+        return linkFactor;
+      } else if (hoveredId === o.source.id || hoveredId === o.target.id) {
+        return linkFactor * partialOpacity;
+      } else {
+        return linkFactor * opacity;
+      }
     });
     text.style("opacity", (o) => {
-      return adjacent(o, d)
-        ? 1 : opacity;
+      if (adjacent(o, highlightedId)) {
+        return 1;
+      } else if (adjacent(o, hoveredId)) {
+        return highlightedId ? partialOpacity : 1;
+      } else {
+        return opacity;
+      }
     });
   }
   
@@ -334,7 +350,6 @@ function fileParser(user, repo, subdir, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter + fileErrors === files.length) {
-            console.log(graphJSON);
             return resolve(
               sanitizeGraph(graphJSON)
             );

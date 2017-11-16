@@ -55,7 +55,6 @@ function fileParser(user, repo, subdir, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter + fileErrors === files.length) {
-            console.log(graphJSON);
             return resolve(
               sanitizeGraph(graphJSON)
             );
