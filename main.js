@@ -23,7 +23,7 @@ function submitGraph(user, repo, subdir = "") {
     return;
   }
   loading = true;
-  setContentMessage("Loading repo...");
+  setContentMessage("Fetching repo from Github...");
   fileParser(user, repo, subdir)
   .then(
     response => {

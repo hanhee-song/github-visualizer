@@ -180,9 +180,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   function generateOpacity(d) {
     let opacity;
     if (highlightedId) {
-      opacity = .2;
+      opacity = .1;
     } else if (hoveredId) {
-      opacity = 1;
+      opacity = .3;
     } else {
       opacity = 1;
     }
@@ -257,9 +257,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     const containerless = (name) => name.split("_container").join("").split(".")[0];
     
     if (containerless(d.source.id) === containerless(d.target.id)) {
-      return 50 + offset;
+      return 70 + offset;
     } else if (sourceId[0] === targetId[0]) {
-      return 105 + offset;
+      return 115 + offset;
     }
     return 180 + offset;
   }

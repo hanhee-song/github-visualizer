@@ -233,7 +233,7 @@ body {
   display: block;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
-  font-size: 13px;
+  font-size: 14px;
   overflow: auto;
 }
 
@@ -242,11 +242,15 @@ body {
 .nodes circle {
   stroke: #232b42;
   stroke-width: 1.5px;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s;
 }
 
 .links line {
   stroke: #888;
   stroke-width: 2px;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s;
 }
 
 .label {
@@ -258,6 +262,8 @@ body {
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+  transition: opacity .3s;
+  -webkit-transition: opacity .3s;
 }
 
 /********** SCROLLBAR **********/

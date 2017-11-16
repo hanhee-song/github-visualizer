@@ -181,9 +181,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   function generateOpacity(d) {
     let opacity;
     if (highlightedId) {
-      opacity = .2;
+      opacity = .1;
     } else if (hoveredId) {
-      opacity = 1;
+      opacity = .3;
     } else {
       opacity = 1;
     }
@@ -258,9 +258,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     const containerless = (name) => name.split("_container").join("").split(".")[0];
     
     if (containerless(d.source.id) === containerless(d.target.id)) {
-      return 50 + offset;
+      return 70 + offset;
     } else if (sourceId[0] === targetId[0]) {
-      return 105 + offset;
+      return 115 + offset;
     }
     return 180 + offset;
   }
@@ -534,7 +534,7 @@ function submitGraph(user, repo, subdir = "") {
     return;
   }
   loading = true;
-  setContentMessage("Loading repo...");
+  setContentMessage("Fetching repo from Github...");
   fileParser(user, repo, subdir)
   .then(
     response => {
@@ -683,7 +683,16 @@ function generateHeader(graph, user, repo, subdir, d) {
   });
 }
 
-const MESSAGE = `Instructions:
+const MESSAGE = `README
+
+Nodes denote files with a .js or .jsx extension. The size of
+the node corresponds to the size of the file. Nodes are colored
+by the subdirectory they are in.
+
+Links indicate a connection between two files. The arrow points
+from the file being exported to the file that is importing it.
+
+Instructions:
 
 Click and drag to move nodes around.
 
