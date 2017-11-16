@@ -159,6 +159,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     generateHeader(graph, user, repo, subdir);
     highlightedId = "";
     generateOpacity();
+    generateText();
   }
   
   function hoverNode(d) {
@@ -173,13 +174,14 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function generateText(d) {
     text.text((o) => {
-      if (highlightedId && adjacent(highlightedId, o)) {
-        return unextended(o.name);
+      if (!d) {
+        return abbreviate(o.name);
+      } else if (highlightedId && adjacent(highlightedId, o)
+        || hoveredId && adjacent(o, d)) {
+          return unextended(o.name);
+      } else {
+        return abbreviate(o.name);
       }
-      if (hoveredId && adjacent(o, d)) {
-        return unextended(o.name);
-      }
-      return abbreviate(o.name);
     });
   }
   
