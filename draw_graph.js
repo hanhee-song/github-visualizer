@@ -16,6 +16,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   let highlightedId = "";
   let hoveredId = "";
   
+  svg.on("click", unhighlightNode);
+  
   const simulation = d3.forceSimulation()
   .force(
     "link", d3.forceLink()
@@ -63,7 +65,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
-      ).on("dblclick", highlightNode)
+      ).on("click", highlightNode)
       .on("mouseover", hoverNode)
       .on("mouseout", hoverNode);
   
@@ -138,6 +140,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   const linkedIds = (a, b) => linkedById[`${a},${b}`];
   
   function highlightNode(d) {
+    d3.event.stopPropagation();
     if (!highlightedId || highlightedId !== d.id) {
       highlightedId = d.id;
       setContentMessage(d.content);
@@ -147,8 +150,15 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       generateHeader(graph, user, repo, subdir);
       highlightedId = "";
     }
-    generateOpacity(d);
+    generateOpacity();
     generateText(d);
+  }
+  
+  function unhighlightNode(d) {
+    setContentMessage();
+    generateHeader(graph, user, repo, subdir);
+    highlightedId = "";
+    generateOpacity();
   }
   
   function hoverNode(d) {
@@ -157,7 +167,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     } else {
       hoveredId = "";
     }
-    generateOpacity(d);
+    generateOpacity();
     generateText(d);
   }
   
@@ -173,7 +183,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     });
   }
   
-  function generateOpacity(d) {
+  function generateOpacity() {
     let opacity;
     if (highlightedId) {
       opacity = .1;
@@ -272,16 +282,22 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function distance(d) {
     const offset = radius(d.target.loc) + radius(d.source.loc);
-    const sourceId = d.source.id.split("_");
-    const targetId = d.target.id.split("_");
+    const sourceId = d.source.id.split("/");
+    const targetId = d.target.id.split("/");
     const containerless = (name) => name.split("_container").join("").split(".")[0];
-    
     if (containerless(d.source.id) === containerless(d.target.id)) {
-      return 70 + offset;
-    } else if (sourceId[0] === targetId[0]) {
-      return 115 + offset;
+      return 60 + offset;
     }
-    return 180 + offset;
+    let distanceDenom = 200 + Math.min(graph.nodes.length * 3, 300);
+    
+    
+    for (let i = 0; i < 3; i++) {
+      if (sourceId[i] === targetId[i]) {
+        distanceDenom += 60;
+      }
+    }
+    console.log(60000 / distanceDenom + offset);
+    return 80000 / distanceDenom + offset;
   }
   
   function radius(loc) {
