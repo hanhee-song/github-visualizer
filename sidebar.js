@@ -17,7 +17,7 @@ function generateHeader(graph, user, repo, subdir, d) {
   let textArr = [linkText, userText, repoText, subdirText, linesText];
   
   if (d) {
-    const fileNameText = document.createTextNode(`Current directory: ${d.id}.${d.extension}`);
+    const fileNameText = document.createTextNode(`Current directory: ${d.id}`);
     const fileLoc = document.createTextNode(`    Current lines: ${d.loc}`);
     textArr = textArr.concat([fileNameText, fileLoc]);
   }

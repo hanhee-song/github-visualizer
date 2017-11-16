@@ -20,7 +20,9 @@ function fileParser(user, repo, subdir, key="") {
     response => {
       const files = parseTree(response, subdir);
       const rootDirs = parseRootDirs(files, subdir);
-      
+      const filePathArr = Object.values(files).map((file) => {
+        return file.path;
+      });
       let counter = 0;
       let fileErrors = 0;
       for (var i = 0; i < files.length; i++) {
@@ -31,9 +33,9 @@ function fileParser(user, repo, subdir, key="") {
               let content = response.responseText;
               const contentArr = content.split(/\r?\n/);
               const fileName = parseName(file.path);
-              let links = parseLinks(file.path, contentArr);
+              let links = parseLinks(file.path, contentArr, filePathArr);
               let node = {
-                id: noExtension(file.path),
+                id: file.path,
                 name: fileName,
                 extension: extension(file.path),
                 loc: contentArr.length,
@@ -53,6 +55,7 @@ function fileParser(user, repo, subdir, key="") {
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
           if (counter + fileErrors === files.length) {
+            console.log(graphJSON);
             return resolve(
               sanitizeGraph(graphJSON)
             );
@@ -97,8 +100,12 @@ function makeRequest(method, url, key, headerKey, headerValue) {
 ///////////////////
 
 function parseName(path) {
-  return path.split("/")[path.split("/").length - 1].split(".")[0]
-    .split("'")[0].split("\"")[0];
+  return path.split("/")[path.split("/").length - 1];//.split(".")[0]
+    //.split("'")[0].split("\"")[0];
+}
+
+function parseFullName(path) {
+  return path.split("/");
 }
 
 function extension(path) {
@@ -106,7 +113,8 @@ function extension(path) {
 }
 
 function forbiddenFile(path) {
-  return parseName(path) === "bundle"
+  return parseName(path) === "bundle.js"
+  || parseName(path) === "bundle.js.map"
   || (extension(path) !== "js"
   && extension(path) !== "jsx");
 }
@@ -136,7 +144,7 @@ function parseRootDirs(files, subdir) {
   return rootDirs;
 }
 
-function parsePath(filePath, line) {
+function parsePath(filePath, line, filePathArr) {
   let lineArr = line.split("'");
   if (lineArr.length === 1) {
     lineArr = line.split("\"");
@@ -147,18 +155,26 @@ function parsePath(filePath, line) {
   });
   
   let sectionArr = segment.split("/");
-  let filePathArr = filePath.split("/");
-  filePathArr.pop();
+  let pathArr = filePath.split("/");
+  pathArr.pop();
   let newPath;
   sectionArr.forEach(section => {
     if (section === '..') {
-      filePathArr.pop();
+      pathArr.pop();
     } else if (section !== ".") {
-      filePathArr.push(section);
+      pathArr.push(section);
     }
   });
   
-  return filePathArr.join("/");
+  const combinedPath = pathArr.join("/");
+  
+  if (filePathArr.includes(combinedPath)) {
+    return combinedPath;
+  } else if (filePathArr.includes(combinedPath + ".jsx")) {
+    return combinedPath + ".jsx";
+  } else {
+    return combinedPath + ".js";
+  }
 }
 
 function parseTree(response, subdir) {
@@ -178,7 +194,7 @@ function noExtension(filePath) {
   return filePath.split(".")[0];
 }
 
-function parseLinks(filePath, contentArr) {
+function parseLinks(filePath, contentArr, filePathArr) {
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
     if (
@@ -191,8 +207,8 @@ function parseLinks(filePath, contentArr) {
       && contentArr[i].slice(0, 2) !== "/*"
       && parseName(contentArr[i]) !== "") {
       links.push({
-        "source": noExtension(parsePath(filePath, contentArr[i])),
-        "target": noExtension(filePath)
+        "source": parsePath(filePath, contentArr[i], filePathArr),
+        "target": filePath
       });
     }
   }
