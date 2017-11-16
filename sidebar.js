@@ -31,8 +31,8 @@ function generateHeader(graph, user, repo, subdir, d) {
 const MESSAGE = `README
 
 Nodes denote files with a .js or .jsx extension. The size of
-the node corresponds to the size of the file. Nodes are colored
-by the subdirectory they are in.
+the node corresponds to the size of the file. Nodes in the same
+subdirectory are given the same color.
 
 Links indicate a connection between two files. The arrow points
 from the file being exported to the file that is importing it.

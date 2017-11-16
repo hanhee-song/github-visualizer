@@ -28,5 +28,5 @@ The visualizer sends XHR requests via the Github API - one to retrieve the SHA o
 
 * The visualizer ignores any file named ```bundle```
 * References to node modules or files outside of the specified subdirectory are ignored
-* Colors are based on the subdirectory immediately following the specified directory. Providing a subdirectory (if applicable) will result in more colorful graphs
+* Nodes are grouped and colored by the subdirectory immediately following the specified directory, e.g. with a specified directory of ```frontend```, all files in ```frontend/actions``` will be one color and all files in ```frontend/components``` will be a separate color. Providing a subdirectory (if applicable) will result in more colorful graphs
 * The subdirectory field takes in only one folder. Attempting to nest folders will result in an error

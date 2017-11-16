@@ -193,7 +193,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       opacity = 1;
     }
     const partialOpacity = .4;
-    const linkFactor = .5;
+    const linkFactor = .4;
     
     node.style("opacity", (o) => {
       if (adjacent(o, highlightedId)) {
