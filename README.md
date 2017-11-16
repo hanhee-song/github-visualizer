@@ -12,9 +12,9 @@ The visualizer will parse out the contents of any given repository, sift through
 
 Users can input either the Github URL or the user, repo, and an optional subdirectory. The visualizer will retrieve and display the files in a graph.
 
-A node represents a file. The size of the node corresponds with the number of lines of code in the file. An arrow from one node to another represents an interdependency.
+Nodes denote files with a .js or .jsx extension. The size of the node corresponds to the size of the file. Nodes are colored by the subdirectory they are in.
 
-Users can double-click a node to highlight its links and display its contents, or double-click the same node to remove highlighting. Users can also click and drag nodes around.
+Users can click on a node to highlight its links and display its contents. To remove highlighting, users can click on the same node or on the background. Users can also click and drag nodes around.
 
 The visualizer is compatible with various major repositories, including Redux, Express, and React.
 
