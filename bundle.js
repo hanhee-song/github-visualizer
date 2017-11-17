@@ -195,8 +195,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     } else {
       opacity = 1;
     }
-    const partialOpacity = .4;
-    const linkFactor = .4;
+    const partialOpacity = .5;
+    const linkFactor = .6;
     
     node.style("opacity", (o) => {
       if (adjacent(o, highlightedId)) {
@@ -211,7 +211,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       if (highlightedId === o.source.id || highlightedId === o.target.id) {
         return linkFactor;
       } else if (hoveredId === o.source.id || hoveredId === o.target.id) {
-        return linkFactor * partialOpacity;
+        return highlightedId ? linkFactor * .7 : linkFactor;
       } else {
         return linkFactor * opacity;
       }
