@@ -16,6 +16,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   const height = Number(svg.attr("height"));
   let highlightedId = "";
   let hoveredId = "";
+  let clickedId = "";
   
   svg.on("click", unhighlightNode);
   
@@ -170,15 +171,14 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       hoveredId = "";
     }
     generateOpacity();
-    generateText(d);
+    generateText();
   }
   
-  function generateText(d) {
+  function generateText() {
+    const mousedId = clickedId || hoveredId;
     text.text((o) => {
-      if (!d) {
-        return abbreviate(o.name);
-      } else if (highlightedId && adjacent(highlightedId, o)
-        || hoveredId && adjacent(o, d)) {
+      if (highlightedId && adjacent(highlightedId, o)
+        || mousedId && adjacent(o, mousedId)) {
           return unextended(o.name);
       } else {
         return abbreviate(o.name);
@@ -190,18 +190,19 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     let opacity;
     if (highlightedId) {
       opacity = .1;
-    } else if (hoveredId) {
+    } else if (hoveredId || clickedId) {
       opacity = .3;
     } else {
       opacity = 1;
     }
     const partialOpacity = .5;
     const linkFactor = .6;
+    const mousedId = clickedId || hoveredId;
     
     node.style("opacity", (o) => {
       if (adjacent(o, highlightedId)) {
         return 1;
-      } else if (adjacent(o, hoveredId)) {
+      } else if (adjacent(o, mousedId)) {
         return highlightedId ? partialOpacity : 1;
       } else {
         return opacity;
@@ -210,7 +211,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     link.style("opacity", (o) => {
       if (highlightedId === o.source.id || highlightedId === o.target.id) {
         return linkFactor;
-      } else if (hoveredId === o.source.id || hoveredId === o.target.id) {
+      } else if (mousedId === o.source.id || mousedId === o.target.id) {
         return highlightedId ? linkFactor * .7 : linkFactor;
       } else {
         return linkFactor * opacity;
@@ -219,7 +220,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     text.style("opacity", (o) => {
       if (adjacent(o, highlightedId)) {
         return 1;
-      } else if (adjacent(o, hoveredId)) {
+      } else if (adjacent(o, mousedId)) {
         return highlightedId ? partialOpacity : 1;
       } else {
         return opacity;
@@ -235,6 +236,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function dragstarted(d) {
     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+    clickedId = d.id;
     d.fx = d.x;
     d.fy = d.y;
   }
@@ -245,6 +247,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   }
   
   function dragended(d) {
+    clickedId = "";
+    generateOpacity();
+    generateText();
     d.fx = null;
     d.fy = null;
   }
