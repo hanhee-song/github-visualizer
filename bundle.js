@@ -208,6 +208,17 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         return opacity;
       }
     });
+    node.style("stroke", (o) => {
+      if (o.id === highlightedId || o.id === mousedId) {
+        return "#b5b5b5";
+      } else if (adjacent(o, highlightedId)) {
+        return "#232b42";
+      } else if (adjacent(o, mousedId)) {
+        return highlightedId ? partialOpacity : "#232b42";
+      } else {
+        return "#232b42";
+      }
+    });
     link.style("opacity", (o) => {
       if (highlightedId === o.source.id || highlightedId === o.target.id) {
         return linkFactor;
