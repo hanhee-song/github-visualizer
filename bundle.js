@@ -291,15 +291,15 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     if (containerless(d.source.id) === containerless(d.target.id)) {
       return 60 + offset;
     }
-    let distanceDenom = 200 + Math.min(graph.nodes.length * 3, 300);
+    let distanceDenom = 200 + Math.min(graph.nodes.length * 2, 250);
     
-    
-    for (let i = 0; i < 3; i++) {
-      if (sourceId[i] === targetId[i]) {
-        distanceDenom += 60;
-      }
-    }
-    return 80000 / distanceDenom + offset;
+    // for (let i = 0; i < 3; i++) {
+    //   if (sourceId[i] === targetId[i]) {
+    //     distanceDenom += 20;
+    //   }
+    // }
+    console.log(80000 / distanceDenom + offset);
+    return 60000 / distanceDenom + offset;
   }
   
   function radius(loc) {
