@@ -14,7 +14,8 @@ function generateHeader(graph, user, repo, subdir, d) {
   const repoText = document.createTextNode(`     Current repo: ${repo}`);
   const subdirText = document.createTextNode(`   Current subdir: ${subdir}`);
   const linesText = document.createTextNode(`      Total lines: ${totalLines}`);
-  let textArr = [linkText, userText, repoText, subdirText, linesText];
+  const filesText = document.createTextNode(`      Total files: ${graph.nodes.length}`);
+  let textArr = [linkText, userText, repoText, subdirText, linesText, filesText];
   
   if (d) {
     const fileNameText = document.createTextNode(`Current directory: ${d.id}`);

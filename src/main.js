@@ -40,7 +40,11 @@ function submitGraph(user, repo, subdir = "") {
     },
     error => {
       loading = false;
-      setContentMessage("Sorry, we couldn't find that repo!");
+      if (error.status === 600) {
+        setContentMessage("Could not process repo: rate limit in effect, over 200 files found.\nMaybe specify a subdirectory?");
+      } else {
+        setContentMessage("Sorry, we couldn't find that repo!");
+      }
     }
   );
 }

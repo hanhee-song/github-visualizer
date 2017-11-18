@@ -209,10 +209,11 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 130px;
+  height: 140px;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;
-  overflow: auto
+  overflow: auto;
+  font-size: 15px;
 }
 
 .sidebar-options {
@@ -229,7 +230,7 @@ body {
   padding: 5px 0px 5px 10px;
   min-width: 400px;
   max-width: 500px;
-  height: 260px;
+  height: 250px;
   display: block;
   border: 1px solid #374468;
   font-family: 'Inconsolata', monospace;

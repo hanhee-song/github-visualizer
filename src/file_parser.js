@@ -1,4 +1,20 @@
+function logRateLimit() {
+  return makeRequest("GET", `https://api.github.com/rate_limit`)
+    .then(
+      response => {
+        console.log(JSON.parse(response.response).resources.core.remaining);
+        return JSON.parse(response.response).resources.core.remaining;
+      }
+    );
+}
+
+// TODO: chain logRateLimit onto promises, use return value
+// to raise a more appropriate error
+
+// TODO: don't let user parse a repo with >200 files
+
 function fileParser(user, repo, subdir, key="") {
+  logRateLimit();
   const graphJSON = {
     "nodes": [],
     "links": [],
@@ -19,6 +35,16 @@ function fileParser(user, repo, subdir, key="") {
   ).then(
     response => {
       const files = parseTree(response, subdir);
+      
+      if (files.length > 200) {
+        return new Promise(function(resolve, reject) {
+          return reject({
+            status: 600,
+            statusText: ""
+          });
+        });
+      }
+      
       const rootDirs = parseRootDirs(files, subdir);
       const filePathArr = Object.values(files).map((file) => {
         return file.path;
@@ -96,11 +122,11 @@ function makeRequest(method, url, key, headerKey, headerValue) {
     request.send();
   });
 }
+
 ///////////////////
 
 function parseName(path) {
-  return path.split("/")[path.split("/").length - 1];//.split(".")[0]
-    //.split("'")[0].split("\"")[0];
+  return path.split("/")[path.split("/").length - 1];
 }
 
 function parseFullName(path) {

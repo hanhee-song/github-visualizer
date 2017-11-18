@@ -322,7 +322,23 @@ const drawGraph = (error, graph, user, repo, subdir) => {
 module.exports = drawGraph;
 
 },{"./sidebar.js":4}],2:[function(require,module,exports){
+function logRateLimit() {
+  return makeRequest("GET", `https://api.github.com/rate_limit`)
+    .then(
+      response => {
+        console.log(JSON.parse(response.response).resources.core.remaining);
+        return JSON.parse(response.response).resources.core.remaining;
+      }
+    );
+}
+
+// TODO: chain logRateLimit onto promises, use return value
+// to raise a more appropriate error
+
+// TODO: don't let user parse a repo with >200 files
+
 function fileParser(user, repo, subdir, key="") {
+  logRateLimit();
   const graphJSON = {
     "nodes": [],
     "links": [],
@@ -343,6 +359,16 @@ function fileParser(user, repo, subdir, key="") {
   ).then(
     response => {
       const files = parseTree(response, subdir);
+      
+      if (files.length > 200) {
+        return new Promise(function(resolve, reject) {
+          return reject({
+            status: 600,
+            statusText: ""
+          });
+        });
+      }
+      
       const rootDirs = parseRootDirs(files, subdir);
       const filePathArr = Object.values(files).map((file) => {
         return file.path;
@@ -420,11 +446,11 @@ function makeRequest(method, url, key, headerKey, headerValue) {
     request.send();
   });
 }
+
 ///////////////////
 
 function parseName(path) {
-  return path.split("/")[path.split("/").length - 1];//.split(".")[0]
-    //.split("'")[0].split("\"")[0];
+  return path.split("/")[path.split("/").length - 1];
 }
 
 function parseFullName(path) {
@@ -599,7 +625,11 @@ function submitGraph(user, repo, subdir = "") {
     },
     error => {
       loading = false;
-      setContentMessage("Sorry, we couldn't find that repo!");
+      if (error.status === 600) {
+        setContentMessage("Could not process repo: rate limit in effect, over 200 files found.\nMaybe specify a subdirectory?");
+      } else {
+        setContentMessage("Sorry, we couldn't find that repo!");
+      }
     }
   );
 }
@@ -717,7 +747,8 @@ function generateHeader(graph, user, repo, subdir, d) {
   const repoText = document.createTextNode(`     Current repo: ${repo}`);
   const subdirText = document.createTextNode(`   Current subdir: ${subdir}`);
   const linesText = document.createTextNode(`      Total lines: ${totalLines}`);
-  let textArr = [linkText, userText, repoText, subdirText, linesText];
+  const filesText = document.createTextNode(`      Total files: ${graph.nodes.length}`);
+  let textArr = [linkText, userText, repoText, subdirText, linesText, filesText];
   
   if (d) {
     const fileNameText = document.createTextNode(`Current directory: ${d.id}`);
