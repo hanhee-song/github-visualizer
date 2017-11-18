@@ -311,12 +311,6 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     }
     let distanceDenom = 200 + Math.min(graph.nodes.length * 2, 250);
     
-    // for (let i = 0; i < 3; i++) {
-    //   if (sourceId[i] === targetId[i]) {
-    //     distanceDenom += 20;
-    //   }
-    // }
-    console.log(80000 / distanceDenom + offset);
     return 60000 / distanceDenom + offset;
   }
   
