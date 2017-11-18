@@ -24,7 +24,7 @@ function fileParser(user, repo, subdir, key="") {
         return new Promise(function(resolve, reject) {
           return reject({
             status: 600,
-            statusText: ""
+            statusText: `${files.length}`
           });
         });
       }

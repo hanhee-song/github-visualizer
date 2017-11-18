@@ -348,7 +348,7 @@ function fileParser(user, repo, subdir, key="") {
         return new Promise(function(resolve, reject) {
           return reject({
             status: 600,
-            statusText: ""
+            statusText: `${files.length}`
           });
         });
       }
@@ -621,7 +621,10 @@ function submitGraph(user, repo, subdir = "") {
     error => {
       loading = false;
       if (error.status === 600) {
-        setContentMessage(`Could not process repo: over 200 files found.\n
+        setContentMessage(`Repo too large: ${error.statusText} files found.
+
+There is a limit of 200 files to avoid flooding the Github servers.
+
 Maybe specify a subdirectory?`);
       } else if (error.status === 403) {
         setContentMessage(`403: Rate limit in effect.\n
