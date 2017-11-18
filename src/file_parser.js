@@ -1,20 +1,4 @@
-function logRateLimit() {
-  return makeRequest("GET", `https://api.github.com/rate_limit`)
-    .then(
-      response => {
-        console.log(JSON.parse(response.response).resources.core.remaining);
-        return JSON.parse(response.response).resources.core.remaining;
-      }
-    );
-}
-
-// TODO: chain logRateLimit onto promises, use return value
-// to raise a more appropriate error
-
-// TODO: don't let user parse a repo with >200 files
-
 function fileParser(user, repo, subdir, key="") {
-  logRateLimit();
   const graphJSON = {
     "nodes": [],
     "links": [],
@@ -254,6 +238,17 @@ function sanitizeGraph(graph) {
   });
   
   return newGraph;
+}
+
+// Utility function for finding rate limit, currently not being used
+function logRateLimit() {
+  return makeRequest("GET", `https://api.github.com/rate_limit`)
+    .then(
+      response => {
+        console.log(JSON.parse(response.response).resources.core.remaining);
+        return JSON.parse(response.response).resources.core.remaining;
+      }
+    );
 }
 
 module.exports = fileParser;

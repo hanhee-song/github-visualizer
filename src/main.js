@@ -41,9 +41,16 @@ function submitGraph(user, repo, subdir = "") {
     error => {
       loading = false;
       if (error.status === 600) {
-        setContentMessage("Could not process repo: rate limit in effect, over 200 files found.\nMaybe specify a subdirectory?");
+        setContentMessage(`Could not process repo: over 200 files found.\n
+Maybe specify a subdirectory?`);
+      } else if (error.status === 403) {
+        setContentMessage(`403: Rate limit in effect.\n
+You are seeing this message because the Github API has a
+limit of 5000 requests per hour, and users have recently
+made 5000 requests with this visualizer.
+Please try again in an hour.`);
       } else {
-        setContentMessage("Sorry, we couldn't find that repo!");
+        setContentMessage("404: Sorry, we couldn't find that repo!");
       }
     }
   );
