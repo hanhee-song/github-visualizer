@@ -208,8 +208,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       }
     });
     node.style("stroke", (o) => {
-      if (o.id === highlightedId || o.id === mousedId) {
-        return "#b5b5b5";
+      if (o.id === highlightedId) {
+        return "#bbf";
+      } else if (o.id === mousedId) {
+        return "#88d";
       } else if (adjacent(o, highlightedId)) {
         return "#232b42";
       } else if (adjacent(o, mousedId)) {
