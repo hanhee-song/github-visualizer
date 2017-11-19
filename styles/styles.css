@@ -172,14 +172,20 @@ body {
   border: 1px solid #374468;
 }
 
-.svg-main {
+/********** SVG ***********/
+
+.svg-container {
   display: block;
-  border: 1px solid #374468;
 }
 
 .sidebar-main {
   width: 500px;
   height: 500px;
+}
+
+.svg-main, .search {
+  border: 1px solid #374468;
+  width: 100%;
 }
 
 @media only screen and (min-width: 800px) {
@@ -189,11 +195,10 @@ body {
     height: 500px;
   }
   
-  .sidebar-main, .svg-main {
+  .sidebar-main, .svg-container {
     width: calc(50%);
   }
 }
-
 
 @media only screen and (min-width: 1000px) {
   .main {
@@ -204,6 +209,16 @@ body {
     width: 500px;
   }
 }
+
+.search {
+  height: 30px;
+}
+
+.search-input {
+  
+}
+
+/******** INFO PANEL ************/
 
 .sidebar-header {
   padding: 5px 0px 5px 10px;
