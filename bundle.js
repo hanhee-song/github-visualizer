@@ -17,6 +17,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   let highlightedId = "";
   let hoveredId = "";
   let clickedId = "";
+  let searchedId = "";
   
   svg.on("click", unhighlightNode);
   
@@ -31,6 +32,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   // .force("center", d3.forceCenter(width/2, height/2))
   .force("collision", d3.forceCollide(10));
   
+  // LINKS, NODES, AND TEXT =============================
   
   if (error) throw error;
   const link = svg.append("g")
@@ -83,7 +85,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
 
   simulation.force("link")
     .links(graph.links);
-
+  
+  // TICK FUNCTION ========================================
+  
   function ticked() {
     const boundedX = (d) => {
       return Math.max(radius(d.loc), Math.min(width - radius(d.loc) - 2, d.x));
@@ -122,14 +126,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     }
   }
   
-  function pointerDistance(d) {
-    const targetId = d.target;
-    for (var i = 0; i < graph.nodes.length; i++) {
-      if (graph.nodes[i].id === targetId) {
-        return graph.nodes[i].loc;
-      }
-    }
-  }
+  // NEIGHBOR HELPER METHODS ===========================
   
   const linkedById = {};
   for (var i = 0; i < graph.nodes.length; i++) {
@@ -141,38 +138,13 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   const linkedNodes = (a, b) => linkedById[`${a.id},${b.id}`];
   const linkedIds = (a, b) => linkedById[`${a},${b}`];
   
-  function highlightNode(d) {
-    d3.event.stopPropagation();
-    if (!highlightedId || highlightedId !== d.id) {
-      highlightedId = d.id;
-      setContentMessage(d.content);
-      generateHeader(graph, user, repo, subdir, d);
-    } else {
-      setContentMessage();
-      generateHeader(graph, user, repo, subdir);
-      highlightedId = "";
-    }
-    generateOpacity();
-    generateText(d);
+  function adjacent(o, d) {
+    const oId = o.id ? o.id : o;
+    const dId = d.id ? d.id : d;
+    return linkedIds(oId, dId) || linkedIds(dId, oId) || oId === dId;
   }
   
-  function unhighlightNode(d) {
-    setContentMessage();
-    generateHeader(graph, user, repo, subdir);
-    highlightedId = "";
-    generateOpacity();
-    generateText();
-  }
-  
-  function hoverNode(d) {
-    if (hoveredId !== d.id) {
-      hoveredId = d.id;
-    } else {
-      hoveredId = "";
-    }
-    generateOpacity();
-    generateText();
-  }
+  // GENERATE TEXT / OPACITY ===========================
   
   function generateText() {
     const mousedId = clickedId || hoveredId;
@@ -241,10 +213,39 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     });
   }
   
-  function adjacent(o, d) {
-    const oId = o.id ? o.id : o;
-    const dId = d.id ? d.id : d;
-    return linkedIds(oId, dId) || linkedIds(dId, oId) || oId === dId;
+  // HOVER / HIGHLIGHT / CLICK EFFECTS =========================
+  
+  function highlightNode(d) {
+    d3.event.stopPropagation();
+    if (!highlightedId || highlightedId !== d.id) {
+      highlightedId = d.id;
+      setContentMessage(d.content);
+      generateHeader(graph, user, repo, subdir, d);
+    } else {
+      setContentMessage();
+      generateHeader(graph, user, repo, subdir);
+      highlightedId = "";
+    }
+    generateOpacity();
+    generateText(d);
+  }
+  
+  function unhighlightNode(d) {
+    setContentMessage();
+    generateHeader(graph, user, repo, subdir);
+    highlightedId = "";
+    generateOpacity();
+    generateText();
+  }
+  
+  function hoverNode(d) {
+    if (hoveredId !== d.id) {
+      hoveredId = d.id;
+    } else {
+      hoveredId = "";
+    }
+    generateOpacity();
+    generateText();
   }
   
   function dragstarted(d) {
@@ -266,6 +267,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     d.fx = null;
     d.fy = null;
   }
+  
+  // MISC HELPER METHODS ============================
   
   function color(d) {
     const group = d.group;
