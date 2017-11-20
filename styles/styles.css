@@ -177,6 +177,7 @@ body {
 .svg-container {
   display: block;
   border: 1px solid #374468;
+  height: 500px;
 }
 
 .sidebar-main {
@@ -211,10 +212,16 @@ body {
 }
 
 .search {
-  height: 30px;
+  height: 26px;
   width: 50%;
-  border-bottom: 1px solid #374468;
-  border-right: 1px solid #374468;
+  border-bottom: 2px solid #374468;
+  border-right: 2px solid #374468;
+  display: flex;
+  border-radius: 0 0 3px 0;
+}
+
+.search-label {
+  width: 90%;
 }
 
 #search {
@@ -222,7 +229,31 @@ body {
   width: 100%;
   margin: 0;
   background-color: rgba(0, 0, 0, 0.0);
+  font-size: 16px;
 }
+
+.search-clear {
+  width: 10%;
+  transition: background .2s ease, color .2s ease;
+  -webkit-transition: background .2s ease, color .2s ease;
+  border-left: 2px solid #374468;
+  border-radius: 0 0 3px 0;
+  color: #888;
+  font-size: 20px;
+  padding: 1px 0 0 6px;
+  cursor: pointer;
+  font-family: 'Inconsolata', monospace;
+}
+
+.search-clear:hover {
+  color: #ccc;
+  background-color: #43537f;
+}
+
+.search-clear:active, .search-clear:focus {
+  background-color: #2d3756;
+}
+
 
 /******** INFO PANEL ************/
 
