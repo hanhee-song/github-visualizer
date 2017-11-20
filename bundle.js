@@ -91,10 +91,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function ticked() {
     const boundedX = (d) => {
-      return Math.max(radius(d.loc) + 2, Math.min(width - radius(d.loc) - 2, d.x));
+      return Math.max(radius(d.loc), Math.min(width - radius(d.loc) - 2, d.x));
     };
     const boundedY = (d) => {
-      return Math.max(radius(d.loc) + 2, Math.min(height - radius(d.loc) - 2, d.y));
+      return Math.max(radius(d.loc), Math.min(height - radius(d.loc) - 2, d.y));
     };
     
     link
