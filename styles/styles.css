@@ -223,6 +223,7 @@ body {
   display: flex;
   width: 200px;
   border-bottom: 2px solid #374468;
+  border-radius: 0 0 2px 0;
 }
 
 .search-label {
@@ -242,6 +243,7 @@ body {
   transition: background .2s ease, color .2s ease;
   -webkit-transition: background .2s ease, color .2s ease;
   border-right: 2px solid #374468;
+  border-radius: 0 0 2px 0;
   color: #888;
   font-size: 20px;
   padding: 1px 0 0 10px;
@@ -262,13 +264,12 @@ body {
 }
 
 #pause-button {
-  /*border-bottom: 2px solid #374468;
-  border-left: 2px solid #374468;*/
   padding: 4px 6px 0 6px;
   transition: background .2s ease, color .2s ease;
   -webkit-transition: background .2s ease, color .2s ease;
   color: #888;
   font-size: 16px;
+  border-radius: 0 0 0 3px;
   cursor: pointer;
   font-family: 'Inconsolata', monospace;
   user-select: none;
@@ -328,8 +329,6 @@ body {
 }
 
 .label {
-  /*stroke: #d8d8d8;
-  stroke-width: 0px;*/
   fill: #d8d8d8;
   font-size: 11px;
   pointer-events: none;

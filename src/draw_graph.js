@@ -90,10 +90,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function ticked() {
     const boundedX = (d) => {
-      return Math.max(radius(d.loc), Math.min(width - radius(d.loc) - 2, d.x));
+      return Math.max(radius(d.loc) + 2, Math.min(width - radius(d.loc) - 2, d.x));
     };
     const boundedY = (d) => {
-      return Math.max(radius(d.loc), Math.min(height - radius(d.loc) - 2, d.y));
+      return Math.max(radius(d.loc) + 2, Math.min(height - radius(d.loc) - 2, d.y));
     };
     
     link
@@ -233,7 +233,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     });
   }
   
-  // HOVER / HIGHLIGHT / CLICK / SEARCH EFFECTS ===============
+  // HOVER / HIGHLIGHT / CLICK EFFECTS ===================
   
   function highlightNode(d) {
     d3.event.stopPropagation();
@@ -290,7 +290,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     }
   }
   
-  // Reset all event listeners
+  // EVENT LISTENERS - SEARCH / PAUSE ====================
+  
   const topOptions = document.querySelector('.top-options');
   var clone = topOptions.cloneNode();
   while (topOptions.firstChild) {
