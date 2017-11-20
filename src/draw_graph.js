@@ -282,9 +282,18 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   search.parentNode.replaceChild(clone, search);
   
   document.getElementById('search').addEventListener("input", handleSearch);
+  document.getElementById('search-clear').addEventListener("click", handleClearSearch);
   
   function handleSearch(e) {
     searchedId = e.target.value;
+    generateOpacity();
+    generateText();
+  }
+  
+  function handleClearSearch(e) {
+    document.getElementById('search').value = "";
+    search.value = "";
+    searchedId = "";
     generateOpacity();
     generateText();
   }

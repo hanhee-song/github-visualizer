@@ -232,7 +232,7 @@ body {
   font-size: 16px;
 }
 
-.search-clear {
+#search-clear {
   width: 10%;
   transition: background .2s ease, color .2s ease;
   -webkit-transition: background .2s ease, color .2s ease;
@@ -245,12 +245,12 @@ body {
   font-family: 'Inconsolata', monospace;
 }
 
-.search-clear:hover {
+#search-clear:hover {
   color: #ccc;
   background-color: #43537f;
 }
 
-.search-clear:active, .search-clear:focus {
+#search-clear:active, #search-clear:focus {
   background-color: #2d3756;
 }
 
