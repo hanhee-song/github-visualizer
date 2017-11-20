@@ -176,6 +176,7 @@ body {
 
 .svg-container {
   display: block;
+  border: 1px solid #374468;
 }
 
 .sidebar-main {
@@ -184,7 +185,6 @@ body {
 }
 
 .svg-main, .search {
-  border: 1px solid #374468;
   width: 100%;
 }
 
@@ -214,8 +214,11 @@ body {
   height: 30px;
 }
 
-.search-input {
-  
+#search {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: #232b42;
 }
 
 /******** INFO PANEL ************/
