@@ -18,6 +18,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   let hoveredId = "";
   let clickedId = "";
   let searchedId = "";
+  let frozen = false;
   
   svg.on("click", unhighlightNode);
   
@@ -29,7 +30,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     .id((d) => d.id)
   )
   .force("charge", d3.forceManyBody(0))
-  // .force("center", d3.forceCenter(width/2, height/2))
+  .force("center", d3.forceCenter(width/2, height/2))
   .force("collision", d3.forceCollide(10));
   
   // LINKS, NODES, AND TEXT =============================
@@ -284,8 +285,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     clickedId = "";
     generateOpacity();
     generateText();
-    d.fx = null;
-    d.fy = null;
+    if (!frozen) {
+      d.fx = null;
+      d.fy = null;
+    }
   }
   
   // Reset all event listeners
@@ -299,6 +302,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   document.getElementById('search').addEventListener("input", handleSearch);
   document.getElementById('search-clear').addEventListener("click", handleClearSearch);
+  document.getElementById('pause-button').addEventListener("click", handlePause);
   
   function handleSearch(e) {
     searchedId = e.target.value;
@@ -312,6 +316,22 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     searchedId = "";
     generateOpacity();
     generateText();
+  }
+  
+  function handlePause(e) {
+    if (frozen) {
+      frozen = false;
+      node.each((d) => {
+        d.fx = null;
+        d.fy = null;
+      });
+    } else {
+      frozen = true;
+      node.each((d) => {
+        d.fx = d.x;
+        d.fy = d.y;
+      });
+    }
   }
   
   // MISC HELPER METHODS ============================
