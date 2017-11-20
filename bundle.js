@@ -268,6 +268,21 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     d.fy = null;
   }
   
+  // Reset all event listeners
+  const search = document.getElementById('search');
+  search.value = "";
+  var clone = search.cloneNode();
+  while (search.firstChild) {
+    clone.appendChild(search.lastChild);
+  }
+  search.parentNode.replaceChild(clone, search);
+  
+  document.getElementById('search').addEventListener("input", handleSearch);
+  
+  function handleSearch(e) {
+    console.log(e.target.value);
+  }
+  
   // MISC HELPER METHODS ============================
   
   function color(d) {
@@ -591,10 +606,6 @@ let loading = false;
 
 const svg = d3.select('.svg-main');
 
-// d3.json("./filetree.json", (e, graph) => {
-//   drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
-//   setContentMessage();
-// });
 document.querySelector(".input-user").value = "hanhee-song";
 document.querySelector(".input-repo").value = "slic";
 document.querySelector(".input-subdir").value = "frontend";

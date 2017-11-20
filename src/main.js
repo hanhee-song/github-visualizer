@@ -8,10 +8,6 @@ let loading = false;
 
 const svg = d3.select('.svg-main');
 
-// d3.json("./filetree.json", (e, graph) => {
-//   drawGraph(e, graph, "hanhee-song", "Slic", "frontend");
-//   setContentMessage();
-// });
 document.querySelector(".input-user").value = "hanhee-song";
 document.querySelector(".input-repo").value = "slic";
 document.querySelector(".input-subdir").value = "frontend";
