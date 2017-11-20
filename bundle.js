@@ -150,7 +150,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     const mousedId = clickedId || hoveredId;
     text.text((o) => {
       if (highlightedId && adjacent(highlightedId, o)
-        || mousedId && adjacent(o, mousedId)) {
+        || mousedId && adjacent(o, mousedId)
+        || searchedId && o.id.includes(searchedId)) {
           return unextended(o.name);
       } else {
         return abbreviate(o.name);
@@ -165,14 +166,16 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     } else if (hoveredId || clickedId) {
       opacity = .3;
     } else {
-      opacity = 1;
+      opacity = searchedId ? .5 : 1;
     }
     const partialOpacity = .5;
     const linkFactor = .6;
     const mousedId = clickedId || hoveredId;
     
     node.style("opacity", (o) => {
-      if (adjacent(o, highlightedId)) {
+      if (searchedId && o.id.includes(searchedId)) {
+        return 1;
+      } else if (adjacent(o, highlightedId)) {
         return 1;
       } else if (adjacent(o, mousedId)) {
         return highlightedId ? partialOpacity : 1;
@@ -182,9 +185,11 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     });
     node.style("stroke", (o) => {
       if (o.id === highlightedId) {
-        return "#bbf";
+        return "#ccf";
       } else if (o.id === mousedId) {
-        return "#88d";
+        return "#99c";
+      } else if (searchedId && o.id.includes(searchedId)) {
+        return "#7b7";
       } else if (adjacent(o, highlightedId)) {
         return "#232b42";
       } else if (adjacent(o, mousedId)) {
@@ -203,7 +208,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       }
     });
     text.style("opacity", (o) => {
-      if (adjacent(o, highlightedId)) {
+      if (searchedId && o.id.includes(searchedId) || adjacent(o, highlightedId)) {
         return 1;
       } else if (adjacent(o, mousedId)) {
         return highlightedId ? partialOpacity : 1;
@@ -213,7 +218,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     });
   }
   
-  // HOVER / HIGHLIGHT / CLICK EFFECTS =========================
+  // HOVER / HIGHLIGHT / CLICK / SEARCH EFFECTS ===============
   
   function highlightNode(d) {
     d3.event.stopPropagation();
@@ -280,7 +285,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   document.getElementById('search').addEventListener("input", handleSearch);
   
   function handleSearch(e) {
-    console.log(e.target.value);
+    searchedId = e.target.value;
+    generateOpacity();
+    generateText();
   }
   
   // MISC HELPER METHODS ============================
