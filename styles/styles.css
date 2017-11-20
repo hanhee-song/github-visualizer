@@ -184,7 +184,7 @@ body {
   height: 500px;
 }
 
-.svg-main, .search {
+.svg-main {
   width: 100%;
 }
 
@@ -212,13 +212,16 @@ body {
 
 .search {
   height: 30px;
+  width: 50%;
+  border-bottom: 1px solid #374468;
+  border-right: 1px solid #374468;
 }
 
 #search {
-  height: 100%;
+  height: calc(100% - 1px);
   width: 100%;
   margin: 0;
-  background-color: #232b42;
+  background-color: rgba(0, 0, 0, 0.0);
 }
 
 /******** INFO PANEL ************/
