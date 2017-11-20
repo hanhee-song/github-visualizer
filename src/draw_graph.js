@@ -291,15 +291,16 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   }
   
   // Reset all event listeners
-  const search = document.getElementById('search');
-  search.value = "";
-  var clone = search.cloneNode();
-  while (search.firstChild) {
-    clone.appendChild(search.lastChild);
+  const topOptions = document.querySelector('.top-options');
+  var clone = topOptions.cloneNode();
+  while (topOptions.firstChild) {
+    clone.appendChild(topOptions.firstChild);
   }
-  search.parentNode.replaceChild(clone, search);
+  topOptions.parentNode.replaceChild(clone, topOptions);
   
-  document.getElementById('search').addEventListener("input", handleSearch);
+  const search = document.getElementById('search');
+  search.addEventListener("input", handleSearch);
+  search.value = "";
   document.getElementById('search-clear').addEventListener("click", handleClearSearch);
   document.getElementById('pause-button').addEventListener("click", handlePause);
   
@@ -318,7 +319,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   }
   
   function handlePause(e) {
+    let icon = document.querySelector(".toggle-pause-icon");
     if (frozen) {
+      icon.classList.add("fa-pause");
+      icon.classList.remove("fa-play");
       frozen = false;
       node.each((d) => {
         d.fx = null;
@@ -326,6 +330,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       });
     } else {
       frozen = true;
+      icon.classList.add("fa-play");
+      icon.classList.remove("fa-pause");
       node.each((d) => {
         d.fx = d.x;
         d.fy = d.y;
