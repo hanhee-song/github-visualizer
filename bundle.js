@@ -144,6 +144,21 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     return linkedIds(oId, dId) || linkedIds(dId, oId) || oId === dId;
   }
   
+  function relatedSearch(d) {
+    if (!searchedId) {
+      return false;
+    }
+    
+    let name = d.name.toLowerCase();
+    let query = searchedId.toLowerCase().split(" ");
+    for (var i = 0; i < query.length; i++) {
+      if (!name.includes(query[i])) {
+        return false;
+      }
+    }
+    return true;
+  }
+  
   // GENERATE TEXT / OPACITY ===========================
   
   function generateText() {
@@ -151,7 +166,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     text.text((o) => {
       if (highlightedId && adjacent(highlightedId, o)
         || mousedId && adjacent(o, mousedId)
-        || searchedId && o.id.includes(searchedId)) {
+        || relatedSearch(o)) {
           return unextended(o.name);
       } else {
         return abbreviate(o.name);
@@ -173,7 +188,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     const mousedId = clickedId || hoveredId;
     
     node.style("opacity", (o) => {
-      if (searchedId && o.id.includes(searchedId)) {
+      if (relatedSearch(o)) {
         return 1;
       } else if (adjacent(o, highlightedId)) {
         return 1;
@@ -188,7 +203,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         return "#ccf";
       } else if (o.id === mousedId) {
         return "#99c";
-      } else if (searchedId && o.id.includes(searchedId)) {
+      } else if (relatedSearch(o)) {
         return "#7b7";
       } else if (adjacent(o, highlightedId)) {
         return "#232b42";
@@ -208,7 +223,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       }
     });
     text.style("opacity", (o) => {
-      if (searchedId && o.id.includes(searchedId) || adjacent(o, highlightedId)) {
+      if (relatedSearch(o) || adjacent(o, highlightedId)) {
         return 1;
       } else if (adjacent(o, mousedId)) {
         return highlightedId ? partialOpacity : 1;
