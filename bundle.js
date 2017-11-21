@@ -305,6 +305,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   search.value = "";
   document.getElementById('search-clear').addEventListener("click", handleClearSearch);
   document.getElementById('pause-button').addEventListener("click", handlePause);
+  const icon = document.querySelector(".toggle-pause-icon");
+  icon.classList.add("fa-pause");
+  icon.classList.remove("fa-play");
+  
   
   function handleSearch(e) {
     searchedId = e.target.value;
@@ -321,7 +325,6 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   }
   
   function handlePause(e) {
-    let icon = document.querySelector(".toggle-pause-icon");
     if (frozen) {
       icon.classList.add("fa-pause");
       icon.classList.remove("fa-play");
