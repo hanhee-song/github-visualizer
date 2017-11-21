@@ -110,15 +110,13 @@ function makeRequest(method, url, key, headerKey, headerValue) {
 ///////////////////
 
 function parseName(path) {
-  return path.split("/")[path.split("/").length - 1];
-}
-
-function parseFullName(path) {
-  return path.split("/");
+  const splitPath = path.split("/");
+  return splitPath[splitPath.length - 1];
 }
 
 function extension(path) {
-  return path.split(".")[path.split(".").length - 1];
+  const splitPath = path.split(".");
+  return splitPath[splitPath.length - 1];
 }
 
 function forbiddenFile(path) {
@@ -154,10 +152,7 @@ function parseRootDirs(files, subdir) {
 }
 
 function parsePath(filePath, line, filePathArr) {
-  let lineArr = line.split("'");
-  if (lineArr.length === 1) {
-    lineArr = line.split("\"");
-  }
+  let lineArr = line.split(/'|\"/);
   let segment;
   lineArr.forEach(section => {
     if (section.includes("./")) segment = section;
@@ -199,21 +194,15 @@ function parseTree(response, subdir) {
   });
 }
 
-function noExtension(filePath) {
-  return filePath.split(".")[0];
-}
-
 function parseLinks(filePath, contentArr, filePathArr) {
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
     if (
-      (contentArr[i].includes("from '")
-      || contentArr[i].includes("from \"")
-      || contentArr[i].includes("require(")
-      || contentArr[i].includes("require ("))
+      (contentArr[i].match(/.*from\s*('|\")\..*/)
+      || contentArr[i].match(/.*require\s*\(('|")\..*/))
       && contentArr[i].includes("./")
-      && contentArr[i].slice(0, 2) !== "//"
-      && contentArr[i].slice(0, 2) !== "/*"
+      && !contentArr[i].slice(0, 6).includes("//")
+      && !contentArr[i].slice(0, 6).includes("/*")
       && parseName(contentArr[i]) !== "") {
       links.push({
         "source": parsePath(filePath, contentArr[i], filePathArr),
