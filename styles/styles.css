@@ -182,6 +182,38 @@ body {
   background-color: #2d3756;
 }
 
+/********** HELP MODAL *********/
+
+.help-modal-container {
+  visibility: hidden;
+  opacity: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, .1);
+  display: flex;
+  justify-content: center;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.help-modal-text {
+  background-color: #232b42;
+  border: 2px solid #374468;
+  border-radius: 5px;
+  padding: 10px;
+  width: 800px;
+  height: 400px;
+  margin-top: 200px;
+  font-family: 'Inconsolata', monospace;
+  font-size: 14px;
+}
+
 /********** BLOCKS **********/
 
 .main {

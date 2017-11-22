@@ -799,6 +799,22 @@ buttonExamples.forEach((button) => {
   });
 });
 
+const helpButton = document.querySelector(".button-help");
+const helpModalContainer = document.querySelector(".help-modal-container");
+const helpModalText = document.querySelector(".help-modal-text");
+
+helpButton.addEventListener("click", (e) => {
+  helpModalContainer.classList.add("visible");
+});
+
+helpModalContainer.addEventListener("click", (e) => {
+  helpModalContainer.classList.remove("visible");
+});
+
+helpModalText.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
 },{"./draw_graph.js":1,"./file_parser.js":2,"./sidebar.js":4}],4:[function(require,module,exports){
 function generateHeader(graph, user, repo, subdir, d) {
   const header = document.querySelector(".sidebar-header");
