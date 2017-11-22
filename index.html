@@ -13,34 +13,40 @@
   <body>
     
     <div class="title-wrapper">
-      <div class="title">
-        Github Filetree Visualizer
-      </div>
+        <div>Github</div>&nbsp;<div>Filetree</div>&nbsp;<div>Visualizer</div>
       <div class="button-help">
         ?
       </div>
     </div>
     
-    <div class="help-modal-container">
-      <pre class="help-modal-text">
-README
-
-Nodes denote files with a .js or .jsx extension. The size of
-the node corresponds to the size of the file. Nodes in the same
-subdirectory are given the same color.
-
-Links indicate a connection between two files. The arrow points
-from the file being exported to the file that is importing it.
-
-Instructions:
-
-Click and drag to move nodes around.
-
-Click on a node to see its contents.
-
-Click on the same node or the background to return to the
-main view, or click on a different node to select a new node.
-      </pre>
+    <div class="help-modal-container visible">
+      <div class="help-modal-text">
+        <div class="help-modal-x">
+          <i class="fa fa-times" aria-hidden="true"></i>
+        </div>
+        About Github Filetree Visualizer
+        <br /><br />
+        This Github visualizer will fetch a repository, map out JavaScript files, and draw links between them based on their interdependencies.
+        <br /><br />
+        Nodes denote files with a .js or .jsx extension.
+        <br />* The size of the node corresponds to the size of the file.
+        <br />* Nodes are colored by subdirectory; e.g. all files in a "test" subdirectory will receive the same color.
+        <br /><br />
+        Links indicate a connection between two files.
+        <br />* The arrow points from the file being exported to the file that is importing it.
+        <br /><br />
+        INSTRUCTIONS:
+        <br /><br />
+        * Click and drag to move nodes around.
+        <br /><br />
+        * Click on a node to see its contents.
+        <br /><br />
+        * Click on the same node or the background to return to the main view, or click on a different node to select a new node.
+        <br /><br />
+        * Search a file using the search box: to find a file named "message_form_container.jsx", it's enough to search for "mes form cont".
+        <br /><br />
+        * Press <i class="fa fa-pause" aria-hidden="true"></i> to pause the simulation.
+        </div>
     </div>
     
     <div class="sample-buttons">

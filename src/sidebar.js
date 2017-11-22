@@ -29,24 +29,7 @@ function generateHeader(graph, user, repo, subdir, d) {
   });
 }
 
-const MESSAGE = `README
-
-Nodes denote files with a .js or .jsx extension. The size of
-the node corresponds to the size of the file. Nodes in the same
-subdirectory are given the same color.
-
-Links indicate a connection between two files. The arrow points
-from the file being exported to the file that is importing it.
-
-Instructions:
-
-Click and drag to move nodes around.
-
-Click on a node to see its contents.
-
-Click on the same node or the background to return to the
-main view, or click on a different node to select a new node.
-`;
+const MESSAGE = "";
 
 function setContentMessage(content) {
   const fileBox = document.querySelector(".file-content");

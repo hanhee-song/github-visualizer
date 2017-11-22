@@ -76,7 +76,10 @@ body {
 .title-wrapper {
   font-family: 'Inconsolata', monospace;
   display: flex;
+  flex-wrap: wrap;
+  flex-shrink: 0;
   justify-content: center;
+  text-align: center;
   margin: auto;
   padding-top: 5%;
   font-size: 50px;
@@ -195,6 +198,8 @@ body {
   background-color: rgba(255, 255, 255, .1);
   display: flex;
   justify-content: center;
+  transition: opacity .2s;
+  -webkit-transition: opacity .2s;
 }
 
 .visible {
@@ -203,15 +208,36 @@ body {
 }
 
 .help-modal-text {
+  position: relative;
   background-color: #232b42;
   border: 2px solid #374468;
-  border-radius: 5px;
-  padding: 10px;
-  width: 800px;
-  height: 400px;
+  border-radius: 10px;
+  padding: 25px 20px;
+  width: 450px;
+  height: 500px;
   margin-top: 200px;
   font-family: 'Inconsolata', monospace;
   font-size: 14px;
+}
+
+.help-modal-x {
+  position: absolute;
+  cursor: pointer;
+  color: #aaa;
+  right: 20px;
+  top: 20px;
+  padding: 4px;
+}
+
+.help-modal-x:hover {
+  color: #ddd;
+}
+
+@media only screen and (min-width: 800px) {
+  .help-modal-text {
+    width: 700px;
+    height: 430px;
+  }
 }
 
 /********** BLOCKS **********/

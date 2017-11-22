@@ -154,12 +154,17 @@ buttonExamples.forEach((button) => {
 const helpButton = document.querySelector(".button-help");
 const helpModalContainer = document.querySelector(".help-modal-container");
 const helpModalText = document.querySelector(".help-modal-text");
+const helpModalX = document.querySelector(".help-modal-x");
 
 helpButton.addEventListener("click", (e) => {
   helpModalContainer.classList.add("visible");
 });
 
 helpModalContainer.addEventListener("click", (e) => {
+  helpModalContainer.classList.remove("visible");
+});
+
+helpModalX.addEventListener("click", (e) => {
   helpModalContainer.classList.remove("visible");
 });
 
