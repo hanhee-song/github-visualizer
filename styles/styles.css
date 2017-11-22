@@ -195,11 +195,11 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255, 255, 255, .1);
+  background-color: rgba(255, 255, 255, .08);
   display: flex;
   justify-content: center;
-  transition: opacity .2s;
-  -webkit-transition: opacity .2s;
+  transition: opacity .13s;
+  -webkit-transition: opacity .13s;
 }
 
 .visible {
@@ -225,8 +225,9 @@ body {
   cursor: pointer;
   color: #aaa;
   right: 20px;
-  top: 20px;
+  top: 15px;
   padding: 4px;
+  font-size: 20px;
 }
 
 .help-modal-x:hover {
