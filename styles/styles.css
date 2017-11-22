@@ -73,10 +73,11 @@ body {
 
 /********** TITLE AND SUBHEADER **********/
 
-.title {
+.title-wrapper {
   font-family: 'Inconsolata', monospace;
+  display: flex;
+  justify-content: center;
   margin: auto;
-  text-align: center;
   padding-top: 5%;
   font-size: 50px;
   padding-bottom: 20px;
@@ -84,6 +85,27 @@ body {
   -webkit-user-select: none;
   -moz-user-select: none;
   cursor: default;
+}
+
+.button-help {
+  cursor: pointer;
+  margin-top: 16px;
+  margin-left: 7px;
+  height: 24px;
+  width: 24px;
+  border-radius: 13px;
+  border: 2px solid #777;
+  text-align: center;
+  line-height: 23px;
+  font-size: 20px;
+  color: #777;
+  transition: color .2s, border .2s;
+  -webkit-transition: color .2s, border .2s;
+}
+
+.button-help:hover {
+  color: #ccc;
+  border-color: #ccc;
 }
 
 .name {
