@@ -30,9 +30,9 @@ function fileParser(user, repo, subdir, key="") {
       }
       
       const rootDirs = parseRootDirs(files, subdir);
-      const filePathArr = Object.values(files).map((file) => {
+      const filePathSet = new Set(Object.values(files).map((file) => {
         return file.path;
-      });
+      }));
       let counter = 0;
       let fileErrors = 0;
       for (var i = 0; i < files.length; i++) {
@@ -43,7 +43,7 @@ function fileParser(user, repo, subdir, key="") {
               let content = response.responseText;
               const contentArr = content.split(/\r?\n/);
               const fileName = parseName(file.path);
-              let links = parseLinks(file.path, contentArr, filePathArr);
+              let links = parseLinks(file.path, contentArr, filePathSet);
               let node = {
                 id: file.path,
                 name: fileName,
@@ -130,11 +130,7 @@ function parseRoot(path, subdir) {
   let splitPath = path.split("/");
   let rootDir;
   if (splitPath[0] === subdir) {
-    if (splitPath[1].split(".")[0] === splitPath[1]) {
-      rootDir = splitPath[1];
-    } else {
-      rootDir = "";
-    }
+    rootDir = !splitPath[1].includes(".") ? splitPath[1] : "";
   } else {
     rootDir = splitPath[0];
   }
@@ -142,22 +138,17 @@ function parseRoot(path, subdir) {
 }
 
 function parseRootDirs(files, subdir) {
-  let rootDirs = [];
+  let rootDirs = new Set();
   let rootDir;
   files.forEach((file) => {
     rootDir = parseRoot(file.path, subdir);
-    if (!rootDirs.includes(rootDir)) rootDirs.push(rootDir);
+    if (!rootDirs.has(rootDir)) rootDirs.add(rootDir);
   });
-  return rootDirs;
+  return Array.from(rootDirs);
 }
 
-function parsePath(filePath, line, filePathArr) {
-  let lineArr = line.split(/'|\"/);
-  let segment;
-  lineArr.forEach(section => {
-    if (section.includes("./")) segment = section;
-  });
-  
+function parsePath(filePath, line, filePathSet) {
+  const segment = line.match(/['"]([^'"]*\.\/[^'"]*)['"]/)[1];
   let sectionArr = segment.split("/");
   let pathArr = filePath.split("/");
   pathArr.pop();
@@ -171,10 +162,9 @@ function parsePath(filePath, line, filePathArr) {
   });
   
   const combinedPath = pathArr.join("/");
-  
-  if (filePathArr.includes(combinedPath)) {
+  if (filePathSet.has(combinedPath)) {
     return combinedPath;
-  } else if (filePathArr.includes(combinedPath + ".jsx")) {
+  } else if (filePathSet.has(combinedPath + ".jsx")) {
     return combinedPath + ".jsx";
   } else {
     return combinedPath + ".js";
@@ -194,18 +184,18 @@ function parseTree(response, subdir) {
   });
 }
 
-function parseLinks(filePath, contentArr, filePathArr) {
+function parseLinks(filePath, contentArr, filePathSet) {
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
     if (
-      (contentArr[i].match(/.*from\s*('|\")\..*/)
-      || contentArr[i].match(/.*require\s*\(('|")\..*/))
+      (contentArr[i].match(/.*from\s*['"]\..*/)
+      || contentArr[i].match(/.*require\s*\(['"]\..*/))
       && contentArr[i].includes("./")
       && !contentArr[i].slice(0, 6).includes("//")
       && !contentArr[i].slice(0, 6).includes("/*")
       && parseName(contentArr[i]) !== "") {
       links.push({
-        "source": parsePath(filePath, contentArr[i], filePathArr),
+        "source": parsePath(filePath, contentArr[i], filePathSet),
         "target": filePath
       });
     }
