@@ -90,12 +90,16 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function ticked() {
     const boundedX = (d) => {
+      // TODO: consider using d.r or d.attr("r") instead of recalculating
+      // radius every time throughout the ticked function because
+      // you're needlessly invoking this function some 5000-10000 times/s
       return Math.max(radius(d.loc), Math.min(width - radius(d.loc) - 2, d.x));
     };
     const boundedY = (d) => {
       return Math.max(radius(d.loc), Math.min(height - radius(d.loc) - 2, d.y));
     };
     
+    // TODO: Consider caching getCircumferencePoint's result
     link
       .attr("x1", (d) => d.source.x)
       .attr("y1", (d) => d.source.y)
@@ -110,12 +114,14 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         d.y = boundedY(d);
         return d.y;
       });
-      
+    
+    // TODO: consider using d.r or d.attr('r') instead of radius()
     text
       .attr("x", (d) => d.x + 1 + radius(d.loc))
       .attr("y", (d) => d.y + 3);
     
     function getCircumferencePoint(d) {
+      // TODO: consider using d.r or d.attr('r') instead of radius()
       const tRadius = radius(d.target.loc);
       const dx = d.target.x - d.source.x;
       const dy = d.target.y - d.source.y;
@@ -206,6 +212,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       } else if (relatedSearch(o)) {
         return "#7b7";
       } else if (adjacent(o, highlightedId)) {
+        // TODO: fix this nonsensical code. I'm making a lot of
+        // unnecessary checks here and assigning a color to a number
         return "#232b42";
       } else if (adjacent(o, mousedId)) {
         return highlightedId ? partialOpacity : "#232b42";
@@ -247,7 +255,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       highlightedId = "";
     }
     generateOpacity();
-    generateText(d);
+    generateText();
   }
   
   function unhighlightNode(d) {
@@ -360,6 +368,14 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function abbreviate(name) {
     let abb;
+    // TODO: Fix this junk with regex
+    // match all instances of ^(\w), (-\W), (_\W), and ([A-Z])[a-z0-9]+
+    // example filenames
+    // file_container.js
+    // file-container.js
+    // FileContainer.js
+    // file.container.js
+    // FILE_CONTAINER.js
     if (name.includes("-")) {
       abb = name.split("-");
     } else if (name.includes("_")) {
@@ -374,6 +390,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   }
   
   function unextended(name) {
+    // TODO: Fix this with regex
+    // match ^(.*)\.[A-Za-z]+$
+    // try this:
+    // return name.match(^(.*)\.[A-Za-z]+$)[1]
     const splitName = name.split(".");
     splitName.pop();
     return splitName.join(".");
@@ -381,8 +401,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function distance(d) {
     const offset = radius(d.target.loc) + radius(d.source.loc);
-    const sourceId = d.source.id.split("/");
-    const targetId = d.target.id.split("/");
+    // TODO: Fix this with regex or consider removing altogether
     const containerless = (name) => name.split("_container").join("").split(".")[0];
     if (containerless(d.source.id) === containerless(d.target.id)) {
       return 60 + offset;

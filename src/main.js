@@ -89,6 +89,7 @@ inputSubdir.addEventListener("input", (e) => {
 });
 
 function parseUrl() {
+  // TODO: Regexify this
   let urlTag = inputUrl.value.split("github.com")[1];
   if (urlTag) {
     const urlTagArr = urlTag.slice(1).split("/");
