@@ -523,10 +523,12 @@ function extension(path) {
 }
 
 function forbiddenFile(path) {
-  return parseName(path) === "bundle.js"
-  || parseName(path) === "bundle.js.map"
-  || (extension(path) !== "js"
-  && extension(path) !== "jsx");
+  const parsedName = parseName(path);
+  const ext = extension(path);
+  return parsedName === "bundle.js"
+  || parsedName === "bundle.js.map"
+  || (ext !== "js"
+  && ext !== "jsx");
 }
 
 function parseRoot(path, subdir) {
@@ -550,9 +552,8 @@ function parseRootDirs(files, subdir) {
   return Array.from(rootDirs);
 }
 
-function parsePath(filePath, line, filePathSet) {
-  const segment = line.match(/['"]([^'"]*\.\/[^'"]*)['"]/)[1];
-  let sectionArr = segment.split("/");
+function parsePath(filePath, parsedImport, filePathSet) {
+  let sectionArr = parsedImport.split("/");
   let pathArr = filePath.split("/");
   pathArr.pop();
   let newPath;
@@ -590,15 +591,14 @@ function parseTree(response, subdir) {
 function parseLinks(filePath, contentArr, filePathSet) {
   let links = [];
   for (var i = 0; i < contentArr.length; i++) {
-    if (
-      (contentArr[i].match(/.*from\s*['"]\..*/)
-      || contentArr[i].match(/.*require\s*\(['"]\..*/))
-      && contentArr[i].includes("./")
+    const line = contentArr[i];
+    // Match 'from' or 'require' statements with './'
+    const regex = line.match(/((from)|(require\s*\())\s*['"]([^'"]*\.\/[^'"]*)['"]/);
+    if (regex
       && !contentArr[i].slice(0, 6).includes("//")
-      && !contentArr[i].slice(0, 6).includes("/*")
-      && parseName(contentArr[i]) !== "") {
+      && !contentArr[i].slice(0, 6).includes("/*")) {
       links.push({
-        "source": parsePath(filePath, contentArr[i], filePathSet),
+        "source": parsePath(filePath, regex[regex.length-1], filePathSet),
         "target": filePath
       });
     }
@@ -611,10 +611,10 @@ function sanitizeGraph(graph) {
     "links": [],
     "nodes": graph.nodes
   };
-  const names = graph.nodes.map(node => node.id);
+  const names = new Set(graph.nodes.map(node => node.id));
   
   graph.links.forEach(link => {
-    if (names.includes(link.source) && names.includes(link.target)) {
+    if (names.has(link.source) && names.has(link.target)) {
       newGraph.links.push(link);
     }
   });
