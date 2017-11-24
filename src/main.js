@@ -89,10 +89,9 @@ inputSubdir.addEventListener("input", (e) => {
 });
 
 function parseUrl() {
-  // TODO: Regexify this
-  let urlTag = inputUrl.value.split("github.com")[1];
+  let urlTag = inputUrl.value.match(/github\.com\/(.*)/);
   if (urlTag) {
-    const urlTagArr = urlTag.slice(1).split("/");
+    const urlTagArr = urlTag[1].split("/");
     inputUser.value = urlTagArr[0] ? urlTagArr[0] : "";
     inputRepo.value = urlTagArr[1] ? urlTagArr[1] : "";
     if (urlTagArr[2] === "tree" && urlTagArr[3] === "master"

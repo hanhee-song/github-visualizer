@@ -63,7 +63,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     graphNodes.push(Object.assign(
       {},
       graph.nodes[i],
-      { r: radius(graph.nodes[i].loc) }
+      { r: Math.sqrt(graph.nodes[i].loc * 2 + 25) }
     ));
   }
   
@@ -367,25 +367,13 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function abbreviate(name) {
     let abb;
-    // TODO: Fix this junk with regex
-    // match all instances of ^(\w), (-\W), (_\W), and ([A-Z])[a-z0-9]+
-    // example filenames
-    // file_container.js
-    // file-container.js
-    // FileContainer.js
-    // file.container.js
-    // FILE_CONTAINER.js
-    if (name.includes("-")) {
-      abb = name.split("-");
-    } else if (name.includes("_")) {
-      abb = name.split("_");
-    } else if (name.split(/A-Z/).length > 2) {
-      abb = name.split(/A-Z/);
+    const extensionless = name.match(/(.*)\.js/)[1];
+    const split = extensionless.split(/[-_\.]/);
+    if (split.length > 1) {
+      return split.map(word => word[0]).join("");
     } else {
-      let split = name.split(".");
-      abb = split.slice(0, split.length - 1);
+      return name[0] + extensionless.slice(1).split(/[a-z]/).join("");
     }
-    return abb.map((word) => word[0]).join("");
   }
   
   function unextended(name) {
@@ -394,18 +382,13 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function distance(d) {
     const offset = d.target.r + d.source.r;
-    // TODO: Fix this with regex or consider removing altogether
-    const containerless = (name) => name.split("_container").join("").split(".")[0];
+    const containerless = (name) => name.split(/(_container)|\./)[0];
     if (containerless(d.source.id) === containerless(d.target.id)) {
       return 60 + offset;
     }
     let distanceDenom = 200 + Math.min(graph.nodes.length * 2, 250);
     
     return 60000 / distanceDenom + offset;
-  }
-  
-  function radius(loc) {
-    return Math.sqrt(loc * 2 + 25);
   }
 };
 
@@ -738,10 +721,9 @@ inputSubdir.addEventListener("input", (e) => {
 });
 
 function parseUrl() {
-  // TODO: Regexify this
-  let urlTag = inputUrl.value.split("github.com")[1];
+  let urlTag = inputUrl.value.match(/github\.com\/(.*)/);
   if (urlTag) {
-    const urlTagArr = urlTag.slice(1).split("/");
+    const urlTagArr = urlTag[1].split("/");
     inputUser.value = urlTagArr[0] ? urlTagArr[0] : "";
     inputRepo.value = urlTagArr[1] ? urlTagArr[1] : "";
     if (urlTagArr[2] === "tree" && urlTagArr[3] === "master"
