@@ -105,12 +105,16 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       return Math.max(d.r, Math.min(height - d.r - 2, d.y));
     };
     
-    // TODO: Consider caching getCircumferencePoint's result
+    const circumferenceHash = {};
     link
       .attr("x1", (d) => d.source.x)
       .attr("y1", (d) => d.source.y)
-      .attr("x2", (d) => getCircumferencePoint(d)[0])
-      .attr("y2", (d) => getCircumferencePoint(d)[1]);
+      .attr("x2", (d) => {
+        circumferenceHash[d.id] = getCircumferencePoint(d);
+        return circumferenceHash[d.id][0];
+      })
+      .attr("y2", (d) => circumferenceHash[d.id][1]);
+      
     node
       .attr("cx", (d) => {
         d.x = boundedX(d);
