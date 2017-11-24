@@ -57,15 +57,24 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     .append("svg:path")
       .attr("d", "M0,-5L10,0L0,5");
   
+  // Pre-compute radius to save processing time
+  const graphNodes = [];
+  for (var i = 0; i < graph.nodes.length; i++) {
+    graphNodes.push(Object.assign(
+      {},
+      graph.nodes[i],
+      { r: radius(graph.nodes[i].loc) }
+    ));
+  }
   
   const node = svg.append("g")
     .attr("class", "nodes")
     .selectAll("circle")
-    .data(graph.nodes)
+    .data(graphNodes)
     .enter()
     .append("circle")
-      .attr("r", (d) => radius(d.loc))
-      .attr("fill", (d) => color(d))
+      .attr("r", d => d.r)
+      .attr("fill", d => color(d))
       .call(d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
@@ -75,13 +84,13 @@ const drawGraph = (error, graph, user, repo, subdir) => {
       .on("mouseout", hoverNode);
   
   const text = svg.selectAll("text").filter(".label")
-    .data(graph.nodes)
+    .data(graphNodes)
     .enter()
     .append("text")
     .classed("label", true)
     .text((d) => abbreviate(d.name));
   
-  simulation.nodes(graph.nodes)
+  simulation.nodes(graphNodes)
     .on("tick", ticked);
 
   simulation.force("link")
@@ -91,13 +100,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   
   function ticked() {
     const boundedX = (d) => {
-      // TODO: consider using d.r or d.attr("r") instead of recalculating
-      // radius every time throughout the ticked function because
-      // you're needlessly invoking this function some 5000-10000 times/s
-      return Math.max(radius(d.loc), Math.min(width - radius(d.loc) - 2, d.x));
+      return Math.max(d.r, Math.min(width - d.r - 2, d.x));
     };
     const boundedY = (d) => {
-      return Math.max(radius(d.loc), Math.min(height - radius(d.loc) - 2, d.y));
+      return Math.max(d.r, Math.min(height - d.r - 2, d.y));
     };
     
     // TODO: Consider caching getCircumferencePoint's result
@@ -116,14 +122,12 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         return d.y;
       });
     
-    // TODO: consider using d.r or d.attr('r') instead of radius()
     text
-      .attr("x", (d) => d.x + 1 + radius(d.loc))
+      .attr("x", (d) => d.x + 1 + d.r)
       .attr("y", (d) => d.y + 3);
     
     function getCircumferencePoint(d) {
-      // TODO: consider using d.r or d.attr('r') instead of radius()
-      const tRadius = radius(d.target.loc);
+      const tRadius = d.target.r;
       const dx = d.target.x - d.source.x;
       const dy = d.target.y - d.source.y;
       const gamma = Math.atan2(dy, dx);
@@ -136,7 +140,7 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   // NEIGHBOR HELPER METHODS ===========================
   
   const linkedById = {};
-  for (var i = 0; i < graph.nodes.length; i++) {
+  for (var i = 0; i < graphNodes.length; i++) {
     linkedById[`${i},${i}`] = 1;
   }
   graph.links.forEach(d => {
@@ -212,12 +216,6 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         return "#99c";
       } else if (relatedSearch(o)) {
         return "#7b7";
-      } else if (adjacent(o, highlightedId)) {
-        // TODO: fix this nonsensical code. I'm making a lot of
-        // unnecessary checks here and assigning a color to a number
-        return "#232b42";
-      } else if (adjacent(o, mousedId)) {
-        return highlightedId ? partialOpacity : "#232b42";
       } else {
         return "#232b42";
       }
@@ -391,17 +389,11 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   }
   
   function unextended(name) {
-    // TODO: Fix this with regex
-    // match ^(.*)\.[A-Za-z]+$
-    // try this:
-    // return name.match(^(.*)\.[A-Za-z]+$)[1]
-    const splitName = name.split(".");
-    splitName.pop();
-    return splitName.join(".");
+    return name.match(/^(.*)\.[A-Za-z]+$/)[1];
   }
   
   function distance(d) {
-    const offset = radius(d.target.loc) + radius(d.source.loc);
+    const offset = d.target.r + d.source.r;
     // TODO: Fix this with regex or consider removing altogether
     const containerless = (name) => name.split("_container").join("").split(".")[0];
     if (containerless(d.source.id) === containerless(d.target.id)) {
