@@ -542,10 +542,8 @@ function parseRoot(path, subdir) {
 
 function parseRootDirs(files, subdir) {
   let rootDirs = new Set();
-  let rootDir;
   files.forEach((file) => {
-    rootDir = parseRoot(file.path, subdir);
-    if (!rootDirs.has(rootDir)) rootDirs.add(rootDir);
+    rootDirs.add(parseRoot(file.path, subdir));
   });
   return Array.from(rootDirs);
 }
@@ -592,9 +590,7 @@ function parseLinks(filePath, contentArr, filePathSet) {
     const line = contentArr[i];
     // Match 'from' or 'require' statements with './'
     const regex = line.match(/((from)|(require\s*\())\s*['"]([^'"]*\.\/[^'"]*)['"]/);
-    if (regex
-      && !contentArr[i].slice(0, 6).includes("//")
-      && !contentArr[i].slice(0, 6).includes("/*")) {
+    if (regex && !contentArr[i].match(/^.{0,7}\/[\*\/]/)) {
       links.push({
         "source": parsePath(filePath, regex[regex.length-1], filePathSet),
         "target": filePath
