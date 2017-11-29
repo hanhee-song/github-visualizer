@@ -97,11 +97,11 @@ body {
   height: 24px;
   width: 24px;
   border-radius: 13px;
-  border: 2px solid #777;
+  border: 2px solid #aaa;
   text-align: center;
   line-height: 23px;
   font-size: 20px;
-  color: #777;
+  color: #aaa;
   transition: color .2s, border .2s;
   -webkit-transition: color .2s, border .2s;
 }

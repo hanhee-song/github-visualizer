@@ -536,13 +536,12 @@ function forbiddenFile(path) {
 }
 
 function parseRoot(path, subdir) {
-  let splitPath = path.split("/");
-  let splitSubdir = subdir.split("/");
-  console.log(splitPath);
-  if (splitSubdir[splitSubdir.length - 1] === splitPath[splitSubdir.length - 1]) {
-    return splitPath[splitSubdir.length] ? splitPath[splitSubdir.length] : splitPath[splitSubdir.length - 1];
+  let pathArr = path.split("/");
+  let subArr = subdir.split("/");
+  if (subArr[subArr.length - 1] === pathArr[subArr.length - 1]) {
+    return pathArr[subArr.length] ? pathArr[subArr.length] : pathArr[subArr.length - 1];
   } else {
-    return splitPath[0];
+    return pathArr[0];
   }
 }
 
