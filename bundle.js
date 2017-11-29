@@ -438,6 +438,7 @@ function fileParser(user, repo, subdir, key="") {
       const filePathSet = new Set(Object.values(files).map((file) => {
         return file.path;
       }));
+      console.log(rootDirs);
       let counter = 0;
       let fileErrors = 0;
       for (var i = 0; i < files.length; i++) {
@@ -536,13 +537,13 @@ function forbiddenFile(path) {
 
 function parseRoot(path, subdir) {
   let splitPath = path.split("/");
-  let rootDir;
-  if (splitPath[0] === subdir) {
-    rootDir = !splitPath[1].includes(".") ? splitPath[1] : "";
+  let splitSubdir = subdir.split("/");
+  console.log(splitPath);
+  if (splitSubdir[splitSubdir.length - 1] === splitPath[splitSubdir.length - 1]) {
+    return splitPath[splitSubdir.length] ? splitPath[splitSubdir.length] : splitPath[splitSubdir.length - 1];
   } else {
-    rootDir = splitPath[0];
+    return splitPath[0];
   }
-  return rootDir;
 }
 
 function parseRootDirs(files, subdir) {
@@ -582,10 +583,15 @@ function parseTree(response, subdir) {
       return false;
     }
     if (subdir) {
-      return file.path.split("/")[0] === subdir && file.path.split(".")[0] !== file.path;
-    } else if (subdir === "") {
-      return file.path.split(".")[0] !== file.path;
+      const splitSubdir = subdir.split("/");
+      const splitPath = file.path.split("/");
+      for (var i = 0; i < splitSubdir.length; i++) {
+        if (splitSubdir[i] !== splitPath[i]) {
+          return false;
+        }
+      }
     }
+    return true;
   });
 }
 
