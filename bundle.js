@@ -411,16 +411,19 @@ function fileParser(user, repo, subdir, key="") {
     "GET",
     `https://api.github.com/repos/${user}/${repo}/commits`,
     key
-  ).then(
+  )
+  .then(
     response => JSON.parse(response.responseText)[0].sha,
     error => ["Invalid username or repo"]
-  ).then(
+  )
+  .then(
     sha => makeRequest(
         "GET",
         `https://api.github.com/repos/${user}/${repo}/git/trees/${sha}?recursive=1`,
         key
       )
-  ).then(
+  )
+  .then(
     response => {
       const files = parseTree(response, subdir);
       
