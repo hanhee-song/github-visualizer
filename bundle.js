@@ -399,6 +399,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
 module.exports = drawGraph;
 
 },{"./sidebar.js":4}],2:[function(require,module,exports){
+const sidebarFunctions = require('./sidebar.js');
+const setContentMessage = sidebarFunctions.setContentMessage;
+
 function fileParser(user, repo, subdir, key="") {
   const graphJSON = {
     "nodes": [],
@@ -441,6 +444,7 @@ function fileParser(user, repo, subdir, key="") {
         makeRequest("GET", file.url, "", "accept", "application/vnd.github.VERSION.raw")
           .then(
             response => {
+              setContentMessage(`Repo found! Parsing files: ${counter} / ${files.length} ...`);
               let content = response.responseText;
               const contentArr = content.split(/\r?\n/);
               const fileName = parseName(file.path);
@@ -590,9 +594,9 @@ function parseLinks(filePath, contentArr, filePathSet) {
     const line = contentArr[i];
     // Match 'from' or 'require' statements with './'
     const regex = line.match(/((from)|(require\s*\())\s*['"]([^'"]*\.\/[^'"]*)['"]/);
-    if (regex && !contentArr[i].match(/^.{0,7}\/[\*\/]/)) {
+    if (regex && !line.match(/^.{0,7}\/[\*\/]/)) {
       links.push({
-        "source": parsePath(filePath, regex[regex.length-1], filePathSet),
+        "source": parsePath(filePath, regex[regex.length - 1], filePathSet),
         "target": filePath
       });
     }
@@ -629,7 +633,7 @@ function logRateLimit() {
 
 module.exports = fileParser;
 
-},{}],3:[function(require,module,exports){
+},{"./sidebar.js":4}],3:[function(require,module,exports){
 const fileParser = require('./file_parser.js');
 const drawGraph = require('./draw_graph.js');
 const sidebarFunctions = require('./sidebar.js');
