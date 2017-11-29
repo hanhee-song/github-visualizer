@@ -23,16 +23,18 @@ function submitGraph(user, repo, subdir = "") {
   fileParser(user, repo, subdir)
   .then(
     response => {
-      loading = false;
-      const graph = response;
-      d3.selectAll("svg > *").remove();
-      svg.data(graph);
-      drawGraph(null, graph, user, repo, subdir);
-      if (graph.nodes.length === 0) {
-        setContentMessage("No .js or .jsx files found...");
-      } else {
-        setContentMessage();
-      }
+      setTimeout(function () {
+        loading = false;
+        const graph = response;
+        d3.selectAll("svg > *").remove();
+        svg.data(graph);
+        drawGraph(null, graph, user, repo, subdir);
+        if (graph.nodes.length === 0) {
+          setContentMessage("No .js or .jsx files found...");
+        } else {
+          setContentMessage();
+        }
+      }, 1400);
     },
     error => {
       loading = false;
@@ -96,7 +98,7 @@ function parseUrl() {
     inputRepo.value = urlTagArr[1] ? urlTagArr[1] : "";
     if (urlTagArr[2] === "tree" && urlTagArr[3] === "master"
       && urlTagArr[4]) {
-      inputSubdir.value = urlTagArr[4];
+      inputSubdir.value = urlTagArr.slice(4).join("/");
     } else {
       inputSubdir.value = "";
     }

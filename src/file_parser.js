@@ -31,21 +31,22 @@ function fileParser(user, repo, subdir, key="") {
           });
         });
       }
-      setContentMessage(`Repo found! Parsing files: 0 / ${files.length} ...`);
+      setMessage(files.length, 0, 0, 0);
       
       const rootDirs = parseRootDirs(files, subdir);
       const filePathSet = new Set(Object.values(files).map((file) => {
         return file.path;
       }));
-      console.log(rootDirs);
-      let counter = 0;
+      let parsed = 0;
+      let fetched = 0;
       let fileErrors = 0;
       for (var i = 0; i < files.length; i++) {
         let file = files[i];
         makeRequest("GET", file.url, "", "accept", "application/vnd.github.VERSION.raw")
           .then(
             response => {
-              setContentMessage(`Repo found! Parsing files: ${counter} / ${files.length} ...`);
+              fetched++;
+              setMessage(files.length, fetched, parsed, fileErrors);
               let content = response.responseText;
               const contentArr = content.split(/\r?\n/);
               const fileName = parseName(file.path);
@@ -60,7 +61,8 @@ function fileParser(user, repo, subdir, key="") {
               };
               graphJSON.nodes.push(node);
               graphJSON.links = graphJSON.links.concat(links);
-              counter ++;
+              parsed++;
+              setMessage(files.length, fetched, parsed, fileErrors);
             },
             error => {
               fileErrors++;
@@ -70,7 +72,7 @@ function fileParser(user, repo, subdir, key="") {
       
       return new Promise(function(resolve, reject) {
         (function waitForFiles() {
-          if (counter + fileErrors === files.length) {
+          if (parsed + fileErrors === files.length) {
             return resolve(
               sanitizeGraph(graphJSON)
             );
@@ -223,6 +225,20 @@ function sanitizeGraph(graph) {
   });
   
   return newGraph;
+}
+
+function setMessage(total, fetched, parsed, errors) {
+  let finishedMessage = "";
+  if (total === parsed + errors) {
+    finishedMessage = "Repository loaded!";
+  }
+  setContentMessage(`Repo found. Fetching and parsing files...
+    
+   Fetched files: ${fetched} / ${total}
+    Parsed files: ${parsed} / ${total}
+Unparsable files: ${errors}
+
+${finishedMessage}`);
 }
 
 // Utility function for finding rate limit, currently not being used
