@@ -432,6 +432,7 @@ function fileParser(user, repo, subdir, key="") {
           });
         });
       }
+      setContentMessage(`Repo found! Parsing files: 0 / ${files.length} ...`);
       
       const rootDirs = parseRootDirs(files, subdir);
       const filePathSet = new Set(Object.values(files).map((file) => {
