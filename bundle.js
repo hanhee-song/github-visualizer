@@ -669,11 +669,11 @@ let loading = false;
 
 const svg = d3.select('.svg-main');
 
-document.querySelector(".input-user").value = "hanhee-song";
-document.querySelector(".input-repo").value = "slic";
-document.querySelector(".input-subdir").value = "frontend";
+document.querySelector(".input-user").value = "reactjs";
+document.querySelector(".input-repo").value = "redux";
+document.querySelector(".input-subdir").value = "src";
 
-submitGraph("hanhee-song", "slic", "frontend");
+submitGraph("reactjs", "redux", "src");
 
 function submitGraph(user, repo, subdir = "") {
   if (loading === true) {
