@@ -43,7 +43,7 @@ function fileParser(user, repo, subdir, key="") {
       let parsed = 0;
       let fetched = 0;
       let fileErrors = 0;
-      for (var i = 0; i < files.length; i++) {
+      for (let i = 0; i < files.length; i++) {
         let file = files[i];
         makeRequest("GET", file.url, "", "accept", "application/vnd.github.VERSION.raw")
           .then(
@@ -188,7 +188,7 @@ function parseTree(response, subdir) {
     if (subdir) {
       const splitSubdir = subdir.split("/");
       const splitPath = file.path.split("/");
-      for (var i = 0; i < splitSubdir.length; i++) {
+      for (let i = 0; i < splitSubdir.length; i++) {
         if (splitSubdir[i] !== splitPath[i]) {
           return false;
         }
@@ -200,7 +200,7 @@ function parseTree(response, subdir) {
 
 function parseLinks(filePath, contentArr, filePathSet) {
   let links = [];
-  for (var i = 0; i < contentArr.length; i++) {
+  for (let i = 0; i < contentArr.length; i++) {
     const line = contentArr[i];
     // Match 'from' or 'require' statements with './'
     const regex = line.match(/((from)|(require\s*\())\s*['"]([^'"]*\.\/[^'"]*)['"]/);

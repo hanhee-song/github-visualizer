@@ -55,7 +55,7 @@ function drawGraph(error, graph, user, repo, subdir) {
   
   // Pre-compute radius to save processing time
   const graphNodes = [];
-  for (var i = 0; i < graph.nodes.length; i++) {
+  for (let i = 0; i < graph.nodes.length; i++) {
     graphNodes.push(Object.assign(
       {},
       graph.nodes[i],
@@ -141,7 +141,7 @@ function drawGraph(error, graph, user, repo, subdir) {
   // NEIGHBOR HELPER METHODS ===========================
   
   const linkedById = {};
-  for (var i = 0; i < graphNodes.length; i++) {
+  for (let i = 0; i < graphNodes.length; i++) {
     linkedById[`${i},${i}`] = 1;
   }
   graph.links.forEach(d => {
@@ -165,7 +165,7 @@ function drawGraph(error, graph, user, repo, subdir) {
     
     let name = d.name.toLowerCase();
     let query = searchedId.toLowerCase().split(" ");
-    for (var i = 0; i < query.length; i++) {
+    for (let i = 0; i < query.length; i++) {
       if (!name.includes(query[i])) {
         return false;
       }
@@ -303,7 +303,7 @@ function drawGraph(error, graph, user, repo, subdir) {
   // EVENT LISTENERS - SEARCH / PAUSE ====================
   
   const topOptions = document.querySelector('.top-options');
-  var clone = topOptions.cloneNode();
+  let clone = topOptions.cloneNode();
   while (topOptions.firstChild) {
     clone.appendChild(topOptions.firstChild);
   }
@@ -443,7 +443,7 @@ function fileParser(user, repo, subdir, key="") {
       let parsed = 0;
       let fetched = 0;
       let fileErrors = 0;
-      for (var i = 0; i < files.length; i++) {
+      for (let i = 0; i < files.length; i++) {
         let file = files[i];
         makeRequest("GET", file.url, "", "accept", "application/vnd.github.VERSION.raw")
           .then(
@@ -588,7 +588,7 @@ function parseTree(response, subdir) {
     if (subdir) {
       const splitSubdir = subdir.split("/");
       const splitPath = file.path.split("/");
-      for (var i = 0; i < splitSubdir.length; i++) {
+      for (let i = 0; i < splitSubdir.length; i++) {
         if (splitSubdir[i] !== splitPath[i]) {
           return false;
         }
@@ -600,7 +600,7 @@ function parseTree(response, subdir) {
 
 function parseLinks(filePath, contentArr, filePathSet) {
   let links = [];
-  for (var i = 0; i < contentArr.length; i++) {
+  for (let i = 0; i < contentArr.length; i++) {
     const line = contentArr[i];
     // Match 'from' or 'require' statements with './'
     const regex = line.match(/((from)|(require\s*\())\s*['"]([^'"]*\.\/[^'"]*)['"]/);
