@@ -3,13 +3,11 @@ const sidebarFunctions = require('./sidebar.js');
 const generateHeader = sidebarFunctions.generateHeader;
 const setContentMessage = sidebarFunctions.setContentMessage;
 
-const svg = d3.select('.svg-main');
-
-
-const drawGraph = (error, graph, user, repo, subdir) => {
+function drawGraph(error, graph, user, repo, subdir) {
   generateHeader(graph, user, repo, subdir);
   setContentMessage();
   
+  const svg = d3.select('.svg-main');
   svg.selectAll("g").remove();
   svg.selectAll("text").remove();
   const width = Number(svg.attr("width"));
@@ -23,19 +21,17 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   svg.on("click", unhighlightNode);
   
   const simulation = d3.forceSimulation()
-  .force(
-    "link", d3.forceLink()
-    .distance(d => distance(d)/2)
-    .strength(1)
-    .id((d) => d.id)
-  )
-  .force("charge", d3.forceManyBody(0))
-  // .force("center", d3.forceCenter(width/2, height/2))
-  .force("collision", d3.forceCollide(10));
+    .force(
+      "link", d3.forceLink()
+      .distance(d => distance(d))
+      .strength(1)
+      .id((d) => d.id)
+    )
+    .force("charge", d3.forceManyBody(0))
+    .force("collision", d3.forceCollide(10));
   
   // LINKS, NODES, AND TEXT =============================
   
-  if (error) throw error;
   const link = svg.append("g")
     .attr("class", "links")
     .selectAll("line")
@@ -79,7 +75,8 @@ const drawGraph = (error, graph, user, repo, subdir) => {
         .on("start", dragstarted)
         .on("drag", dragged)
         .on("end", dragended)
-      ).on("click", highlightNode)
+      )
+      .on("click", highlightNode)
       .on("mouseover", hoverNode)
       .on("mouseout", hoverNode);
   
@@ -150,8 +147,10 @@ const drawGraph = (error, graph, user, repo, subdir) => {
   graph.links.forEach(d => {
     linkedById[`${d.source.id},${d.target.id}`] = 1;
   });
-  const linkedNodes = (a, b) => linkedById[`${a.id},${b.id}`];
-  const linkedIds = (a, b) => linkedById[`${a},${b}`];
+  
+  function linkedIds(a, b) {
+    return linkedById[`${a},${b}`];
+  }
   
   function adjacent(o, d) {
     const oId = o.id ? o.id : o;
@@ -392,9 +391,9 @@ const drawGraph = (error, graph, user, repo, subdir) => {
     }
     let distanceDenom = 200 + Math.min(graph.nodes.length * 2, 250);
     
-    return 60000 / distanceDenom + offset;
+    return 30000 / distanceDenom + offset;
   }
-};
+}
 
 module.exports = drawGraph;
 
