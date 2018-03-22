@@ -1,3 +1,33 @@
-<p>
-  sidebar works!
-</p>
+<div class="sidebar-main">
+  <div class="sidebar-options">
+    <form ng-submit="handleSubmit()">
+      <div class="input-fields">
+        
+        <div class="input-fields">
+          <div class="input-fields-top">
+            <label class="input-text-label">Github Username
+              <input class="input-text input-user" type="text">
+              <span></span>
+            </label>
+            <label class="input-text-label">Repos
+              <input class="input-text input-repo" type="text">
+              <span></span>
+            </label>
+            <label class="input-text-label">
+              <div>
+                Subdir
+                <div class="optional-tag">(optional)</div>
+              </div>
+              <input class="input-text input-subdir" type="text">
+              <span></span>
+            </label>
+            <label class="input-submit-label">
+              <input class="input-submit" type="submit" value="submit">
+            </label>
+          </div>
+        </div>
+        
+      </div>
+    </form>
+  </div>
+</div>
