@@ -1,32 +1,27 @@
-# Github Filetree Visualizer
+# GithubVisualizerAngular
 
-![](https://thumbs.gfycat.com/MeatyRecklessButterfly-size_restricted.gif)
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
-[Live Site](https://hanhee-song.github.io/github-visualizer/)
+## Development server
 
-The Github Filetree Visualizer combines the D3 library with Github's API to create powerful visualizations of JavaScript-based repositories.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-### Features
+## Code scaffolding
 
-The visualizer will parse out the contents of any given repository, sift through all files with a ```.js``` or ```.jsx``` extension, and calculate the interdependencies based on the contents of the files.
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Users can input either the Github URL or the user, repo, and an optional subdirectory. The visualizer will retrieve and display the files in a graph.
+## Build
 
-Nodes denote files with a .js or .jsx extension. The size of the node corresponds to the size of the file. Nodes are colored by the subdirectory they are in.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-Users can click on a node to highlight its links and display its contents. To remove highlighting, users can click on the same node or on the background. Users can also click and drag nodes around.
+## Running unit tests
 
-The visualizer is compatible with various major repositories, including Redux, Express, and React.
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-![](https://thumbs.gfycat.com/DeliriousFarflungAquaticleech-size_restricted.gif)
+## Running end-to-end tests
 
-## How it works
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
-The visualizer sends XHRs via the Github API - one to retrieve the SHA of the most recent commit, one to retrieve the file tree, and a series of requests to retrieve the contents of every ```.js``` or ```.jsx``` file. It stores each file as a node and examines file dependencies to construct links between each file. Using a combination of data structures, memoization, and regex, the parser rapidly determines the tree structure and converts ```import``` or ```require``` statements into links. The resulting JSON is then rendered in D3.
+## Further help
 
-#### Notes
-
-* The visualizer ignores any file named ```bundle.js``` or ```bundle.js.map```
-* References to node modules or files outside of the specified subdirectory are ignored
-* Nodes are grouped and colored by the subdirectory immediately following the specified directory, e.g. with a specified directory of ```frontend/component```, all files in ```frontend/components/channel``` will be one color and all files in ```frontend/components/workspace``` will be a separate color. Providing a subdirectory (if applicable) will result in more colorful graphs
-* The subdirectory field can take in any number of folders
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
