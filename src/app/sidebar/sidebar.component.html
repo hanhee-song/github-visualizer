@@ -7,7 +7,7 @@
           <div class="input-fields-top">
             <label class="input-text-label">Github Username
               <input class="input-text input-user"
-                [ngModel]="user"
+                [(ngModel)]="user"
                 (ngModelChange)="handleChange(e)"
                 name="user"
                 type="text">
@@ -15,7 +15,7 @@
             </label>
             <label class="input-text-label">Repos
               <input class="input-text input-repo"
-              [ngModel]="repo"
+              [(ngModel)]="repo"
               (ngModelChange)="handleChange(e)"
               name="repo"
               type="text">
@@ -27,7 +27,7 @@
                 <div class="optional-tag">(optional)</div>
               </div>
               <input class="input-text input-subdir"
-              [ngModel]="subdir"
+              [(ngModel)]="subdir"
               (ngModelChange)="handleChange(e)"
               name="subdir"
               type="text">
@@ -48,7 +48,7 @@
                 </div>
               </div>
               <input class="input-text input-url"
-              [ngModel]="url"
+              [(ngModel)]="url"
               (ngModelChange)="handleUrlChange(e)"
               name="url"
               type="text">
