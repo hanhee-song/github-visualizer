@@ -1,3 +1,4 @@
+import { GitApiService } from './../git-api.service';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -6,12 +7,14 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./sidebar-form.component.css']
 })
 export class SidebarFormComponent implements OnInit {
-  @Input() user;
-  @Input() repo;
-  @Input() subdir;
-  @Input() url;
+  @Input() user = "hanhee-song";
+  @Input() repo = "github-visualizer";
+  @Input() subdir = "";
+  @Input() url = "";
   
-  constructor() { }
+  constructor(
+    private gitApiService: GitApiService
+  ) { }
 
   ngOnInit() {
   }
@@ -25,7 +28,13 @@ export class SidebarFormComponent implements OnInit {
   }
 
   handleSubmit() {
-
+    // TODO: error handling for empty fields
+    const params = {
+      user: this.user,
+      repo: this.repo,
+      subdir: this.subdir,
+    }
+    this.gitApiService.handleSubmit(params)
   }
 
   makeUrl() {

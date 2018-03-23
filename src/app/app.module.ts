@@ -8,6 +8,8 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { SidebarFormComponent } from './sidebar-form/sidebar-form.component';
 import { SidebarDataComponent } from './sidebar-data/sidebar-data.component';
 import { SidebarCodeComponent } from './sidebar-code/sidebar-code.component';
+import { GitApiService } from './git-api.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -20,9 +22,10 @@ import { SidebarCodeComponent } from './sidebar-code/sidebar-code.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [GitApiService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
