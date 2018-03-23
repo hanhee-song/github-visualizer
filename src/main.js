@@ -37,6 +37,7 @@ function submitGraph(user, repo, subdir = "") {
       }, 1400);
     },
     error => {
+      console.log(error)
       loading = false;
       if (error.status === 600) {
         setContentMessage(`Repo too large: ${error.statusText} files found.

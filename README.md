@@ -6,6 +6,12 @@
 
 The Github Filetree Visualizer combines the D3 library with Github's API to create powerful visualizations of JavaScript-based repositories.
 
+### Cloning the Repo
+
+If you wish to run this repo locally by cloning it:
+* run ```watchify src/main.js -o bundle.js -v``` to bundle
+* open ```index.html```. No need to get a server running
+
 ### Features
 
 The visualizer will parse out the contents of any given repository, sift through all files with a ```.js``` or ```.jsx``` extension, and calculate the interdependencies based on the contents of the files.

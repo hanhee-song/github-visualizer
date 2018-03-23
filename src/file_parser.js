@@ -133,10 +133,11 @@ function extension(path) {
 function forbiddenFile(path) {
   const parsedName = parseName(path);
   const ext = extension(path);
-  return parsedName === "bundle.js"
-  || parsedName === "bundle.js.map"
+  return parsedName.match(/((bundle).*\.(js))/)
+  || parsedName.match(/((webpack).*\.(config))/)
   || (ext !== "js"
-  && ext !== "jsx");
+  && ext !== "jsx")
+  || path === "js" || path === "jsx"; // will otherwise break when folders are named js
 }
 
 function parseRoot(path, subdir) {

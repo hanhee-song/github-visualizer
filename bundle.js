@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
 const sidebarFunctions = require('./sidebar.js');
 const generateHeader = sidebarFunctions.generateHeader;
 const setContentMessage = sidebarFunctions.setContentMessage;
@@ -533,10 +533,11 @@ function extension(path) {
 function forbiddenFile(path) {
   const parsedName = parseName(path);
   const ext = extension(path);
-  return parsedName === "bundle.js"
-  || parsedName === "bundle.js.map"
+  return parsedName.match(/((bundle).*\.(js))/)
+  || parsedName.match(/((webpack).*\.(config))/)
   || (ext !== "js"
-  && ext !== "jsx");
+  && ext !== "jsx")
+  || path === "js" || path === "jsx"; // will otherwise break when folders are named js
 }
 
 function parseRoot(path, subdir) {
@@ -697,6 +698,7 @@ function submitGraph(user, repo, subdir = "") {
       }, 1400);
     },
     error => {
+      console.log(error)
       loading = false;
       if (error.status === 600) {
         setContentMessage(`Repo too large: ${error.statusText} files found.
