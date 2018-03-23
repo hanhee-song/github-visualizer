@@ -453,7 +453,7 @@ body {
 
 /******** INFO PANEL ************/
 
-.sidebar-header {
+.sidebar-data {
   min-width: 400px;
   max-width: 500px;
   height: 140px;
@@ -575,7 +575,7 @@ form label {
 
 .optional-tag {
   display: inline;
-  font-size: 12px;
+  font-size: 10px;
   color: #bbb;
 }
 

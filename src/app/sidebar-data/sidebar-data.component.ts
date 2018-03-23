@@ -6,10 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sidebar-data.component.css']
 })
 export class SidebarDataComponent implements OnInit {
+  data = {
+    user: "",
+    repo: "",
+    subdir: "",
+    totalLines: "",
+    totalFiles: "",
+    currentFile: "",
+    currentLoc: "",
+  }
 
   constructor() { }
 
   ngOnInit() {
   }
-
 }
