@@ -20,6 +20,9 @@ export class D3ContainerComponent implements OnInit {
   }
   
   // D3 LIVES HERE =======================================
+  // Todo: refactor this mess
+  // There's a good deal of really messy code from back when this was
+  // executed functional-style in a separate file
   
   drawGraph(graph, user, repo, subdir) {
     // generateHeader(graph, user, repo, subdir);

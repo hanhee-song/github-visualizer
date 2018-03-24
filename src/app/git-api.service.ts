@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of'
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, tap } from 'rxjs/operators'
+import { catchError, map, tap, delay } from 'rxjs/operators'
 import { zip } from 'rxjs/observable/zip';
 
 import { decode } from 'base-64';
@@ -110,9 +110,20 @@ Maybe specify a subdirectory?`)
         catchError(err => this._handleFileError())
       ))
     }
-    return zip(...observables).subscribe(
+    return zip(...observables)
+      .pipe(delay(1500))
+      .subscribe(
       _ => {
         this.graphChange.next(this.graphJSON)
+        let totalLines = 0;
+        this.graphJSON.nodes.forEach(node => {
+          totalLines += node.loc;
+        });
+        this.sidebarContentService.setData({
+          totalLines,
+          totalFiles: this.graphJSON.nodes.length
+        })
+        this.sidebarContentService.setHelpMessage()
       }
     )
   }
