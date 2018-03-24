@@ -36,6 +36,7 @@ export class GitApiService {
   ) { }
   
   handleSubmit(params) {
+    this._clearVars()
     // Order of events
     // this._setParams
     // this._getRepo
@@ -249,5 +250,24 @@ export class GitApiService {
     links.forEach(link => {
       this.graphJSON.links.push(link)
     })
+  }
+  
+  // ==================================
+  
+  _clearVars() {
+    this._ = {
+      sha: "",
+      files: [],
+      fetched: 0,
+      parsed: 0,
+      unparsed: 0,
+      rootDirs: [],
+      filePathSet: new Set(),
+    }
+
+    this.graphJSON = {
+      nodes: [],
+      links: [],
+    }
   }
 }
