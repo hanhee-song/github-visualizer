@@ -7,9 +7,13 @@ import { SidebarContentService } from '../sidebar-content.service';
   styleUrls: ['./sidebar-content.component.css']
 })
 export class SidebarContentComponent implements OnInit {
+  content = ""
+  
   constructor(
-    public sidebarContentService: SidebarContentService
-  ) { }
+    private sidebarContentService: SidebarContentService
+  ) {
+    this.sidebarContentService.contentChange.subscribe(value => this.content = value);
+  }
 
   ngOnInit() {
   }
