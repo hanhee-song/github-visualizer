@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of'
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators'
+import { zip } from 'rxjs/observable/zip';
+
 import { decode } from 'base-64';
 
 
@@ -83,27 +85,22 @@ export class GitApiService {
     this._.parsed = 0;
     this._.fetched = 0;
     this._.unparsed = 0;
+    const observables = []
     for (let i = 0; i < this._.files.length; i++) {
       const file = this._.files[i];
-      console.log("sent", file.url)
-      this._getFile(file.url)
-        .subscribe(
-          res => {
-            const content = decode(res.content)
-            this._.fetched++
-            const contentArr = content.split(/\r?\n/);
-            const fileName = this._parseName(file.path);
-            this._addNode(file, contentArr.length, content)
-            this._addLinks(file, contentArr)
-            console.log(this.graphJSON)
-          },
-          error => this._.unparsed++
-        )
+      observables.push(this._getFile(file.url).pipe(
+        tap(res => this._processFile(file.path, res)),
+        catchError(err => this._handleFileError())
+      ))
     }
+    zip(...observables).subscribe(
+      _ => {
+        console.log(this.graphJSON)
+      }
+    )
   }
   
   _getFile(url) {
-    console.log(url)
     return this.http.get(
       url,
       {
@@ -112,6 +109,20 @@ export class GitApiService {
         }
       }
     )
+  }
+  
+  _processFile(filePath, res) {
+    const content = decode(res.content)
+    this._.fetched++
+    const contentArr = content.split(/\r?\n/);
+    const fileName = this._parseName(filePath);
+    this._addNode(filePath, contentArr.length, content)
+    this._addLinks(filePath, contentArr)
+  }
+  
+  _handleFileError() {
+    this._.unparsed++
+    return of(null)
   }
   
   _englishifyError(error) {
@@ -220,21 +231,21 @@ export class GitApiService {
     }
   }
   
-  _addNode(file, length, content) {
-    const name = this._parseName(file.path);
+  _addNode(filePath, length, content) {
+    const name = this._parseName(filePath);
     let node = {
-      id: file.path,
+      id: filePath,
       name,
-      extension: this._extension(file.path),
+      extension: this._extension(filePath),
       loc: length,
-      group: this._.rootDirs.indexOf(this._parseRoot(file.path)),
+      group: this._.rootDirs.indexOf(this._parseRoot(filePath)),
       content,
     };
     this.graphJSON.nodes.push(node);
   }
   
-  _addLinks(file, contentArr) {
-    const links = this._parseLinks(file.path, contentArr);
+  _addLinks(filePath, contentArr) {
+    const links = this._parseLinks(filePath, contentArr);
     links.forEach(link => {
       this.graphJSON.links.push(link)
     })
