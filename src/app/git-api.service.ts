@@ -43,6 +43,7 @@ export class GitApiService {
   handleSubmit(params) {
     this._clearVars()
     this.sidebarContentService.setContent("Fetching repo from Github...")
+    this.sidebarContentService.setData(params)
     // Order of events
     // this._setParams
     // this._getRepo

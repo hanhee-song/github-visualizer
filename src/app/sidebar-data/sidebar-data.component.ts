@@ -1,3 +1,4 @@
+import { SidebarContentService } from './../sidebar-content.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -16,7 +17,11 @@ export class SidebarDataComponent implements OnInit {
     currentLoc: "",
   }
 
-  constructor() { }
+  constructor(
+    private sidebarContentService: SidebarContentService
+  ) {
+    this.sidebarContentService.dataChange.subscribe(value => this.data = value)
+  }
 
   ngOnInit() {
   }
