@@ -42,6 +42,7 @@ export class GitApiService {
   
   handleSubmit(params) {
     this._clearVars()
+    this.sidebarContentService.setContent("Fetching repo from Github...")
     // Order of events
     // this._setParams
     // this._getRepo
@@ -86,6 +87,12 @@ export class GitApiService {
     this._.files = this._parseTree(response)
     if (this._.files.length > 200) {
       // raise error or something, or maybe you don't even need to raise an error
+      this.sidebarContentService.setContent(`Repo too large: ${this._.files.length} files found.
+
+There is a limit of 200 files to avoid flooding the Github servers.
+
+Maybe specify a subdirectory?`)
+      return
     }
     this._.rootDirs = this._parseRootDirs()
     this._.filePathSet = new Set(Object.values(this._.files).map(file => file.path ));
@@ -93,6 +100,7 @@ export class GitApiService {
     this._.parsed = 0;
     this._.fetched = 0;
     this._.unparsed = 0;
+    this._setMessage
     const observables = []
     for (let i = 0; i < this._.files.length; i++) {
       const file = this._.files[i];
@@ -122,14 +130,18 @@ export class GitApiService {
   _processFile(filePath, res) {
     const content = decode(res.content)
     this._.fetched++
+    this._setMessage()
     const contentArr = content.split(/\r?\n/);
     const fileName = this._parseName(filePath);
     this._addNode(filePath, contentArr.length, content)
     this._addLinks(filePath, contentArr)
+    this._.parsed++
+    this._setMessage()
   }
   
   _handleFileError() {
     this._.unparsed++
+    this._setMessage()
     return of(null)
   }
   
@@ -140,6 +152,20 @@ export class GitApiService {
       console.log(error)
       return "Sorry, we couldn't process the repo for an unknown reason.\nPlease check the console logs."
     }
+  }
+  
+  _setMessage() {
+    let finishedMessage = "";
+    if (this._.files.length === this._.parsed + this._.unparsed) {
+      finishedMessage = "Repository loaded!";
+    }
+    this.sidebarContentService.setContent(`Repo found. Fetching and parsing files...
+    
+   Fetched files: ${this._.fetched} / ${this._.files.length}
+    Parsed files: ${this._.parsed} / ${this._.files.length}
+Unparsable files: ${this._.unparsed}
+
+${finishedMessage}`);
   }
   
   // ================================================================
