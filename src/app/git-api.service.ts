@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { SidebarContentService } from './sidebar-content.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -14,6 +15,8 @@ export class GitApiService {
   user: String;
   repo: String;
   subdir: String;
+  
+  graphChange = new Subject()
   
   _ = {
     sha: "",
@@ -33,7 +36,9 @@ export class GitApiService {
   constructor(
     private http: HttpClient,
     private sidebarContentService: SidebarContentService
-  ) { }
+  ) {
+    this.graphChange.subscribe()
+  }
   
   handleSubmit(params) {
     this._clearVars()
@@ -83,6 +88,8 @@ export class GitApiService {
       // raise error or something, or maybe you don't even need to raise an error
     }
     this._.rootDirs = this._parseRootDirs()
+    this._.filePathSet = new Set(Object.values(this._.files).map(file => file.path ));
+    
     this._.parsed = 0;
     this._.fetched = 0;
     this._.unparsed = 0;
@@ -96,7 +103,7 @@ export class GitApiService {
     }
     return zip(...observables).subscribe(
       _ => {
-        console.log(this.graphJSON)
+        this.graphChange.next(this.graphJSON)
       }
     )
   }
