@@ -36,9 +36,10 @@ export class GitApiService {
     // this._setParams
     // this._getRepo
     // this._processRepoResponse
+    // this._getSha
     // this._processShaResponse
     this._setParams(params)
-    this._getRepo().subscribe(
+    return this._getRepo().subscribe(
       response => this._processRepoResponse(response),
       error => this.sidebarContentService.setContent(this._englishifyError(error))
     )
@@ -57,13 +58,17 @@ export class GitApiService {
   }
   
   _processRepoResponse(response) {
-    this._.sha = JSON.parse(response.responseText)[0].sha
-    return this.http.get(`https://api.github.com/repos/${this.user}/${this.repo}/git/trees/${this._.sha}?recursive=1`, {
-      headers: { 'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==' }
-    }).subscribe(
+    this._.sha = response[0].sha
+    return this._getSha().subscribe(
       response => this._processShaResponse(response),
       error => this.sidebarContentService.setContent(this._englishifyError(error))
     )
+  }
+  
+  _getSha() {
+    return this.http.get(`https://api.github.com/repos/${this.user}/${this.repo}/git/trees/${this._.sha}?recursive=1`, {
+      headers: { 'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==' }
+    })
   }
   
   _processShaResponse(response) {
@@ -75,8 +80,37 @@ export class GitApiService {
     this._.parsed = 0;
     this._.fetched = 0;
     this._.unparsed = 0;
-    
-    
+    for (let i = 0; i < this._.files.length; i++) {
+      const file = this._.files[i];
+      console.log("sent", file.url)
+      this._requestFile(file.url)
+        .subscribe(
+          content => {
+            console.log("received")
+            debugger
+            this._.fetched++
+            const contentArr = content.split(/\r?\n/);
+            const fileName = this._parseName(file.path);
+            let links = this._parseLinks(file.path, contentArr);
+            this._addNode(file, contentArr.length, content)
+            this._addLinks(file, contentArr)
+            console.log(this.graphJSON)
+          },
+          error => this._.unparsed++
+        )
+    }
+  }
+  
+  _requestFile(url) {
+    return this.http.get(
+      url,
+      {
+        headers: {
+          'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==',
+          'accept': 'application/vnd.github.VERSION.raw'
+        }
+      }
+    )
   }
   
   _englishifyError(error) {
@@ -91,7 +125,7 @@ export class GitApiService {
   // ================================================================
   
   _parseTree(response) {
-    return JSON.parse(response.responseText).tree.filter(file => {
+    return response.tree.filter(file => {
       if (this._forbiddenFile(file.path)) {
         return false;
       }
@@ -144,5 +178,64 @@ export class GitApiService {
   _parseName(path) {
     const splitPath = path.split("/");
     return splitPath[splitPath.length - 1];
+  }
+  
+  _parseLinks(filePath, contentArr) {
+    let links = [];
+    for (let i = 0; i < contentArr.length; i++) {
+      const line = contentArr[i];
+      // Match 'from' or 'require' statements with './'
+      const regex = line.match(/((from)|(require\s*\())\s*['"]([^'"]*\.\/[^'"]*)['"]/);
+      if (regex && !line.match(/^.{0,7}\/[\*\/]/)) {
+        links.push({
+          "source": this._parsePath(filePath, regex[regex.length - 1]),
+          "target": filePath
+        });
+      }
+    }
+    return links;
+  }
+  
+  _parsePath(filePath, parsedImport) {
+    let sectionArr = parsedImport.split("/");
+    let pathArr = filePath.split("/");
+    pathArr.pop();
+    let newPath;
+    sectionArr.forEach(section => {
+      if (section === '..') {
+        pathArr.pop();
+      } else if (section !== ".") {
+        pathArr.push(section);
+      }
+    });
+
+    const combinedPath = pathArr.join("/");
+    if (this._.filePathSet.has(combinedPath)) {
+      return combinedPath;
+    } else if (this._.filePathSet.has(combinedPath + ".jsx")) {
+      return combinedPath + ".jsx";
+    } else {
+      return combinedPath + ".js";
+    }
+  }
+  
+  _addNode(file, length, content) {
+    const name = this._parseName(file.path);
+    let node = {
+      id: file.path,
+      name,
+      extension: this._extension(file.path),
+      loc: length,
+      group: this._.rootDirs.indexOf(this._parseRoot(file.path)),
+      content,
+    };
+    this.graphJSON.nodes.push(node);
+  }
+  
+  _addLinks(file, contentArr) {
+    const links = this._parseLinks(file.path, contentArr);
+    links.forEach(link => {
+      this.graphJSON.links.push(link)
+    })
   }
 }
