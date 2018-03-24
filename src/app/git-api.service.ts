@@ -4,6 +4,8 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of'
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators'
+import { decode } from 'base-64';
+
 
 @Injectable()
 export class GitApiService {
@@ -38,6 +40,7 @@ export class GitApiService {
     // this._processRepoResponse
     // this._getSha
     // this._processShaResponse
+    // this._getFile
     this._setParams(params)
     return this._getRepo().subscribe(
       response => this._processRepoResponse(response),
@@ -83,15 +86,13 @@ export class GitApiService {
     for (let i = 0; i < this._.files.length; i++) {
       const file = this._.files[i];
       console.log("sent", file.url)
-      this._requestFile(file.url)
+      this._getFile(file.url)
         .subscribe(
-          content => {
-            console.log("received")
-            debugger
+          res => {
+            const content = decode(res.content)
             this._.fetched++
             const contentArr = content.split(/\r?\n/);
             const fileName = this._parseName(file.path);
-            let links = this._parseLinks(file.path, contentArr);
             this._addNode(file, contentArr.length, content)
             this._addLinks(file, contentArr)
             console.log(this.graphJSON)
@@ -101,13 +102,13 @@ export class GitApiService {
     }
   }
   
-  _requestFile(url) {
+  _getFile(url) {
+    console.log(url)
     return this.http.get(
       url,
       {
         headers: {
           'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==',
-          'accept': 'application/vnd.github.VERSION.raw'
         }
       }
     )
