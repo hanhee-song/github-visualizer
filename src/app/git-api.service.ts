@@ -1,3 +1,4 @@
+import { SidebarContentService } from './sidebar-content.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of'
@@ -11,13 +12,15 @@ export class GitApiService {
   subdir;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private sidebarContentService: SidebarContentService
   ) { }
   
   handleSubmit(params) {
     this._setParams(params)
     this._getRepo().subscribe(
-      response => console.log(response)
+      response => console.log(response),
+      error => this.sidebarContentService.setContent(this.stringifyError(error))
     )
   }
   
@@ -31,5 +34,11 @@ export class GitApiService {
     return this.http.get(`https://api.github.com/repos/${this.user}/${this.repo}/commits`, {
       headers: { 'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==' }
     })
+  }
+  
+  stringifyError(error) {
+    if (error.status === 404) {
+      return "404: Sorry, we couldn't find that repo!"
+    }
   }
 }
