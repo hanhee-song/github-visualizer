@@ -94,7 +94,7 @@ export class GitApiService {
         catchError(err => this._handleFileError())
       ))
     }
-    zip(...observables).subscribe(
+    return zip(...observables).subscribe(
       _ => {
         console.log(this.graphJSON)
       }

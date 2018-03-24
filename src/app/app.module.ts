@@ -11,6 +11,7 @@ import { SidebarContentComponent } from './sidebar-content/sidebar-content.compo
 import { GitApiService } from './git-api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SidebarContentService } from './sidebar-content.service';
+import { D3ContainerComponent } from './d3-container/d3-container.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { SidebarContentService } from './sidebar-content.service';
     SidebarComponent,
     SidebarFormComponent,
     SidebarDataComponent,
-    SidebarContentComponent
+    SidebarContentComponent,
+    D3ContainerComponent
   ],
   imports: [
     BrowserModule,
