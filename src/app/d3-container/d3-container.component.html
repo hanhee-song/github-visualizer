@@ -10,8 +10,11 @@
       </div>
     </div>
 
-    <div id="pause-button">
-      <i class="fa fa-pause toggle-pause-icon" aria-hidden="true"></i>
+    <div id="pause-button"
+      (click)="handlePause()">
+      <i class="fa toggle-pause-icon"
+        [ngClass]="!paused ? 'fa-pause' : 'fa-play'"
+        aria-hidden="true"></i>
     </div>
   </div>
   <svg class="svg-main" width="500" height="474">

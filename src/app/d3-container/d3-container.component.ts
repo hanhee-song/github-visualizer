@@ -19,7 +19,7 @@ export class D3ContainerComponent implements OnInit {
   hoveredId = "";
   clickedId = "";
   searchedId = "";
-  frozen = false;
+  paused = false;
   linkedById = {}
 
   constructor(
@@ -130,60 +130,6 @@ export class D3ContainerComponent implements OnInit {
     graph.links.forEach(d => {
       this.linkedById[`${d.source.id},${d.target.id}`] = 1;
     });
-
-
-    // EVENT LISTENERS - SEARCH / PAUSE ====================
-
-    // const topOptions = document.querySelector('.top-options');
-    // let clone = topOptions.cloneNode();
-    // while (topOptions.firstChild) {
-    //   clone.appendChild(topOptions.firstChild);
-    // }
-    // topOptions.parentNode.replaceChild(clone, topOptions);
-
-    // const search = document.getElementById('search');
-    // search.addEventListener("input", handleSearch);
-    // search.value = "";
-    // document.getElementById('search-clear').addEventListener("click", handleClearSearch);
-    // document.getElementById('pause-button').addEventListener("click", handlePause);
-    // const icon = document.querySelector(".toggle-pause-icon");
-    // icon.classList.add("fa-pause");
-    // icon.classList.remove("fa-play");
-
-
-    // function handleSearch(e) {
-    //   searchedId = e.target.value;
-    //   generateOpacity();
-    //   generateText();
-    // }
-
-    // function handleClearSearch(e) {
-    //   document.getElementById('search').value = "";
-    //   search.value = "";
-    //   searchedId = "";
-    //   generateOpacity();
-    //   generateText();
-    // }
-
-    // function handlePause(e) {
-    //   if (frozen) {
-    //     icon.classList.add("fa-pause");
-    //     icon.classList.remove("fa-play");
-    //     frozen = false;
-    //     node.each((d) => {
-    //       d.fx = null;
-    //       d.fy = null;
-    //     });
-    //   } else {
-    //     frozen = true;
-    //     icon.classList.add("fa-play");
-    //     icon.classList.remove("fa-pause");
-    //     node.each((d) => {
-    //       d.fx = d.x;
-    //       d.fy = d.y;
-    //     });
-    //   }
-    // }
   }
   
   // TICK FUNCTION ========================================
@@ -292,7 +238,7 @@ export class D3ContainerComponent implements OnInit {
     this.clickedId = "";
     this.generateOpacity();
     this.generateText();
-    if (!this.frozen) {
+    if (!this.paused) {
       d.fx = null;
       d.fy = null;
     }
@@ -381,6 +327,63 @@ export class D3ContainerComponent implements OnInit {
       }
     }
     return true;
+  }
+  
+
+  // EVENT LISTENERS - SEARCH / PAUSE ====================
+
+  // const topOptions = document.querySelector('.top-options');
+  // let clone = topOptions.cloneNode();
+  // while (topOptions.firstChild) {
+  //   clone.appendChild(topOptions.firstChild);
+  // }
+  // topOptions.parentNode.replaceChild(clone, topOptions);
+
+  // const search = document.getElementById('search');
+  // search.addEventListener("input", handleSearch);
+  // search.value = "";
+  // document.getElementById('search-clear').addEventListener("click", handleClearSearch);
+  // document.getElementById('pause-button').addEventListener("click", handlePause);
+  // const icon = document.querySelector(".toggle-pause-icon");
+  // icon.classList.add("fa-pause");
+  // icon.classList.remove("fa-play");
+
+
+  handleSearch(e) {
+    this.searchedId = e.target.value;
+    this.generateOpacity();
+    this.generateText();
+  }
+
+  handleClearSearch(e) {
+    // document.getElementById('search').value = "";
+    // search.value = "";
+    this.searchedId = "";
+    this.generateOpacity();
+    this.generateText();
+  }
+
+  handlePause(e) {
+    if (!this.node) {
+      return
+    }
+    if (this.paused) {
+      // icon.classList.add("fa-pause");
+      // icon.classList.remove("fa-play");
+      this.paused = false;
+      this.node.each((d) => {
+        d.fx = null;
+        d.fy = null;
+      });
+    } else {
+      this.paused = true;
+      // icon.classList.add("fa-play");
+      // icon.classList.remove("fa-pause");
+      this.node.each((d) => {
+        d.fx = d.x;
+        d.fy = d.y;
+      });
+    }
   }
   
 
