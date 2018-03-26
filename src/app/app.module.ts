@@ -1,3 +1,4 @@
+import { ModalService } from './modal.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SidebarContentService } from './sidebar-content.service';
 import { D3ContainerComponent } from './d3-container/d3-container.component';
 import { SampleReposComponent } from './sample-repos/sample-repos.component';
+import { HelpModalComponent } from './help-modal/help-modal.component';
 
 
 @NgModule({
@@ -23,7 +25,8 @@ import { SampleReposComponent } from './sample-repos/sample-repos.component';
     SidebarDataComponent,
     SidebarContentComponent,
     D3ContainerComponent,
-    SampleReposComponent
+    SampleReposComponent,
+    HelpModalComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +35,8 @@ import { SampleReposComponent } from './sample-repos/sample-repos.component';
   ],
   providers: [
     GitApiService,
-    SidebarContentService
+    SidebarContentService,
+    ModalService
   ],
   bootstrap: [AppComponent]
 })

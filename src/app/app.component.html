@@ -1,10 +1,13 @@
+<app-help-modal *ngIf="this.modal === 'help'"></app-help-modal>
+
 <div class="title-wrapper">
   <div>Github</div>&nbsp;
   <div>Filetree</div>&nbsp;
   <div>Visualizer</div>
-  <!-- <div class="button-help">
+  <div class="button-help"
+    (click)="openModal('help')">
     ?
-  </div> -->
+  </div>
 </div>
 
 <app-sample-repos></app-sample-repos>
