@@ -332,25 +332,10 @@ export class D3ContainerComponent implements OnInit {
 
   // EVENT LISTENERS - SEARCH / PAUSE ====================
 
-  // const topOptions = document.querySelector('.top-options');
-  // let clone = topOptions.cloneNode();
-  // while (topOptions.firstChild) {
-  //   clone.appendChild(topOptions.firstChild);
-  // }
-  // topOptions.parentNode.replaceChild(clone, topOptions);
-
-  // const search = document.getElementById('search');
-  // search.addEventListener("input", handleSearch);
-  // search.value = "";
-  // document.getElementById('search-clear').addEventListener("click", handleClearSearch);
-  // document.getElementById('pause-button').addEventListener("click", handlePause);
-  // const icon = document.querySelector(".toggle-pause-icon");
-  // icon.classList.add("fa-pause");
-  // icon.classList.remove("fa-play");
-
-
-  handleSearch(e) {
-    this.searchedId = e.target.value;
+  handleSearch() {
+    if (!this.node) {
+      return
+    }
     this.generateOpacity();
     this.generateText();
   }
@@ -359,6 +344,9 @@ export class D3ContainerComponent implements OnInit {
     // document.getElementById('search').value = "";
     // search.value = "";
     this.searchedId = "";
+    if (!this.node) {
+      return
+    }
     this.generateOpacity();
     this.generateText();
   }
@@ -368,8 +356,6 @@ export class D3ContainerComponent implements OnInit {
       return
     }
     if (this.paused) {
-      // icon.classList.add("fa-pause");
-      // icon.classList.remove("fa-play");
       this.paused = false;
       this.node.each((d) => {
         d.fx = null;
@@ -387,7 +373,7 @@ export class D3ContainerComponent implements OnInit {
   }
   
 
-    // MISC HELPER METHODS ============================
+  // MISC HELPER METHODS ============================
 
   color(d) {
     const group = d.group;

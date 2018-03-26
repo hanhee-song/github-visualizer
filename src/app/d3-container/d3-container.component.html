@@ -2,10 +2,17 @@
   <div class="top-options">
     <div class="top-options-search">
       <label class="search-label">
-        <input id="search" class="input-text" type="text" placeholder="Search">
+        <input id="search"
+          class="input-text"
+          [(ngModel)]="searchedId"
+          (ngModelChange)="handleSearch()"
+          type="text"
+          placeholder="Search"
+          name="searchedId">
         <span></span>
       </label>
-      <div id="search-clear">
+      <div id="search-clear"
+        (click)="handleClearSearch()">
         x
       </div>
     </div>
