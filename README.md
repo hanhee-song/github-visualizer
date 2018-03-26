@@ -11,6 +11,7 @@ The Github Filetree Visualizer combines the D3 library with Github's API to crea
 If you wish to run this repo locally by cloning it:
 * get the angular cli package with ```npm install -g @angular/cli```
 * run ```ng serve``` to bundle and serve on 4200
+* to push to github pages, run ```npm run build``` and ```npm run gh``` after installing the ```angular-cli-ghpages``` package
 
 ### Features
 

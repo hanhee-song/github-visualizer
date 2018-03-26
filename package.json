@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --base-href 'https: //hanhee-song.github.io/github-visualizer/'",
+    "build": "ng build --prod --base-href \"https: //hanhee-song.github.io/github-visualizer/\"",
     "gh": "angular-cli-ghpages",
     "test": "ng test",
     "lint": "ng lint",
