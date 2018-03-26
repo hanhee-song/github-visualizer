@@ -35,6 +35,14 @@ export class SampleReposComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const initialRepo = {
+      user: "hanhee-song",
+      repo: "github-visualizer",
+      subdir: "src/app",
+    }
+    setTimeout(() => {
+      this.gitApiService.handleSubmit(initialRepo)
+    }, 10);
   }
   
   handleSubmit(repo) {
