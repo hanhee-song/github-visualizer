@@ -52,6 +52,7 @@ export class GitApiService {
   }
   
   handleSubmit(params) {
+    console.log(this.loading)
     if (this.loading) {
       return
     }
@@ -69,7 +70,10 @@ export class GitApiService {
     this._setParams(params)
     return this._getRepo().subscribe(
       response => this._processRepoResponse(response),
-      error => this.sidebarContentService.setContent(this._englishifyError(error))
+      error => {
+        this.sidebarContentService.setContent(this._englishifyError(error))
+        this.loading = false
+      }
     )
   }
   
@@ -89,7 +93,10 @@ export class GitApiService {
     this._.sha = response[0].sha
     return this._getSha().subscribe(
       response => this._processShaResponse(response),
-      error => this.sidebarContentService.setContent(this._englishifyError(error))
+      error => {
+        this.sidebarContentService.setContent(this._englishifyError(error))
+        this.loading = false
+      }
     )
   }
   

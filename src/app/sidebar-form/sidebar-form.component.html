@@ -5,11 +5,11 @@
       <div class="input-fields">
         <div class="input-fields-top">
           <label class="input-text-label">Github User
-            <input class="input-text input-user" [(ngModel)]="user" (ngModelChange)="handleChange(e)" name="user" type="text">
+            <input class="input-text input-user" [(ngModel)]="params.user" (ngModelChange)="handleChange(e)" name="user" type="text">
             <span></span>
           </label>
           <label class="input-text-label">Repository
-            <input class="input-text input-repo" [(ngModel)]="repo" (ngModelChange)="handleChange(e)" name="repo" type="text">
+            <input class="input-text input-repo" [(ngModel)]="params.repo" (ngModelChange)="handleChange(e)" name="repo" type="text">
             <span></span>
           </label>
           <label class="input-text-label">
@@ -17,7 +17,7 @@
               Subdir
               <div class="optional-tag">(optional)</div>
             </div>
-            <input class="input-text input-subdir" [(ngModel)]="subdir" (ngModelChange)="handleChange(e)" name="subdir" type="text">
+            <input class="input-text input-subdir" [(ngModel)]="params.subdir" (ngModelChange)="handleChange(e)" name="subdir" type="text">
             <span></span>
           </label>
           <label class="input-submit-label">
@@ -33,7 +33,7 @@
                 (optional)
               </div>
             </div>
-            <input class="input-text input-url" [(ngModel)]="url" (ngModelChange)="handleUrlChange(e)" name="url" type="text">
+            <input class="input-text input-url" [(ngModel)]="params.url" (ngModelChange)="handleUrlChange(e)" name="url" type="text">
             <span></span>
           </label>
         </div>
