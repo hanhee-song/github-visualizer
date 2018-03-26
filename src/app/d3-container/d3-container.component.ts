@@ -23,7 +23,8 @@ export class D3ContainerComponent implements OnInit {
   linkedById = {}
 
   constructor(
-    private gitApiService: GitApiService
+    private gitApiService: GitApiService,
+    private sidebarContentService: SidebarContentService
   ) {
     this.gitApiService.graphChange.subscribe(graph => {
       this.drawGraph(graph)
@@ -193,11 +194,17 @@ export class D3ContainerComponent implements OnInit {
     d3.event.stopPropagation();
     if (!this.highlightedId || this.highlightedId !== d.id) {
       this.highlightedId = d.id;
-      // setContentMessage(d.content);
-      // generateHeader(graph, user, repo, subdir, d);
+      this.sidebarContentService.setContent(d.content)
+      this.sidebarContentService.setData({
+        currentFile: d.id,
+        currentLoc: d.loc,
+      })
     } else {
-      // setContentMessage();
-      // generateHeader(graph, user, repo, subdir);
+      this.sidebarContentService.setHelpMessage()
+      this.sidebarContentService.setData({
+        currentFile: "",
+        currentLoc: "",
+      })
       this.highlightedId = "";
     }
     this.generateOpacity();
@@ -205,8 +212,11 @@ export class D3ContainerComponent implements OnInit {
   }
   
   unhighlightNode(d) {
-    // setContentMessage();
-    // generateHeader(graph, user, repo, subdir);
+    this.sidebarContentService.setHelpMessage()
+    this.sidebarContentService.setData({
+      currentFile: "",
+      currentLoc: "",
+    })
     this.highlightedId = "";
     this.generateOpacity();
     this.generateText();
