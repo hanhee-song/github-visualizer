@@ -15,6 +15,7 @@ import { SidebarContentService } from './sidebar-content.service';
 import { D3ContainerComponent } from './d3-container/d3-container.component';
 import { SampleReposComponent } from './sample-repos/sample-repos.component';
 import { HelpModalComponent } from './help-modal/help-modal.component';
+import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { HelpModalComponent } from './help-modal/help-modal.component';
     SidebarContentComponent,
     D3ContainerComponent,
     SampleReposComponent,
-    HelpModalComponent
+    HelpModalComponent,
+    ClickStopPropagationDirective
   ],
   imports: [
     BrowserModule,

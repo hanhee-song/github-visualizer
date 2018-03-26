@@ -14,11 +14,11 @@ export class AppComponent {
     this.modalService.modalChange.subscribe(modal => this.modal = modal)
   }
   
-  openModal(modal) {)
+  openModal(modal) {
     this.modalService.openModal(modal)
   }
   
-  closeModal() {
-    this.modalService.closeModal()
-  }
+  // closeModal() {
+  //   this.modalService.closeModal()
+  // }
 }

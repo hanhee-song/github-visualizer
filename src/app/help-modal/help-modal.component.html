@@ -1,6 +1,8 @@
-<div class="help-modal-container visible">
-  <div class="help-modal-text">
-    <div class="help-modal-x">
+<div class="help-modal-container visible"
+  (click)="handleClose()">
+  <div class="help-modal-text" click-stop-propagation>
+    <div class="help-modal-x"
+      (click)="handleClose()">
       x
     </div>
     About Github Filetree Visualizer
