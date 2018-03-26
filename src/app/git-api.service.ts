@@ -12,11 +12,11 @@ import { decode } from 'base-64';
 
 @Injectable()
 export class GitApiService {
-  user: String;
-  repo: String;
-  subdir: String;
+  paramsChange = new Subject<any>()
+  user: String = "";
+  repo: String = "";
+  subdir: String = "";
   
-  graphChange = new Subject()
   loading = false
   
   _ = {
@@ -29,6 +29,7 @@ export class GitApiService {
     filePathSet: new Set(),
   }
   
+  graphChange = new Subject()
   graphJSON = {
     nodes: [],
     links: [],
@@ -39,6 +40,15 @@ export class GitApiService {
     private sidebarContentService: SidebarContentService
   ) {
     this.graphChange.subscribe()
+    this.paramsChange.subscribe(
+      params => {
+        this.user = params.user
+        this.repo = params.repo
+        if (params.subdir) {
+          this.subdir = params.subdir
+        }
+      }
+    )
   }
   
   handleSubmit(params) {
@@ -48,7 +58,7 @@ export class GitApiService {
     this.loading = true
     this._clearVars()
     this.sidebarContentService.setContent("Fetching repo from Github...")
-    this.sidebarContentService.setData(params)
+    this.paramsChange.next(params)
     // Order of events
     // this._setParams
     // this._getRepo

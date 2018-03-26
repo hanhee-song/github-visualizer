@@ -6,9 +6,6 @@ import { Subject } from 'rxjs/Subject';
 export class SidebarContentService {
   content = ""
   data = {
-    user: "",
-    repo: "",
-    subdir: "",
     totalLines: "",
     totalFiles: "",
     currentFile: "",

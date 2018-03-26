@@ -1,3 +1,4 @@
+import { GitApiService } from './../git-api.service';
 import { SidebarContentService } from './../sidebar-content.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -18,9 +19,11 @@ export class SidebarDataComponent implements OnInit {
   }
 
   constructor(
-    private sidebarContentService: SidebarContentService
+    private sidebarContentService: SidebarContentService,
+    private gitApiService: GitApiService
   ) {
-    this.sidebarContentService.dataChange.subscribe(value => this.data = value)
+    this.sidebarContentService.dataChange.subscribe(value => this.data = Object.assign(this.data, value))
+    this.gitApiService.paramsChange.subscribe(value => this.data = Object.assign(this.data, value))
   }
 
   ngOnInit() {
