@@ -401,7 +401,7 @@ export class D3ContainerComponent implements OnInit {
 
   abbreviate(name) {
     let abb;
-    const extensionless = name.match(/(.*)\.js/)[1];
+    const extensionless = name.match(/(.*)\.[jt]s/)[1];
     const split = extensionless.split(/[-_\.]/);
     if (split.length > 1) {
       return split.map(word => word[0]).join("");

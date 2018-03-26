@@ -52,7 +52,6 @@ export class GitApiService {
   }
   
   handleSubmit(params) {
-    console.log(this.loading)
     if (this.loading) {
       return
     }
@@ -247,9 +246,8 @@ ${finishedMessage}`);
     const ext = this._extension(path);
     return parsedName.match(/((bundle).*\.(js))/)
       || parsedName.match(/((webpack).*\.(config))/)
-      || (ext !== "js"
-        && ext !== "jsx")
-      || path === "js" || path === "jsx"; // will otherwise break when folders are named js
+      || !["ts", "js", "jsx"].includes(ext)
+      || ["ts", "js", "jsx"].includes(path) // will otherwise break when folders are named js
   }
   
   _extension(path) {
@@ -294,10 +292,12 @@ ${finishedMessage}`);
     const combinedPath = pathArr.join("/");
     if (this._.filePathSet.has(combinedPath)) {
       return combinedPath;
+    } else if (this._.filePathSet.has(combinedPath + ".js")) {
+      return combinedPath + ".js";
     } else if (this._.filePathSet.has(combinedPath + ".jsx")) {
       return combinedPath + ".jsx";
     } else {
-      return combinedPath + ".js";
+      return combinedPath + ".ts"
     }
   }
   
