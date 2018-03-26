@@ -40,6 +40,8 @@ export class D3ContainerComponent implements OnInit {
   // executed functional-style in a separate file
   
   drawGraph(graph) {
+    console.log(graph)
+    debugger
     this.graph = graph
     const svg = d3.select('.svg-main');
     svg.selectAll("g").remove();

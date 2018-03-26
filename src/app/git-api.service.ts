@@ -17,6 +17,7 @@ export class GitApiService {
   subdir: String;
   
   graphChange = new Subject()
+  loading = false
   
   _ = {
     sha: "",
@@ -41,6 +42,10 @@ export class GitApiService {
   }
   
   handleSubmit(params) {
+    if (this.loading) {
+      return
+    }
+    this.loading = true
     this._clearVars()
     this.sidebarContentService.setContent("Fetching repo from Github...")
     this.sidebarContentService.setData(params)
@@ -114,6 +119,8 @@ Maybe specify a subdirectory?`)
       .pipe(delay(1500))
       .subscribe(
       _ => {
+        this.loading = false
+        this._sanitizeGraph()
         this.graphChange.next(this.graphJSON)
         let totalLines = 0;
         this.graphJSON.nodes.forEach(node => {
@@ -296,6 +303,22 @@ ${finishedMessage}`);
       this.graphJSON.links.push(link)
     })
   }
+  
+  _sanitizeGraph() {
+  let newGraph = {
+    "links": [],
+    "nodes": this.graphJSON.nodes
+  };
+  const names = new Set(this.graphJSON.nodes.map(node => node.id));
+  
+  this.graphJSON.links.forEach(link => {
+    if (names.has(link.source) && names.has(link.target)) {
+      newGraph.links.push(link);
+    }
+  });
+  
+  this.graphJSON = newGraph;
+}
   
   // ==================================
   
