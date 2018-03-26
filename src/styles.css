@@ -512,22 +512,22 @@ body {
 
 /********** SCROLLBAR **********/
 
-div::-webkit-scrollbar-track, div::-webkit-scrollbar-track {
+.sidebar-data::-webkit-scrollbar-track, .file-content::-webkit-scrollbar-track, .sidebar-options::-webkit-scrollbar-track, html::-webkit-scrollbar-track {
   border: 0;
   background-color: #232b42;
 }
 
-div::-webkit-scrollbar, html::-webkit-scrollbar {
+.sidebar-data::-webkit-scrollbar, .file-content::-webkit-scrollbar, .sidebar-options::-webkit-scrollbar, html::-webkit-scrollbar {
   width: 6px;
   height: 6px;
   background-color: #232b42;
 }
 
-div::-webkit-scrollbar-corner, html::-webkit-scrollbar-corner {
+.sidebar-data::-webkit-scrollbar-corner, .file-content::-webkit-scrollbar-corner, .sidebar-options::-webkit-scrollbar-corner, html::-webkit-scrollbar-corner {
   background-color: #232b42;
 }
 
-div::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb {
+.sidebar-data::-webkit-scrollbar-thumb, .file-content::-webkit-scrollbar-thumb, .sidebar-options::-webkit-scrollbar-thumb, html::-webkit-scrollbar-thumb {
   background-color: rgba(98, 129, 178, .3);
   border-radius: 6px;
 }
