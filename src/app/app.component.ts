@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  modal = ""
+  modal = "help"
   constructor(
     private modalService: ModalService
   ) {
@@ -17,8 +17,4 @@ export class AppComponent {
   openModal(modal) {
     this.modalService.openModal(modal)
   }
-  
-  // closeModal() {
-  //   this.modalService.closeModal()
-  // }
 }

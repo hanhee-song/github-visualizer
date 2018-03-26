@@ -307,10 +307,11 @@ body {
   min-width: 450px;
   height: 500px;
   padding: 25px 20px;
-  margin-top: 200px;
+  margin-top: 20vh;
   border: 2px solid #374468;
   border-radius: 10px;
   font-size: 14px;
+  opacity: .97;
 }
 
 .help-modal-x {
