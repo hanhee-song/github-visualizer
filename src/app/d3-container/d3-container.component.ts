@@ -351,7 +351,7 @@ export class D3ContainerComponent implements OnInit {
     this.generateText();
   }
 
-  handleClearSearch(e) {
+  handleClearSearch() {
     // document.getElementById('search').value = "";
     // search.value = "";
     this.searchedId = "";
@@ -362,7 +362,7 @@ export class D3ContainerComponent implements OnInit {
     this.generateText();
   }
 
-  handlePause(e) {
+  handlePause() {
     if (!this.node) {
       return
     }

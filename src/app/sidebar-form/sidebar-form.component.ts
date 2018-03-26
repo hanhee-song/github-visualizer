@@ -27,11 +27,11 @@ export class SidebarFormComponent implements OnInit {
     })
   }
 
-  handleChange(e) {
+  handleChange() {
     this.makeUrl()
   }
 
-  handleUrlChange(e) {
+  handleUrlChange() {
     this.parseUrl()
   }
 
