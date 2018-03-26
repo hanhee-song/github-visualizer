@@ -36,9 +36,6 @@ export class D3ContainerComponent implements OnInit {
   }
   
   // D3 LIVES HERE =======================================
-  // Todo: refactor this mess
-  // There's a good deal of really messy code from back when this was
-  // executed functional-style in a separate file
   
   drawGraph(graph) {
     this.graph = graph
@@ -339,7 +336,6 @@ export class D3ContainerComponent implements OnInit {
     }
     return true;
   }
-  
 
   // EVENT LISTENERS - SEARCH / PAUSE ====================
 
@@ -352,8 +348,6 @@ export class D3ContainerComponent implements OnInit {
   }
 
   handleClearSearch() {
-    // document.getElementById('search').value = "";
-    // search.value = "";
     this.searchedId = "";
     if (!this.node) {
       return
@@ -374,8 +368,6 @@ export class D3ContainerComponent implements OnInit {
       });
     } else {
       this.paused = true;
-      // icon.classList.add("fa-play");
-      // icon.classList.remove("fa-pause");
       this.node.each((d) => {
         d.fx = d.x;
         d.fy = d.y;

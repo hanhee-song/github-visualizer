@@ -36,7 +36,6 @@ export class SidebarFormComponent implements OnInit {
   }
 
   handleSubmit() {
-    // TODO: error handling for empty fields
     if (!this.params.user || !this.params.repo) {
       this.sidebarContentService.setContent("Please enter both a username and a repo.")
     } else {
