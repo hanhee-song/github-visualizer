@@ -1,6 +1,7 @@
 import { SidebarContentService } from './../sidebar-content.service';
 import { GitApiService } from './../git-api.service';
 import { Component, OnInit } from '@angular/core';
+import * as d3 from "d3";
 
 @Component({
   selector: 'app-d3-container',
