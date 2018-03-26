@@ -29,11 +29,11 @@ The visualizer is compatible with various major repositories, including Redux, E
 
 ## How it works
 
-The visualizer sends XHRs via the Github API - one to retrieve the SHA of the most recent commit, one to retrieve the file tree, and a series of requests to retrieve the contents of every ```.js``` or ```.jsx``` file. It stores each file as a node and examines file dependencies to construct links between each file. Using a combination of data structures, memoization, and regex, the parser rapidly determines the tree structure and converts ```import``` or ```require``` statements into links. The resulting JSON is then rendered in D3.
+The visualizer sends XHRs via the Github API - one to retrieve the SHA of the most recent commit, one to retrieve the file tree, and a series of requests to retrieve the contents of every ```.ts```, ```.js```, or ```.jsx``` file. It stores each file as a node and examines file dependencies to construct links between each file. Using a combination of data structures, memoization, and regex, the parser rapidly determines the tree structure and converts ```import``` or ```require``` statements into links. The resulting JSON is then rendered in D3.
 
 #### Notes
 
-* The visualizer ignores any file named ```bundle.js``` or ```bundle.js.map```
+* The visualizer ignores any file named ```bundle.js``` or ```bundle.js.map```, and any similarly named files like ```bundle.aoeu.js```
 * References to node modules or files outside of the specified subdirectory are ignored
 * Nodes are grouped and colored by the subdirectory immediately following the specified directory, e.g. with a specified directory of ```frontend/component```, all files in ```frontend/components/channel``` will be one color and all files in ```frontend/components/workspace``` will be a separate color. Providing a subdirectory (if applicable) will result in more colorful graphs
-* The subdirectory field can take in any number of folders
+* The subdirectory field can take in any number of folders, e.g. ```src/app```
