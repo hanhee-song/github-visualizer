@@ -1,18 +1,18 @@
 {
   "configVersion": 1,
-  "index": "/index.html",
+  "index": "https://hanhee-song.github.io/github-visualizer/index.html",
   "assetGroups": [
     {
       "name": "app",
       "installMode": "prefetch",
       "updateMode": "prefetch",
       "urls": [
-        "/favicon.ico",
-        "/index.html",
-        "/main.56618c9e876641f62550.js",
-        "/polyfills.c783ffa5336b84423c1c.js",
-        "/runtime.a66f828dca56eeb90e02.js",
-        "/styles.2a83035a8a1f954e2921.css"
+        "https://hanhee-song.github.io/github-visualizer/favicon.ico",
+        "https://hanhee-song.github.io/github-visualizer/index.html",
+        "https://hanhee-song.github.io/github-visualizer/main.56618c9e876641f62550.js",
+        "https://hanhee-song.github.io/github-visualizer/polyfills.c783ffa5336b84423c1c.js",
+        "https://hanhee-song.github.io/github-visualizer/runtime.a66f828dca56eeb90e02.js",
+        "https://hanhee-song.github.io/github-visualizer/styles.2a83035a8a1f954e2921.css"
       ],
       "patterns": []
     },
@@ -21,34 +21,34 @@
       "installMode": "lazy",
       "updateMode": "prefetch",
       "urls": [
-        "/assets/icons/icon-128x128.png",
-        "/assets/icons/icon-144x144.png",
-        "/assets/icons/icon-152x152.png",
-        "/assets/icons/icon-192x192.png",
-        "/assets/icons/icon-384x384.png",
-        "/assets/icons/icon-512x512.png",
-        "/assets/icons/icon-72x72.png",
-        "/assets/icons/icon-96x96.png"
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-128x128.png",
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-144x144.png",
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-152x152.png",
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-192x192.png",
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-384x384.png",
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-512x512.png",
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-72x72.png",
+        "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-96x96.png"
       ],
       "patterns": []
     }
   ],
   "dataGroups": [],
   "hashTable": {
-    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
-    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
-    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
-    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
-    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
-    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
-    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
-    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
-    "/favicon.ico": "0f6ad9170c48425800b7c1a9796f2045d5579ea1",
-    "/index.html": "dca7b8cfdc56f1bc40680052c2b9abcb5e206ff1",
-    "/main.56618c9e876641f62550.js": "3899f5fee13dc41230011f835ed55520c721d4d9",
-    "/polyfills.c783ffa5336b84423c1c.js": "4c850befca5b780eb941f5897e76e8654e7c962d",
-    "/runtime.a66f828dca56eeb90e02.js": "078e320cc6fdaf355836c3b1c52b059cdd33fc7e",
-    "/styles.2a83035a8a1f954e2921.css": "6d2e8db58309495c4e0111afba4e2988c2be9d57"
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "https://hanhee-song.github.io/github-visualizer/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "https://hanhee-song.github.io/github-visualizer/favicon.ico": "0f6ad9170c48425800b7c1a9796f2045d5579ea1",
+    "https://hanhee-song.github.io/github-visualizer/index.html": "ffa0e64da3938db1abf98a5191460af123a85737",
+    "https://hanhee-song.github.io/github-visualizer/main.56618c9e876641f62550.js": "3899f5fee13dc41230011f835ed55520c721d4d9",
+    "https://hanhee-song.github.io/github-visualizer/polyfills.c783ffa5336b84423c1c.js": "4c850befca5b780eb941f5897e76e8654e7c962d",
+    "https://hanhee-song.github.io/github-visualizer/runtime.a66f828dca56eeb90e02.js": "078e320cc6fdaf355836c3b1c52b059cdd33fc7e",
+    "https://hanhee-song.github.io/github-visualizer/styles.2a83035a8a1f954e2921.css": "6d2e8db58309495c4e0111afba4e2988c2be9d57"
   },
   "navigationUrls": [
     {
