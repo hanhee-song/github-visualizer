@@ -16,6 +16,8 @@ import { D3ContainerComponent } from './d3-container/d3-container.component';
 import { SampleReposComponent } from './sample-repos/sample-repos.component';
 import { HelpModalComponent } from './help-modal/help-modal.component';
 import { ClickStopPropagationDirective } from './click-stop-propagation.directive';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -33,7 +35,8 @@ import { ClickStopPropagationDirective } from './click-stop-propagation.directiv
   imports: [
     BrowserModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     GitApiService,

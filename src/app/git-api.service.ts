@@ -1,11 +1,11 @@
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { SidebarContentService } from './sidebar-content.service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of'
+import { Observable } from 'rxjs';
+import { of } from 'rxjs'
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap, delay } from 'rxjs/operators'
-import { zip } from 'rxjs/observable/zip';
+import { zip } from 'rxjs';
 
 import { decode } from 'base-64';
 
