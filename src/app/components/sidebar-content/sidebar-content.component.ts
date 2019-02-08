@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SidebarContentService } from '../sidebar-content.service';
+import { SidebarContentService } from '../../services/sidebar-content.service';
 
 @Component({
   selector: 'app-sidebar-content',

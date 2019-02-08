@@ -12,14 +12,14 @@ import { decode } from 'base-64';
 
 @Injectable()
 export class GitApiService {
-  paramsChange = new Subject<any>()
-  user: String = "";
-  repo: String = "";
-  subdir: String = "";
+  private paramsChange = new Subject<any>();
+  private user: String = "";
+  private repo: String = "";
+  private subdir: String = "";
   
-  loading = false
+  private loading = false
   
-  _ = {
+  private _ = {
     sha: "",
     files: [],
     fetched: 0,
@@ -27,13 +27,13 @@ export class GitApiService {
     unparsed: 0,
     rootDirs: [],
     filePathSet: new Set(),
-  }
+  };
   
-  graphChange = new Subject()
-  graphJSON = {
+  private graphChange = new Subject();
+  private graphJSON = {
     nodes: [],
     links: [],
-  }
+  };
 
   constructor(
     private http: HttpClient,
@@ -49,6 +49,14 @@ export class GitApiService {
         }
       }
     )
+  }
+  
+  public getParamsChange(): Subject<any> {
+    return this.paramsChange;
+  }
+  
+  public getGraphChange(): Subject<any> {
+    return this.graphChange;
   }
   
   handleSubmit(params) {

@@ -1,4 +1,4 @@
-import { GitApiService } from './../git-api.service';
+import { GitApiService } from '../../services/git-api.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({

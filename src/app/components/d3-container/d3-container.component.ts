@@ -1,5 +1,5 @@
-import { SidebarContentService } from './../sidebar-content.service';
-import { GitApiService } from './../git-api.service';
+import { SidebarContentService } from '../../services/sidebar-content.service';
+import { GitApiService } from '../../services/git-api.service';
 import { Component, OnInit } from '@angular/core';
 import * as d3 from "d3";
 
@@ -9,25 +9,25 @@ import * as d3 from "d3";
   styleUrls: ['./d3-container.component.css']
 })
 export class D3ContainerComponent implements OnInit {
-  graph
-  link
-  node
-  text
-  width
-  height
-  simulation
-  highlightedId = "";
-  hoveredId = "";
-  clickedId = "";
-  searchedId = "";
-  paused = false;
-  linkedById = {}
+  private graph
+  private link
+  private node
+  private text
+  private width
+  private height
+  private simulation
+  private highlightedId = "";
+  private hoveredId = "";
+  private clickedId = "";
+  private searchedId = "";
+  private paused = false;
+  private linkedById = {}
 
   constructor(
     private gitApiService: GitApiService,
     private sidebarContentService: SidebarContentService
   ) {
-    this.gitApiService.graphChange.subscribe(graph => {
+    this.gitApiService.getGraphChange().subscribe(graph => {
       this.drawGraph(graph)
     })
   }
@@ -37,7 +37,7 @@ export class D3ContainerComponent implements OnInit {
   
   // D3 LIVES HERE =======================================
   
-  drawGraph(graph) {
+  private drawGraph(graph): void {
     this.graph = graph
     const svg = d3.select('.svg-main');
     svg.selectAll("g").remove();

@@ -1,5 +1,5 @@
-import { SidebarContentService } from './../sidebar-content.service';
-import { GitApiService } from './../git-api.service';
+import { SidebarContentService } from '../../services/sidebar-content.service';
+import { GitApiService } from '../../services/git-api.service';
 import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
@@ -21,7 +21,7 @@ export class SidebarFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.gitApiService.paramsChange.subscribe(params => {
+    this.gitApiService.getParamsChange().subscribe(params => {
       this.params = Object.assign(this.params, params)
       this.makeUrl()
     })
