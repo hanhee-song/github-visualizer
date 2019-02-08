@@ -7,14 +7,14 @@ export class ModalService {
   modalChange = new Subject<string>()
 
   constructor() {
-    this.modalChange.subscribe(modal => this.modal = modal)
+    this.modalChange.subscribe(modal => this.modal = modal);
   }
 
-  closeModal() {
+  public closeModal(): void {
     this.modalChange.next("")
   }
   
-  openModal(modal: string) {
+  public openModal(modal: string): void {
     this.modalChange.next(modal)
   }
 }

@@ -1,29 +1,29 @@
-import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
+import { SidebarData } from '../models/models';
 
 @Injectable()
 export class SidebarContentService {
-  content = ""
-  data = {
-    totalLines: "",
-    totalFiles: "",
+  private content = "";
+  private data = {
+    totalLines: 0,
+    totalFiles: 0,
     currentFile: "",
     currentLoc: "",
   }
-  contentChange: Subject<string> = new Subject<string>()
-  dataChange = new Subject<any>()
+  public contentChange: Subject<string> = new Subject<string>()
+  public dataChange = new Subject<SidebarData>();
 
   constructor() {
-    this.contentChange.subscribe(val => this.content = val)
-    this.dataChange.subscribe(data => this.data = data)
+    this.contentChange.subscribe(val => this.content = val);
+    this.dataChange.subscribe(data => this.data = Object.assign(this.data, data));
   }
 
-  setContent(str) {
-    this.contentChange.next(str)
+  public setContent(str: string): void {
+    this.contentChange.next(str);
   }
   
-  setHelpMessage() {
+  public setHelpMessage(): void {
     this.contentChange.next(`INSTRUCTIONS:
 
 * Click and drag to move nodes around.
@@ -38,10 +38,10 @@ select a new node.
 named "message_form_container.jsx", it's enough to
 search for "mes form cont".
 
-* Press pause to pause the simulation.`)
+* Press pause to pause the simulation.`);
   }
   
-  setData(data) {
-    this.dataChange.next(Object.assign(this.data, data))
+  public setData(data: SidebarData): void {
+    this.dataChange.next(Object.assign(this.data, data));
   }
 }

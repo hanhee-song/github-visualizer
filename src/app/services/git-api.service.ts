@@ -1,21 +1,27 @@
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { SidebarContentService } from './sidebar-content.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs'
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, tap, delay } from 'rxjs/operators'
 import { zip } from 'rxjs';
+import { Params } from '../models/models';
 
 import { decode } from 'base-64';
 
+interface ShaResponse {
+  tree: {
+    path: string,
+  }[]
+}
 
 @Injectable()
 export class GitApiService {
   private paramsChange = new Subject<any>();
-  private user: String = "";
-  private repo: String = "";
-  private subdir: String = "";
+  private user: string = "";
+  private repo: string = "";
+  private subdir: string = "";
   
   private loading = false
   
@@ -59,14 +65,14 @@ export class GitApiService {
     return this.graphChange;
   }
   
-  handleSubmit(params) {
+  public handleSubmit(params: Params): Subscription {
     if (this.loading) {
-      return
+      return;
     }
-    this.loading = true
-    this._clearVars()
-    this.sidebarContentService.setContent("Fetching repo from Github...")
-    this.paramsChange.next(params)
+    this.loading = true;
+    this._clearVars();
+    this.sidebarContentService.setContent("Fetching repo from Github...");
+    this.paramsChange.next(params);
     // Order of events
     // this._setParams
     // this._getRepo
@@ -74,72 +80,72 @@ export class GitApiService {
     // this._getSha
     // this._processShaResponse
     // this._getFile
-    this._setParams(params)
+    this._setParams(params);
     return this._getRepo().subscribe(
-      response => this._processRepoResponse(response),
+      (response: HttpResponse<any>) => this._processRepoResponse(response),
       error => {
-        this.sidebarContentService.setContent(this._englishifyError(error))
-        this.loading = false
+        this.sidebarContentService.setContent(this._englishifyError(error));
+        this.loading = false;
       }
     )
   }
   
-  _setParams(params) {
-    this.user = params.user
-    this.repo = params.repo
-    this.subdir = params.subdir
+  private _setParams(params: Params): void {
+    this.user = params.user;
+    this.repo = params.repo;
+    this.subdir = params.subdir;
   }
   
-  _getRepo() {
+  private _getRepo(): Observable<any> {
     return this.http.get(`https://api.github.com/repos/${this.user}/${this.repo}/commits`, {
-      headers: { 'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==' }
-    })
+      headers: { 'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==' },
+    });
   }
   
-  _processRepoResponse(response) {
-    this._.sha = response[0].sha
-    return this._getSha().subscribe(
-      response => this._processShaResponse(response),
+  private _processRepoResponse(response: HttpResponse<any>): void {
+    this._.sha = response[0].sha;
+    this._getSha().subscribe(
+      (response: ShaResponse) => this._processShaResponse(response),
       error => {
-        this.sidebarContentService.setContent(this._englishifyError(error))
-        this.loading = false
+        this.sidebarContentService.setContent(this._englishifyError(error));
+        this.loading = false;
       }
     )
   }
   
-  _getSha() {
+  private _getSha(): Observable<any> {
     return this.http.get(`https://api.github.com/repos/${this.user}/${this.repo}/git/trees/${this._.sha}?recursive=1`, {
       headers: { 'Authorization': 'Basic aGFuaGVlLXNvbmc6ZjVlMzE3YWMxYWMwMDg1Njg5MDI0OWI5ODZiY2I0OTBiOGNhNzRmZA==' }
     })
   }
   
-  _processShaResponse(response) {
-    this._.files = this._parseTree(response)
+  private _processShaResponse(response: ShaResponse): void {
+    this._.files = this._parseTree(response);
     if (this._.files.length > 200) {
       // raise error or something, or maybe you don't even need to raise an error
       this.sidebarContentService.setContent(`Repo too large: ${this._.files.length} files found.
 
 There is a limit of 200 files to avoid flooding the Github servers.
 
-Maybe specify a subdirectory?`)
+Maybe specify a subdirectory?`);
       return
     }
-    this._.rootDirs = this._parseRootDirs()
+    this._.rootDirs = this._parseRootDirs();
     this._.filePathSet = new Set(Object.values(this._.files).map(file => file.path ));
     
     this._.parsed = 0;
     this._.fetched = 0;
     this._.unparsed = 0;
-    this._setMessage
-    const observables = []
+    this._setMessage();
+    const observables = [];
     for (let i = 0; i < this._.files.length; i++) {
       const file = this._.files[i];
       observables.push(this._getFile(file.url).pipe(
         tap(res => this._processFile(file.path, res)),
         catchError(err => this._handleFileError())
-      ))
+      ));
     }
-    return zip(...observables)
+    zip(...observables)
       .pipe(delay(1500))
       .subscribe(
       _ => {
@@ -152,14 +158,14 @@ Maybe specify a subdirectory?`)
         });
         this.sidebarContentService.setData({
           totalLines,
-          totalFiles: this.graphJSON.nodes.length
-        })
-        this.sidebarContentService.setHelpMessage()
+          totalFiles: this.graphJSON.nodes.length,
+        });
+        this.sidebarContentService.setHelpMessage();
       }
     )
   }
   
-  _getFile(url) {
+  private _getFile(url: string): Observable<any> {
     return this.http.get(
       url,
       {
@@ -188,7 +194,7 @@ Maybe specify a subdirectory?`)
     return of(null)
   }
   
-  _englishifyError(error) {
+  private _englishifyError(error: HttpErrorResponse): string {
     if (error.status === 404) {
       return "404: Sorry, we couldn't find that repo!"
     } else {
@@ -213,7 +219,7 @@ ${finishedMessage}`);
   
   // ================================================================
   
-  _parseTree(response) {
+  private _parseTree(response: ShaResponse): { path: string }[] {
     return response.tree.filter(file => {
       if (this._forbiddenFile(file.path)) {
         return false;
@@ -231,7 +237,7 @@ ${finishedMessage}`);
     });
   }
   
-  _parseRootDirs() {
+  private _parseRootDirs(): string[] {
     let rootDirs = new Set();
     this._.files.forEach(file => {
       rootDirs.add(this._parseRoot(file.path));
@@ -239,7 +245,7 @@ ${finishedMessage}`);
     return Array.from(rootDirs);
   }
   
-  _parseRoot(path) {
+  private _parseRoot(path: string): string {
     let pathArr = path.split("/");
     let subArr = this.subdir.split("/");
     if (subArr[subArr.length - 1] === pathArr[subArr.length - 1]) {
@@ -249,26 +255,26 @@ ${finishedMessage}`);
     }
   }
   
-  _forbiddenFile(path) {
+  private _forbiddenFile(path: string): boolean {
     const parsedName = this._parseName(path);
     const ext = this._extension(path);
-    return parsedName.match(/((bundle).*\.(js))/)
-      || parsedName.match(/((webpack).*\.(config))/)
+    return !!parsedName.match(/((bundle).*\.(js))/)
+      || !!parsedName.match(/((webpack).*\.(config))/)
       || !["ts", "js", "jsx"].includes(ext)
-      || ["ts", "js", "jsx"].includes(path) // will otherwise break when folders are named js
+      || ["ts", "js", "jsx"].includes(path); // will otherwise break when folders are named js
   }
   
-  _extension(path) {
+  private _extension(path: string): string {
     const splitPath = path.split(".");
     return splitPath[splitPath.length - 1];
   }
   
-  _parseName(path) {
+  private _parseName(path: string): string {
     const splitPath = path.split("/");
     return splitPath[splitPath.length - 1];
   }
   
-  _parseLinks(filePath, contentArr) {
+  private _parseLinks(filePath: string, contentArr: string[]): string[] {
     let links = [];
     for (let i = 0; i < contentArr.length; i++) {
       const line = contentArr[i];
@@ -284,11 +290,10 @@ ${finishedMessage}`);
     return links;
   }
   
-  _parsePath(filePath, parsedImport) {
+  private _parsePath(filePath: string, parsedImport: string): string {
     let sectionArr = parsedImport.split("/");
     let pathArr = filePath.split("/");
     pathArr.pop();
-    let newPath;
     sectionArr.forEach(section => {
       if (section === '..') {
         pathArr.pop();
@@ -309,7 +314,7 @@ ${finishedMessage}`);
     }
   }
   
-  _addNode(filePath, length, content) {
+  private _addNode(filePath: string, length: number, content: string) {
     const name = this._parseName(filePath);
     let node = {
       id: filePath,
@@ -322,32 +327,32 @@ ${finishedMessage}`);
     this.graphJSON.nodes.push(node);
   }
   
-  _addLinks(filePath, contentArr) {
+  private _addLinks(filePath: string, contentArr: string[]) {
     const links = this._parseLinks(filePath, contentArr);
     links.forEach(link => {
       this.graphJSON.links.push(link)
     })
   }
   
-  _sanitizeGraph() {
-  let newGraph = {
-    "links": [],
-    "nodes": this.graphJSON.nodes
-  };
-  const names = new Set(this.graphJSON.nodes.map(node => node.id));
-  
-  this.graphJSON.links.forEach(link => {
-    if (names.has(link.source) && names.has(link.target)) {
-      newGraph.links.push(link);
-    }
-  });
-  
-  this.graphJSON = newGraph;
-}
+  private _sanitizeGraph(): void {
+    let newGraph = {
+      "links": [],
+      "nodes": this.graphJSON.nodes
+    };
+    const names = new Set(this.graphJSON.nodes.map(node => node.id));
+    
+    this.graphJSON.links.forEach(link => {
+      if (names.has(link.source) && names.has(link.target)) {
+        newGraph.links.push(link);
+      }
+    });
+    
+    this.graphJSON = newGraph;
+  }
   
   // ==================================
   
-  _clearVars() {
+  private _clearVars(): void {
     this._ = {
       sha: "",
       files: [],
