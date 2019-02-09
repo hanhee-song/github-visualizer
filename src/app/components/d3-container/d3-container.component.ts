@@ -19,8 +19,8 @@ export class D3ContainerComponent implements OnInit {
   private highlightedId = "";
   private hoveredId = "";
   private clickedId = "";
-  private searchedId = "";
-  private paused = false;
+  public searchedId = "";
+  public paused = false;
   private linkedById = {}
 
   constructor(
