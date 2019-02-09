@@ -18,6 +18,8 @@ interface ShaResponse {
   }[]
 }
 
+const VALID_EXTENSIONS = ['ts', 'tsx', 'js', 'jsx'];
+
 @Injectable()
 export class GitApiService implements OnDestroy {
   private paramsChange = new Subject<any>();
@@ -265,8 +267,8 @@ ${finishedMessage}`);
     const ext = this._extension(path);
     return !!parsedName.match(/((bundle).*\.(js))/)
       || !!parsedName.match(/((webpack).*\.(config))/)
-      || !["ts", "js", "jsx"].includes(ext)
-      || ["ts", "js", "jsx"].includes(path); // will otherwise break when folders are named js
+      || !VALID_EXTENSIONS.includes(ext)
+      || VALID_EXTENSIONS.includes(path); // will otherwise break when folders are named js
   }
   
   private _extension(path: string): string {
@@ -310,12 +312,13 @@ ${finishedMessage}`);
     const combinedPath = pathArr.join("/");
     if (this._.filePathSet.has(combinedPath)) {
       return combinedPath;
-    } else if (this._.filePathSet.has(combinedPath + ".js")) {
-      return combinedPath + ".js";
-    } else if (this._.filePathSet.has(combinedPath + ".jsx")) {
-      return combinedPath + ".jsx";
     } else {
-      return combinedPath + ".ts"
+      for (let i = 0; i < VALID_EXTENSIONS.length; i++) {
+        const ext = VALID_EXTENSIONS[i];
+        if (this._.filePathSet.has(combinedPath + ext)) {
+          return combinedPath + ext;
+        }
+      }
     }
   }
   

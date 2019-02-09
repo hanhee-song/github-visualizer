@@ -15,11 +15,11 @@ If you wish to run this repo locally by cloning it:
 
 ### Features
 
-The visualizer will parse out the contents of any given repository, sift through all files with a ```.js``` or ```.jsx``` extension, and calculate the interdependencies based on the contents of the files.
+The visualizer will parse out the contents of any given repository, sift through all files with a ```.js```, ```.jsx```, ```.ts```, or ```.tsx``` extension, and calculate the interdependencies based on the contents of the files.
 
 Users can input either the Github URL or the user, repo, and an optional subdirectory. The visualizer will retrieve and display the files in a graph.
 
-Nodes denote files with a .js or .jsx extension. The size of the node corresponds to the size of the file. Nodes are colored by the subdirectory they are in.
+Nodes denote files with a .js, .jsx, .ts, or .tsx extension. The size of the node corresponds to the size of the file. Nodes are colored by the subdirectory they are in.
 
 Users can click on a node to highlight its links and display its contents. To remove highlighting, users can click on the same node or on the background. Users can also click and drag nodes around.
 
@@ -29,7 +29,7 @@ The visualizer is compatible with various major repositories, including Redux, E
 
 ## How it works
 
-The visualizer sends XHRs via the Github API - one to retrieve the SHA of the most recent commit, one to retrieve the file tree, and a series of requests to retrieve the contents of every ```.ts```, ```.js```, or ```.jsx``` file. It stores each file as a node and examines file dependencies to construct links between each file. Using a combination of data structures, memoization, and regex, the parser rapidly determines the tree structure and converts ```import``` or ```require``` statements into links. The resulting JSON is then rendered in D3.
+The visualizer sends XHRs via the Github API - one to retrieve the SHA of the most recent commit, one to retrieve the file tree, and a series of requests to retrieve the contents of every ```.ts```, ```.tsx```, ```.js```, or ```.jsx``` file. It stores each file as a node and examines file dependencies to construct links between each file. Using a combination of data structures, memoization, and regex, the parser rapidly determines the tree structure and converts ```import``` or ```require``` statements into links. The resulting JSON is then rendered in D3.
 
 #### Notes
 
