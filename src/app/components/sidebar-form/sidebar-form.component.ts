@@ -1,13 +1,15 @@
+import { LogWrapper } from './../../logger/log-wrapper';
 import { SidebarContentService } from '../../services/sidebar-content.service';
 import { GitApiService } from '../../services/git-api.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { LogService } from '../../logger/log.service';
 
 @Component({
   selector: 'app-sidebar-form',
   templateUrl: './sidebar-form.component.html',
   styleUrls: ['./sidebar-form.component.css']
 })
-export class SidebarFormComponent implements OnInit {
+export class SidebarFormComponent extends LogWrapper implements OnInit, OnDestroy {
   @Input() params = {
     user: "",
     repo: "",
@@ -16,9 +18,12 @@ export class SidebarFormComponent implements OnInit {
   }
   
   constructor(
+    protected logService: LogService,
     private gitApiService: GitApiService,
     private sidebarContentService: SidebarContentService
-  ) { }
+  ) {
+    super(logService);
+  }
 
   ngOnInit() {
     this.gitApiService.getParamsChange().subscribe(params => {
@@ -26,16 +31,18 @@ export class SidebarFormComponent implements OnInit {
       this.makeUrl()
     })
   }
+  
+  ngOnDestroy() { }
 
-  handleChange() {
+  public handleChange(): void {
     this.makeUrl()
   }
 
-  handleUrlChange() {
+  public handleUrlChange(): void {
     this.parseUrl()
   }
 
-  handleSubmit() {
+  public handleSubmit(): void {
     if (!this.params.user || !this.params.repo) {
       this.sidebarContentService.setContent("Please enter both a username and a repo.")
     } else {
@@ -43,7 +50,7 @@ export class SidebarFormComponent implements OnInit {
     }
   }
 
-  makeUrl() {
+  private makeUrl(): void {
     let url = `https://github.com/${this.params.user}`;
     if (this.params.repo) {
       url += '/' + this.params.repo;
@@ -54,7 +61,7 @@ export class SidebarFormComponent implements OnInit {
     this.params.url = url;
   }
 
-  parseUrl() {
+  private parseUrl(): void {
     let urlTag = this.params.url.match(/github\.com\/(.*)/);
     if (urlTag) {
       const urlTagArr = urlTag[1].split("/");

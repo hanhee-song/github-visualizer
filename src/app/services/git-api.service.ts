@@ -1,6 +1,6 @@
 import { Subject, Subscription } from 'rxjs';
 import { SidebarContentService } from './sidebar-content.service';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs'
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -9,6 +9,8 @@ import { zip } from 'rxjs';
 import { Params } from '../models/models';
 
 import { decode } from 'base-64';
+import { LogWrapper } from '../logger/log-wrapper';
+import { LogService } from '../logger/log.service';
 
 interface ShaResponse {
   tree: {
@@ -17,7 +19,7 @@ interface ShaResponse {
 }
 
 @Injectable()
-export class GitApiService {
+export class GitApiService implements OnDestroy {
   private paramsChange = new Subject<any>();
   private user: string = "";
   private repo: string = "";
@@ -42,6 +44,7 @@ export class GitApiService {
   };
 
   constructor(
+    protected logService: LogService,
     private http: HttpClient,
     private sidebarContentService: SidebarContentService
   ) {
@@ -56,6 +59,8 @@ export class GitApiService {
       }
     )
   }
+  
+  public ngOnDestroy() {}
   
   public getParamsChange(): Subject<any> {
     return this.paramsChange;

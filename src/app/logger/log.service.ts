@@ -146,6 +146,19 @@ export class LogService {
         !this.isIe
           ? console.group('%c' + args[0] + '%c - ' + this._getLogDateTimeString(), this.STYLE[level], this.STYLE.TIMESTAMP)
           : console.group(args[0] + ' - ' + this._getLogDateTimeString());
+        for (let i = 0; i < args.length; i++) {
+          const element = args[i];
+          console[level.toLocaleLowerCase()](element);
+        }
+        console.groupEnd();
+      } else {
+        if (level.toLocaleLowerCase() === 'info') {
+          !this.isIe
+            ? console.log('%c' + args[0], this.STYLE[level], ...args.slice(1))
+            : console.log(...args);
+        } else {
+          console[level.toLocaleLowerCase()](...args);
+        }
       }
     }
   }

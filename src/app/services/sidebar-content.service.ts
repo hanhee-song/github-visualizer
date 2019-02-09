@@ -1,9 +1,11 @@
-import { Injectable } from '@angular/core';
+import { LogService } from './../logger/log.service';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { SidebarData } from '../models/models';
+import { LogWrapper } from '../logger/log-wrapper';
 
 @Injectable()
-export class SidebarContentService {
+export class SidebarContentService extends LogWrapper implements OnDestroy {
   private content = "";
   private data = {
     totalLines: 0,
@@ -14,10 +16,15 @@ export class SidebarContentService {
   public contentChange: Subject<string> = new Subject<string>()
   public dataChange = new Subject<SidebarData>();
 
-  constructor() {
+  constructor(
+    protected logService: LogService
+  ) {
+    super(logService);
     this.contentChange.subscribe(val => this.content = val);
     this.dataChange.subscribe(data => this.data = Object.assign(this.data, data));
   }
+  
+  ngOnDestroy() { }
 
   public setContent(str: string): void {
     this.contentChange.next(str);

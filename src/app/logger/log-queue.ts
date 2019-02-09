@@ -30,7 +30,7 @@ export class LogQueue {
     if (logLevel) {
       group.style = logLevel;
     }
-    group.logQueueHeader = this.getNestedGroupHeader(header, group.depth);
+    group.logQueueHeader = this.getNestedGroupHeader(group.logQueueHeader, group.depth);
     group.endTime = performanceNow || performance.now();
     group.style = this.elevateGroupLevel(group);
   }

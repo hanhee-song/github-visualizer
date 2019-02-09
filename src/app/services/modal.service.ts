@@ -1,14 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
+import { LogWrapper } from '../logger/log-wrapper';
+import { LogService } from '../logger/log.service';
 
 @Injectable()
-export class ModalService {
+export class ModalService extends LogWrapper implements OnDestroy {
   modal = "help"
   modalChange = new Subject<string>()
 
-  constructor() {
+  constructor(
+    protected logService: LogService
+  ) {
+    super(logService);
     this.modalChange.subscribe(modal => this.modal = modal);
   }
+  
+  ngOnDestroy() { }
 
   public closeModal(): void {
     this.modalChange.next("")
