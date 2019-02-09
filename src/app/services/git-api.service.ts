@@ -314,7 +314,7 @@ ${finishedMessage}`);
       return combinedPath;
     } else {
       for (let i = 0; i < VALID_EXTENSIONS.length; i++) {
-        const ext = VALID_EXTENSIONS[i];
+        const ext = '.' + VALID_EXTENSIONS[i];
         if (this._.filePathSet.has(combinedPath + ext)) {
           return combinedPath + ext;
         }
