@@ -120,7 +120,7 @@ export class LogService {
     }
     if (!this.isTest) {
       !this.isIe
-        ? console.warn('%Log level is now ' + this.logLevel, this.STYLE.ERROR)
+        ? console.warn('%cLog level is now ' + this.logLevel, this.STYLE.ERROR)
         : console.warn('Log level is now ' + this.logLevel);
     }
     this.logLevelSubject.next(this.logLevel);
