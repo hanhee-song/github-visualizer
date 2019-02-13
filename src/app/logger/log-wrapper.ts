@@ -148,7 +148,7 @@ export abstract class LogWrapper implements Component {
         LogWrapper.logService.log('Return:', returnValue);
       }
       
-      const logString = this._getHeaderName(functionName);
+      const logString = this._getHeaderName(functionName)
         + ' (changes - ' + numberOfDiffs + ')'
         + (returnValue !== undefined ? ' (return ' + LogWrapper._getTypeOfValue(returnValue) + ')' : '');
       
